@@ -265,6 +265,21 @@ input.field,select.field,textarea.field{font-family:inherit;font-size:16px;width
 .wc-gift{background:radial-gradient(circle at 35% 30%,#f9a8d4,#ec4899 60%,#be185d);font-size:0}.wc-gift svg{stroke:#fff}
 .wc-goal{background:#fdf2f8;border-color:#fbcfe8;color:#9d174d;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:600}
 .wpop .wp-goal{margin-top:10px;background:#fdf2f8;border:1px solid #fbcfe8;color:#9d174d;border-radius:10px;padding:8px 10px;font-size:13.5px;font-weight:600;display:flex;gap:6px;align-items:flex-start}
+.app-intro{text-align:center}.app-intro .ai-logo{width:64px;height:64px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(99,102,241,.25)}
+.app-intro .ai-lead{color:var(--ink-2);font-size:15.5px;line-height:1.6;margin:0 auto 12px;max-width:480px}
+.app-intro .ai-fs{display:grid;gap:8px;text-align:right;max-width:460px;margin:0 auto}
+.app-intro .ai-f{display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--ink-2)}
+.app-intro .ai-i{width:30px;height:30px;border-radius:9px;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;flex:none}
+.steps{display:flex;gap:8px;margin-bottom:8px;font-size:13px}.steps span{padding:4px 10px;border-radius:999px;background:var(--bg);color:var(--muted);font-weight:600}
+.steps .on{background:var(--primary-soft);color:var(--primary)}.steps .done{background:var(--ok-soft);color:var(--ok)}
+.sq{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px;transition:border-color .2s}.sq.ok{border-color:#c7d2fe;background:#fafaff}
+.sq-t{font-weight:600;font-size:15.5px;display:flex;gap:8px;align-items:flex-start;line-height:1.45}
+.sq-n{flex:none;width:24px;height:24px;border-radius:50%;background:var(--primary);color:#fff;font-size:13px;display:grid;place-items:center}
+.sq-sc{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.sq-b{height:44px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-weight:700;font-size:17px;color:var(--ink-2);cursor:pointer}
+.sq-b:hover{border-color:var(--primary)}.sq-b.sel{background:var(--primary);border-color:var(--primary);color:#fff;transform:scale(1.05)}
+.sq-ends{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted);margin-top:6px}
+.login-new{margin:10px 0 4px;background:var(--primary-soft);border-radius:12px;padding:10px 12px;font-size:14px;color:var(--ink-2);line-height:1.55}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;z-index:60;font-size:14.5px;box-shadow:0 8px 24px rgba(15,23,42,.25);max-width:90vw;text-align:center}
 .lang-btn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 11px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:13.5px;font-weight:600;color:var(--ink-2)}
 .lang-btn:hover{background:var(--bg)}
@@ -754,7 +769,7 @@ const I18N={"אפשר לפנות להורה לקבלת המתנה":"You can ask 
 "שם משתמש: 3–20 תווים, בלי רווחים ":"Username: 3–20 characters, no spaces",
 "אפשר להוסיף עוד עמודים":"you can add more pages","תמונה":"image"
 };
-const I18N_PAT=[["הגעת ל-{} בקופה!", "You reached {} in your wallet!"],["יש לך עכשיו {}. זה הזמן לפנות להורה ולקבל את המתנה שלך!", "You now have {}. Time to ask a parent for your gift!"],["עוד {} נכנסו לקופה, ויש לך עכשיו {}. זה הזמן לפנות להורה ולקבל את המתנה שלך!", "{} more went into your wallet, and you now have {}. Time to ask a parent for your gift!"],["הגעת ל-{}! אפשר לפנות להורה לקבלת המתנה", "You reached {}! You can ask a parent for your gift"],["היעד למתנה: {} (עוד {})", "Gift goal: {} ({} to go)"],["יש! הרווחת {}", "Yay! You earned {}"],["{} חדשים נכנסו לקופה שלך. כל הכבוד על ההתמדה!", "{} new went into your wallet. Great persistence!"],["חסרים לך {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["{} על כל {} כוכבים", "{} for every {} stars"],["עוד {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["עוד {} כוכבים ל-{} הבאים · נצבר {} · שולם {}", "{} more stars to the next {} · earned {} · paid {}"],["כל הכבוד! נכנסו {} לקופה שלך", "Well done! {} went into your wallet"],["{} על כל {} כוכבים · עוד {} כוכבים לתשלום הבא", "{} for every {} stars · {} more stars to the next payment"],
+const I18N_PAT=[["הערכה עצמית בהרשמה: {}/5","Self-assessment at sign-up: {}/5"],["הגעת ל-{} בקופה!", "You reached {} in your wallet!"],["יש לך עכשיו {}. זה הזמן לפנות להורה ולקבל את המתנה שלך!", "You now have {}. Time to ask a parent for your gift!"],["עוד {} נכנסו לקופה, ויש לך עכשיו {}. זה הזמן לפנות להורה ולקבל את המתנה שלך!", "{} more went into your wallet, and you now have {}. Time to ask a parent for your gift!"],["הגעת ל-{}! אפשר לפנות להורה לקבלת המתנה", "You reached {}! You can ask a parent for your gift"],["היעד למתנה: {} (עוד {})", "Gift goal: {} ({} to go)"],["יש! הרווחת {}", "Yay! You earned {}"],["{} חדשים נכנסו לקופה שלך. כל הכבוד על ההתמדה!", "{} new went into your wallet. Great persistence!"],["חסרים לך {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["{} על כל {} כוכבים", "{} for every {} stars"],["עוד {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["עוד {} כוכבים ל-{} הבאים · נצבר {} · שולם {}", "{} more stars to the next {} · earned {} · paid {}"],["כל הכבוד! נכנסו {} לקופה שלך", "Well done! {} went into your wallet"],["{} על כל {} כוכבים · עוד {} כוכבים לתשלום הבא", "{} for every {} stars · {} more stars to the next payment"],
 ["כיתה {} · {}", "Grade {} · {}"],["כיתה {}", "Grade {}"],["רמה אישית {} מתוך 5 · {} מילים בשליטה{}", "Personal level {} of 5 · {} words mastered{}"],[" · אוצר משוער ~{}", " · estimated vocabulary ~{}"],["הסט היומי שלך: {}/{} מילים", "Today's set: {}/{} words"],["הרמה האישית שלך: {}", "Your personal level: {}"],["רמה {}", "Level {}"],["{} מילים לפי רמות תוכנית הלימודים · רמה אישית {}{}", "{} words by curriculum level · personal level {}{}"],[" · {} מילים לחזרה היום", " · {} words to review today"],["הכנה לבגרות · {}", "Bagrut prep · {}"],["{}מבנה הבחינה לפי משרד החינוך", "{}Exam structure per the Ministry of Education"],["כיתה {} · ", "Grade {} · "],["מבנים מרכזיים לרמת {} יח״ל", "Key structures for {} units"],["Unseen · {} יח״ל", "Unseen · {} units"],["אוצר מילים משוער: {} מילים מתוך {} בבנק", "Estimated vocabulary: {} words out of {} in the bank"],["{}/{} · {} מילים", "{}/{} · {} words"],["מתרגם {} מילים…", "Translating {} words…"],["{}/{} תשובות נכונות · +{} כוכבים", "{}/{} correct · +{} stars"],["כותב… {}%", "Writing… {}%"],["חסר תרגום ל-{} מילים. הוסיפו תרגום (word - תרגום).", "{} words have no translation. Add one (word - translation), or open the app inside Claude for automatic translation."],["רשימה של {} מילים שיובאה מבית הספר.", "A list of {} words imported from school."],["יובאה רשימה: {} ({} מילים)", "List imported: {} ({} words)"],["מבחן מיקום: רמה {}", "Placement test: level {}"],
 ["סונכרן {}", "synced {}"],["מנהל: {}", "Manager: {}"],["החשבון נעול: {}. יש לפנות למנהל.", "Account is locked: {}. Please contact an admin."],["הגדרות עודכנו מרחוק על ידי {}", "Settings updated remotely by {}"],["הגדרות עודכנו מרחוק", "Settings updated remotely"],["{} תוכניות", "{} plans"],["קהילה: {}", "community: {}"],["{} משחקים, {} ניצחונות", "{} games, {} wins"],["למחוק סופית את {}?", "Permanently delete {}?"],
 ["{} תשובות נכונות מתוך {}","{} correct out of {}"],["קיבלת {} כוכבים{}","you got {} stars{}"],["מהגלריה, עד {}","from gallery, up to {}"],
@@ -2715,7 +2730,7 @@ function summary(p){
   const key=group(p)+p.level, [k,t]=knownFor(p,key), week=[...Array(7)].map((_,i)=>dayKey(new Date(Date.now()-i*864e5)));
   return {id:p.id,name:p.name,user:p.user||"",grade:p.grade||null,bagrut:p.bagrut||null,wl:p.grade?Math.round(wlOf(p)*10)/10:null,age:p.age,gender:p.gender||"f",level:p.level,group:group(p),avatar:p.avatar,stars:p.stars||0,known:k,total:t,passed:passedFor(p,key),
     today:minsOn(p,dayKey()),week:week.reduce((a,d)=>a+minsOn(p,d),0),lastSeen:p.lastSeen||0,created:p.created||0,plans:(p.plans||[]).length,
-    community:p.community?p.community.code:"",games:p.games||null,ctrl:rawCtrl(p),locked:!!p.locked,managedAt:p.managedAt||0,hasPw:!!p.hash,log:(p.log||[]).slice(-15),wallet:walletOf(p)};
+    community:p.community?p.community.code:"",games:p.games||null,ctrl:rawCtrl(p),locked:!!p.locked,managedAt:p.managedAt||0,hasPw:!!p.hash,log:(p.log||[]).slice(-15),wallet:walletOf(p),selfAssess:p.selfAssess||null};
 }
 function scheduleSync(now){
   if(!CLOUD.db) return; clearTimeout(CLOUD.syncT);
@@ -2827,7 +2842,7 @@ function renderCloudUser(id){
   cloudShell(`
     <button class="link" id="cub" style="display:inline-flex;align-items:center;gap:4px;margin-bottom:10px">${icon("back",16)} כל המשתמשים</button>
     <div class="card"><div class="hero">${avatarHTML(a.avatar,60)}<div style="flex:1"><h2>${esc(a.name)}</h2><div class="badges"><span class="badge gray en">${esc(a.user)}</span><span class="badge">${GROUP_NAME[a.group]||""} · ${LEVELS[(a.level||1)-1].name}</span><span class="badge gray">${esc(a.device||"")}</span>${a.locked?`<span class="badge" style="background:var(--bad-soft);color:var(--bad)">נעול</span>`:""}</div>
-      <div class="hint">${ACT_N[actState(a)]}${a.lastSeen?` · ${fmtDT(a.lastSeen)}`:""} · סונכרן ${fmtDT(a.syncedAt)}</div></div></div>
+      <div class="hint">${ACT_N[actState(a)]}${a.lastSeen?` · ${fmtDT(a.lastSeen)}`:""} · סונכרן ${fmtDT(a.syncedAt)}</div>${a.selfAssess?`<div class="hint">הערכה עצמית בהרשמה: ${a.selfAssess.avg}/5 <span data-notr style="color:var(--muted)">(${a.selfAssess.ans.join(" · ")})</span></div>`:""}</div></div>
       <div class="stat-row"><div class="stat"><div class="v">${a.stars}</div><div class="l">כוכבים</div></div><div class="stat"><div class="v">${a.known}/${a.total}</div><div class="l">מילים ברמה</div></div><div class="stat"><div class="v">${a.week}</div><div class="l">דקות השבוע</div></div></div>
       ${pend?`<div class="hint" style="color:var(--amber)">יש שינויים שממתינים להחלה – הם יחולו בפעם הבאה שהמכשיר פותח את האפליקציה.</div>`:""}</div>
     ${a.wallet&&a.wallet.on?`<div class="section-title">קופה</div>
@@ -3273,7 +3288,7 @@ async function renderLogin(msg=""){
   if(!WEB.sb){ app.innerHTML=topBar(" ")+setupCard(); return; }
   app.innerHTML=topBar(" ")+`<div class="auth"><div class="card pop">
     <div class="tile-ic">${icon("login",22)}</div>
-    <h1>כניסה לחשבון</h1><p class="sub">היכנסו עם שם המשתמש והסיסמה שלכם – מכל מכשיר.</p>
+    <h1>כניסה לחשבון</h1><p class="sub">היכנסו עם שם המשתמש והסיסמה שלכם – מכל מכשיר.</p><div class="login-new"><b>חדשים כאן?</b> לומדים אנגלית היא אפליקציה ללימוד אנגלית בכיף לכל המשפחה, מותאמת לגיל ולרמה. <button type="button" class="link" id="tosign2">להרשמה ←</button></div>
     <form id="lf" autocomplete="on">
       <label class="lbl" for="lu">שם משתמש</label><input class="field" id="lu" autocomplete="username" autocapitalize="off" spellcheck="false">
       <label class="lbl" for="lp">סיסמה</label>${pwField("lp")}
@@ -3285,7 +3300,7 @@ async function renderLogin(msg=""){
       <span style="color:var(--muted)">אין לך חשבון? <button class="link" id="tosign">הרשמה</button></span>
       <button class="link muted" id="forgot">שכחתי סיסמה</button></div></div></div>`;
   wireEyes(app);
-  $("#tosign").onclick=renderSignup;
+  $("#tosign").onclick=renderSignup; $("#tosign2").onclick=renderSignup;
   $("#forgot").onclick=()=>{ $("#lerr").style.color="var(--ink-2)"; $("#lerr").textContent="פנו למנהל האפליקציה לאיפוס הסיסמה."; };
   $("#lf").onsubmit=async e=>{
     e.preventDefault(); const err=$("#lerr"); err.style.color="";
@@ -3302,14 +3317,42 @@ async function renderLogin(msg=""){
   };
   setTimeout(()=>{ const f=$("#lu"); if(f&&!("ontouchstart" in window)) f.focus(); },50);
 }
-/* ---------- signup ---------- */
+Object.assign(I18N,{"כמה מילים באנגלית כבר מוכרות לך?": "How many English words do you already know?", "עד כמה קל לך לקרוא שלטים או טקסטים באנגלית?": "How easily can you read signs or texts in English?", "כשמדברים באנגלית בסרטונים או במשחקים, כמה מזה מובן לך?": "When people speak English in videos or games, how much do you understand?", "כמה קל לך לענות כשמישהו שואל אותך משהו באנגלית?": "How easy is it to answer when someone asks you something in English?", "כמה קל לך לכתוב משפט באנגלית בלי שגיאות?": "How easy is it to write a sentence in English without mistakes?", "לומדים אנגלית": "Learn English", "אפליקציה ללימוד אנגלית לכל המשפחה – מגיל 2 ועד מבוגרים. המטרה: ללמוד אנגלית בכיף, בקצב אישי ובהתאם לגיל ולרמה, ולהתקדם בביטחון כל יום.": "An English-learning app for the whole family – from age 2 to adults. The goal: learn English with fun, at your own pace, matched to age and level, and grow more confident every day.", "מילים, האזנה, קריאה ודקדוק – מותאמים לגיל ולרמה": "Words, listening, reading and grammar – matched to age and level", "לפי תוכנית משרד החינוך: מכיתה ג׳ ועד הכנה לבגרות 4–5 יח״ל": "Follows the Israeli Ministry of Education curriculum: grade 3 to Bagrut prep (4–5 units)", "כוכבים על כל הצלחה, וקופה שצוברת כסף למתנה": "Stars for every success, and a wallet that saves money toward a gift", "משחקי מילים אונליין מול חברים ובני משפחה": "Online word games with friends and family", "חשבון אישי לכל אחד – נכנסים מכל מכשיר": "A personal account for everyone – sign in from any device", "1. פרטים": "1. Details", "2. הרמה שלך": "2. Your level", "יצירת חשבון": "Create account", "המשך ←": "Continue →", "5 שאלות קצרות על הרמה שלך": "5 quick questions about your level", "אין תשובות נכונות או לא נכונות. לפי התשובות נתאים לך תרגולים ברמה הנכונה.": "There are no right or wrong answers. We'll use them to match practice to your level.", "→ חזרה לפרטים": "← Back to details", "חדשים כאן?": "New here?", "לומדים אנגלית היא אפליקציה ללימוד אנגלית בכיף לכל המשפחה, מותאמת לגיל ולרמה.": "Learn English is a fun English-learning app for the whole family, matched to age and level.", "להרשמה ←": "Sign up →", "כמעט כלום": "almost nothing", "המון מילים": "lots of words", "בכלל לא": "not at all", "קריאה בקלות": "read easily", "שום דבר": "nothing", "כמעט הכול": "almost everything", "מביך / אין לי מושג": "awkward / no idea", "תשובה חופשית ובביטחון": "answer freely and confidently", "עוד לא מצליחים לכתוב": "can't write yet", "בלי שום בעיה": "no problem at all"});
+[["1 = {}", "1 = {}"], ["5 = {}", "5 = {}"], ["נא לענות על שאלה {}", "Please answer question {}"], ["התאמנו לך {}. אפשר לשנות בהגדרות.", "We matched you to {}. You can change it in settings."]].forEach(([k,v])=>PATS.push([new RegExp("^"+_escRe(k)+"$"),v])); PATS.sort((a,b)=>b[0].source.length-a[0].source.length);
+/* ---------- signup: intro → details → 5 self-assessment questions ---------- */
+const SELF_Q=[
+  {q:"כמה מילים באנגלית כבר מוכרות לך?",lo:"כמעט כלום",hi:"המון מילים"},
+  {q:"עד כמה קל לך לקרוא שלטים או טקסטים באנגלית?",lo:"בכלל לא",hi:"קריאה בקלות"},
+  {q:"כשמדברים באנגלית בסרטונים או במשחקים, כמה מזה מובן לך?",lo:"שום דבר",hi:"כמעט הכול"},
+  {q:"כמה קל לך לענות כשמישהו שואל אותך משהו באנגלית?",lo:"מביך / אין לי מושג",hi:"תשובה חופשית ובביטחון"},
+  {q:"כמה קל לך לכתוב משפט באנגלית בלי שגיאות?",lo:"עוד לא מצליחים לכתוב",hi:"בלי שום בעיה"}
+];
+function appIntro(){
+  const f=(ic,t)=>`<div class="ai-f"><span class="ai-i">${icon(ic,17)}</span><span>${t}</span></div>`;
+  return `<div class="app-intro"><div class="ai-logo" data-notr>${LOGO_SVG}</div>
+    <h1 style="margin:10px 0 4px">לומדים אנגלית</h1>
+    <p class="ai-lead">אפליקציה ללימוד אנגלית לכל המשפחה – מגיל 2 ועד מבוגרים. המטרה: ללמוד אנגלית בכיף, בקצב אישי ובהתאם לגיל ולרמה, ולהתקדם בביטחון כל יום.</p>
+    <div class="ai-fs">${f("cards","מילים, האזנה, קריאה ודקדוק – מותאמים לגיל ולרמה")}${f("trophy","לפי תוכנית משרד החינוך: מכיתה ג׳ ועד הכנה לבגרות 4–5 יח״ל")}${f("wallet","כוכבים על כל הצלחה, וקופה שצוברת כסף למתנה")}${f("users","משחקי מילים אונליין מול חברים ובני משפחה")}${f("phone","חשבון אישי לכל אחד – נכנסים מכל מכשיר")}</div></div>`;
+}
+function selfLevel(ans,age,grade,bagrut){
+  const avg=ans.reduce((a,b)=>a+b,0)/ans.length;
+  const level=avg<2.3?1:avg<3.7?2:3;
+  let wl=1+(avg-1)*1.1;
+  const tmp={age,grade,bagrut};
+  if(isSchool(tmp)){ const [lo,hi]=LV_RANGE[bandOf(tmp)]; wl=Math.max(lo,Math.min(hi,(defaultWl(tmp)+wl)/2)); }
+  return {avg:Math.round(avg*10)/10,level,wl:Math.round(Math.max(1,Math.min(5.9,wl))*100)/100};
+}
 function renderSignup(){
   PLAN=null; clearSession();
   if(!WEB.sb){ app.innerHTML=topBar(" ")+setupCard(); return; }
-  if(CLOUD.cfg&&CLOUD.cfg.allowSignup===false){ app.innerHTML=topBar(" ")+`<div class="auth"><div class="card pop"><div class="tile-ic">${icon("lock",22)}</div><h1>ההרשמה סגורה</h1><p class="sub">חשבונות חדשים נפתחים על ידי המנהל.</p><div class="row"><button class="btn ghost" id="tl">חזרה לכניסה</button></div></div></div>`; $("#tl").onclick=()=>renderLogin(); return; }
-  const st={level:1,avatar:"a1",cat:"anime",gender:"f"};
+  if(CLOUD.cfg&&CLOUD.cfg.allowSignup===false){ app.innerHTML=topBar(" ")+`<div class="auth"><div class="card pop">${appIntro()}<div class="divider"></div><h2 style="font-size:19px">ההרשמה סגורה</h2><p class="sub">חשבונות חדשים נפתחים על ידי המנהל.</p><div class="row"><button class="btn ghost" id="tl">חזרה לכניסה</button></div></div></div>`; $("#tl").onclick=()=>renderLogin(); return; }
+  const st={level:1,avatar:"a1",cat:"anime",gender:"f"}; let D=null; const ans=Array(SELF_Q.length).fill(0);
   app.innerHTML=topBar(" ")+`<div class="auth wide"><div class="card pop">
-    <div class="tile-ic">${icon("userplus",22)}</div><h1>יצירת חשבון</h1><p class="sub">החשבון נשמר בענן – אפשר להתחבר אליו מכל מכשיר.</p>
+    ${appIntro()}
+    <div class="divider"></div>
+    <div id="su-step1">
+    <div class="steps"><span class="on">1. פרטים</span><span>2. הרמה שלך</span></div>
+    <h2 style="font-size:20px;margin:6px 0 2px">יצירת חשבון</h2><p class="sub">החשבון נשמר בענן – אפשר להתחבר אליו מכל מכשיר.</p>
     <form id="sf" autocomplete="off">
       <div class="two"><div><label class="lbl" for="sn">השם שלך</label><input class="field" id="sn" maxlength="20" placeholder="למשל: נועה"></div>
         <div><label class="lbl" for="sa">גיל</label><input class="field" id="sa" type="number" min="2" max="120" inputmode="numeric" placeholder="8"></div></div>
@@ -3319,14 +3362,38 @@ function renderSignup(){
         <div><label class="lbl" for="sp2">אימות סיסמה</label>${pwField("sp2","","new-password")}</div></div>
       <label class="lbl">מין</label><div id="sgn">${genderChoices("f")}</div>
       ${gradeFields("",null)}
-      <label class="lbl">רמת אנגלית</label><div id="slv">${levelChoices(1)}</div>
       <label class="lbl">דמות לפרופיל</label><div id="sav"></div>
       <div class="err" id="serr"></div>
-      <div class="row"><button type="button" class="link" id="tologin">כבר יש לי חשבון</button><button class="btn" id="sgo" type="submit">יצירת חשבון</button></div>
-    </form></div></div>`;
-  wireEyes(app); wireLevels($("#slv"),st); avatarPicker($("#sav"),st); wireGender($("#sgn"),st,genderAvatarSync(st,$("#sav"))); wireGradeFields();
+      <div class="row"><button type="button" class="link" id="tologin">כבר יש לי חשבון</button><button class="btn" id="snext" type="submit">המשך ←</button></div>
+    </form></div>
+    <div id="su-step2" hidden>
+      <div class="steps"><span class="done">1. פרטים</span><span class="on">2. הרמה שלך</span></div>
+      <h2 style="font-size:20px;margin:6px 0 2px">5 שאלות קצרות על הרמה שלך</h2>
+      <p class="sub">אין תשובות נכונות או לא נכונות. לפי התשובות נתאים לך תרגולים ברמה הנכונה.</p>
+      <div id="sq">${SELF_Q.map((x,i)=>`<div class="sq" data-q="${i}"><div class="sq-t"><span class="sq-n">${i+1}</span>${x.q}</div>
+        <div class="sq-sc">${[1,2,3,4,5].map(n=>`<button type="button" class="sq-b" data-v="${n}" aria-label="${n}">${n}</button>`).join("")}</div>
+        <div class="sq-ends"><span>1 = <span>${x.lo}</span></span><span>5 = <span>${x.hi}</span></span></div></div>`).join("")}</div>
+      <div class="err" id="qerr"></div>
+      <div class="row"><button type="button" class="btn ghost" id="sback">→ חזרה לפרטים</button><button class="btn" id="sgo" type="button">יצירת חשבון</button></div>
+    </div></div></div>`;
+  wireEyes(app); avatarPicker($("#sav"),st); wireGender($("#sgn"),st,genderAvatarSync(st,$("#sav"))); wireGradeFields();
   $("#tologin").onclick=()=>renderLogin();
-  $("#sf").onsubmit=async e=>{
+  const show=n=>{ $("#su-step1").hidden=n!==1; $("#su-step2").hidden=n!==2; const s=document.querySelector(n===1?"#su-step1":"#su-step2"); if(s) s.scrollIntoView({behavior:"smooth",block:"start"}); };
+  const create=async(sa)=>{
+    const err=n=>{ const e=$(sa?"#qerr":"#serr"); return e; };
+    const e=err(), btn=$(sa?"#sgo":"#snext");
+    btn.disabled=true; e.innerHTML=`<span class="spin"></span>`;
+    const lv=sa?selfLevel(ans,D.age,D.grade,D.bagrut):{level:1};
+    try{ await api("signup",{username:D.u,password:D.pw,name:D.name,age:D.age,gender:st.gender,level:lv.level,avatar:st.avatar,grade:D.grade,bagrut:D.bagrut}); }
+    catch(x){ btn.disabled=false; e.textContent=apiErr(x); if(x&&["taken","bad_username","weak_password","bad_age","bad_name"].includes(x.code)&&sa){ show(1); $("#serr").textContent=apiErr(x); } return; }
+    const {error}=await WEB.sb.auth.signInWithPassword({email:toEmail(D.u),password:D.pw});
+    if(error){ btn.disabled=false; return e.textContent="החשבון נוצר, אבל הכניסה נכשלה. נסו להיכנס."; }
+    const p=await loadMe(); if(!p) return renderLogin("החשבון נוצר. נסו להיכנס.");
+    if(sa){ p.selfAssess={ans:[...ans],avg:lv.avg,at:Date.now()}; p.wl=lv.wl; save(); }
+    logEvent(p,"login","הרשמה"); renderHome();
+    if(sa) setTimeout(()=>flash(`התאמנו לך ${LEVELS[lv.level-1].name}. אפשר לשנות בהגדרות.`),600);
+  };
+  $("#sf").onsubmit=e=>{
     e.preventDefault(); const err=$("#serr");
     const name=$("#sn").value.trim(), age=parseInt($("#sa").value,10), u=normUser($("#su").value), pw=$("#sp").value;
     if(!name) return err.textContent="נא להזין שם";
@@ -3334,15 +3401,16 @@ function renderSignup(){
     if(!validUser(u)) return err.textContent=API_ERR.bad_username;
     if(pw.length<6) return err.textContent=API_ERR.weak_password;
     if(pw!==$("#sp2").value) return err.textContent="הסיסמאות לא תואמות";
-    const g={}; readGradeFields(g);
-    $("#sgo").disabled=true; err.innerHTML=`<span class="spin"></span>`;
-    try{ await api("signup",{username:u,password:pw,name,age,gender:st.gender,level:st.level,avatar:st.avatar,grade:g.grade||null,bagrut:g.bagrut||null}); }
-    catch(x){ $("#sgo").disabled=false; return err.textContent=apiErr(x); }
-    const {error}=await WEB.sb.auth.signInWithPassword({email:toEmail(u),password:pw});
-    if(error){ $("#sgo").disabled=false; return err.textContent="החשבון נוצר, אבל הכניסה נכשלה. נסו להיכנס."; }
-    const p=await loadMe(); if(!p) return renderLogin("החשבון נוצר. נסו להיכנס.");
-    logEvent(p,"login","הרשמה"); renderHome();
+    const g={}; readGradeFields(g); err.textContent="";
+    D={name,age,u,pw,grade:g.grade||null,bagrut:g.bagrut||null};
+    if(age<7) return create(false);   // little ones start at the beginning – no questionnaire
+    show(2);
   };
+  app.querySelectorAll(".sq").forEach(box=>box.querySelectorAll(".sq-b").forEach(b=>b.onclick=()=>{
+    const i=+box.dataset.q; ans[i]=+b.dataset.v; box.querySelectorAll(".sq-b").forEach(x=>x.classList.toggle("sel",x===b)); box.classList.add("ok"); $("#qerr").textContent="";
+  }));
+  $("#sback").onclick=()=>show(1);
+  $("#sgo").onclick=()=>{ const miss=ans.findIndex(v=>!v); if(miss>=0){ $("#qerr").textContent=`נא לענות על שאלה ${miss+1}`; app.querySelector(`.sq[data-q="${miss}"]`).scrollIntoView({behavior:"smooth",block:"center"}); return; } create(true); };
 }
 /* ---------- own settings ---------- */
 function settingsModal(){
