@@ -26,7 +26,7 @@ html,body{margin:0;padding:0}
 body{font-family:'Heebo',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:16px}
 .wrap{max-width:880px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(64px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left))}
 .drawer{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
-html,body{overflow-x:hidden}
+html{overflow-x:hidden}body{overflow-x:clip}
 .card{overflow-wrap:anywhere}
 .hist{table-layout:auto}
 .en{direction:ltr;unicode-bidi:isolate}
@@ -34,7 +34,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.01em}
 svg.ic{display:inline-block;vertical-align:middle;flex-shrink:0}
 /* app bar */
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:45;background:rgba(246,247,249,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding-top:calc(10px + env(safe-area-inset-top));margin-top:calc(-10px - env(safe-area-inset-top))}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
 .logo{width:36px;height:36px;border-radius:10px;display:block;overflow:hidden;flex:none}.logo svg{display:block}
 .menu-btn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;color:var(--ink-2)}
@@ -245,6 +245,23 @@ input.field,select.field,textarea.field{font-family:inherit;font-size:16px;width
 .wallet .w-rule{font-size:12.5px;color:#92400e;background:#fff;border-radius:999px;padding:4px 10px;border:1px solid #fde68a}
 .wallet .w-bar{height:8px;background:#fff;border-radius:99px;margin-top:12px;overflow:hidden}.wallet .w-bar>div{height:100%;background:linear-gradient(90deg,#f59e0b,#d97706);border-radius:99px}
 .wallet .w-s{font-size:13px;color:#92400e;margin-top:6px}
+.wchip{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#fffbeb,#fde68a);border:1px solid #fcd34d;color:#92400e;border-radius:999px;padding:5px 10px;font-weight:700;font-size:14px;line-height:1;cursor:pointer;white-space:nowrap}
+.wchip:hover{filter:brightness(.97)} .wchip.bump{animation:wbump .7s ease}
+@keyframes wbump{0%{transform:scale(1)}30%{transform:scale(1.25)}60%{transform:scale(.95)}100%{transform:scale(1)}}
+.wpop{position:fixed;z-index:70;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 32px rgba(15,23,42,.16);padding:14px}
+.wpop .wp-h{display:flex;align-items:center;gap:6px;font-weight:700;color:#92400e;margin-bottom:8px}
+.wpop .wp-row{display:flex;justify-content:space-between;align-items:center;font-size:14.5px;padding:4px 0;color:var(--ink-2)} .wpop .wp-row b{font-size:17px;color:var(--ink)}
+.wpop .wp-bar{height:8px;background:#fef3c7;border-radius:99px;margin:10px 0 6px;overflow:hidden}.wpop .wp-bar>div{height:100%;background:linear-gradient(90deg,#f59e0b,#d97706)}
+.wpop .wp-next{font-size:14px;color:var(--ink-2)} .wpop .wp-rule{font-size:12px;color:var(--muted);margin-top:6px}
+.wcele{position:fixed;inset:0;z-index:80;background:rgba(15,23,42,.45);display:grid;place-items:center;padding:20px;overflow:hidden}
+.wc-card{position:relative;z-index:2;background:#fff;border-radius:20px;padding:26px 22px 20px;max-width:340px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.wc-card h2{font-size:24px;margin:12px 0 6px;color:#78350f} .wc-card p{color:var(--ink-2);margin:0 0 12px;line-height:1.5}
+.wc-bal{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:10px;margin-bottom:14px;color:#92400e} .wc-bal b{font-size:20px}
+.wc-coin{width:84px;height:84px;margin:0 auto;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fde68a,#f59e0b 60%,#b45309);color:#fff;font-size:42px;font-weight:800;display:grid;place-items:center;box-shadow:0 6px 0 #92400e33,inset 0 -4px 0 #92400e55;animation:wcoin 1.2s ease}
+@keyframes wcoin{0%{transform:translateY(-60px) rotateY(0) scale(.4);opacity:0}50%{transform:translateY(0) rotateY(360deg) scale(1.1);opacity:1}100%{transform:rotateY(720deg) scale(1)}}
+.wc-conf{position:absolute;inset:0;pointer-events:none} .wc-conf i{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:wfall linear forwards}
+@keyframes wfall{to{top:105%;transform:rotate(540deg) translateX(30px)}}
+@media (max-width:420px){ .wchip{padding:5px 8px;font-size:13px} }
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;z-index:60;font-size:14.5px;box-shadow:0 8px 24px rgba(15,23,42,.25);max-width:90vw;text-align:center}
 .lang-btn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 11px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:13.5px;font-weight:600;color:var(--ink-2)}
 .lang-btn:hover{background:var(--bg)}
@@ -539,7 +556,7 @@ const IC={
 };
 function icon(n,s=20,sw=1.8){ return `<svg class="ic${["back","chev","login","logout"].includes(n)?" dir":""}" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||IC.info}</svg>`; }
 
-const I18N={"הקופה שלי":"My wallet","קופה":"Wallet","יתרה":"Balance","נצבר":"Earned","שולם":"Paid","רישום תשלום":"Record payment","סכום ששולם (₪)":"Amount paid (₪)","רושמים כאן כסף שנתתם בפועל. היתרה תרד בהתאם.":"Record money you actually gave. The balance goes down accordingly.","נא להזין סכום":"Please enter an amount","התשלום נרשם ✓":"Payment recorded ✓","להציג קופה לכל משתמש":"Show a wallet for every user","₪ על כל":"₪ for every","כוכבים":"stars","רישום תשלומים מהקופה":"Record wallet payments","תרגום כל הטקסט":"Translate the whole text",
+const I18N={"צברת עד עכשיו":"Earned so far","כבר קיבלת":"Already received","נשאר בקופה":"Left in the wallet","איזה כיף!":"Awesome!","בקופה עכשיו:":"In your wallet now:","הקופה שלי":"My wallet","קופה":"Wallet","יתרה":"Balance","נצבר":"Earned","שולם":"Paid","רישום תשלום":"Record payment","סכום ששולם (₪)":"Amount paid (₪)","רושמים כאן כסף שנתתם בפועל. היתרה תרד בהתאם.":"Record money you actually gave. The balance goes down accordingly.","נא להזין סכום":"Please enter an amount","התשלום נרשם ✓":"Payment recorded ✓","להציג קופה לכל משתמש":"Show a wallet for every user","₪ על כל":"₪ for every","כוכבים":"stars","רישום תשלומים מהקופה":"Record wallet payments","תרגום כל הטקסט":"Translate the whole text",
 "ג׳":"3","ד׳":"4","ה׳":"5","ו׳":"6","ז׳":"7","ח׳":"8","ט׳":"9","י׳":"10","י״א":"11","י״ב":"12","מתחילים":"Start",
 "כיתה":"Grade",
 "(לתלמידים)":"(for students)",
@@ -733,7 +750,7 @@ const I18N={"הקופה שלי":"My wallet","קופה":"Wallet","יתרה":"Bala
 "שם משתמש: 3–20 תווים, בלי רווחים ":"Username: 3–20 characters, no spaces",
 "אפשר להוסיף עוד עמודים":"you can add more pages","תמונה":"image"
 };
-const I18N_PAT=[["{} על כל {} כוכבים", "{} for every {} stars"],["עוד {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["עוד {} כוכבים ל-{} הבאים · נצבר {} · שולם {}", "{} more stars to the next {} · earned {} · paid {}"],["כל הכבוד! נכנסו {} לקופה שלך", "Well done! {} went into your wallet"],["{} על כל {} כוכבים · עוד {} כוכבים לתשלום הבא", "{} for every {} stars · {} more stars to the next payment"],
+const I18N_PAT=[["יש! הרווחת {}", "Yay! You earned {}"],["{} חדשים נכנסו לקופה שלך. כל הכבוד על ההתמדה!", "{} new went into your wallet. Great persistence!"],["חסרים לך {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["{} על כל {} כוכבים", "{} for every {} stars"],["עוד {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["עוד {} כוכבים ל-{} הבאים · נצבר {} · שולם {}", "{} more stars to the next {} · earned {} · paid {}"],["כל הכבוד! נכנסו {} לקופה שלך", "Well done! {} went into your wallet"],["{} על כל {} כוכבים · עוד {} כוכבים לתשלום הבא", "{} for every {} stars · {} more stars to the next payment"],
 ["כיתה {} · {}", "Grade {} · {}"],["כיתה {}", "Grade {}"],["רמה אישית {} מתוך 5 · {} מילים בשליטה{}", "Personal level {} of 5 · {} words mastered{}"],[" · אוצר משוער ~{}", " · estimated vocabulary ~{}"],["הסט היומי שלך: {}/{} מילים", "Today's set: {}/{} words"],["הרמה האישית שלך: {}", "Your personal level: {}"],["רמה {}", "Level {}"],["{} מילים לפי רמות תוכנית הלימודים · רמה אישית {}{}", "{} words by curriculum level · personal level {}{}"],[" · {} מילים לחזרה היום", " · {} words to review today"],["הכנה לבגרות · {}", "Bagrut prep · {}"],["{}מבנה הבחינה לפי משרד החינוך", "{}Exam structure per the Ministry of Education"],["כיתה {} · ", "Grade {} · "],["מבנים מרכזיים לרמת {} יח״ל", "Key structures for {} units"],["Unseen · {} יח״ל", "Unseen · {} units"],["אוצר מילים משוער: {} מילים מתוך {} בבנק", "Estimated vocabulary: {} words out of {} in the bank"],["{}/{} · {} מילים", "{}/{} · {} words"],["מתרגם {} מילים…", "Translating {} words…"],["{}/{} תשובות נכונות · +{} כוכבים", "{}/{} correct · +{} stars"],["כותב… {}%", "Writing… {}%"],["חסר תרגום ל-{} מילים. הוסיפו תרגום (word - תרגום).", "{} words have no translation. Add one (word - translation), or open the app inside Claude for automatic translation."],["רשימה של {} מילים שיובאה מבית הספר.", "A list of {} words imported from school."],["יובאה רשימה: {} ({} מילים)", "List imported: {} ({} words)"],["מבחן מיקום: רמה {}", "Placement test: level {}"],
 ["סונכרן {}", "synced {}"],["מנהל: {}", "Manager: {}"],["החשבון נעול: {}. יש לפנות למנהל.", "Account is locked: {}. Please contact an admin."],["הגדרות עודכנו מרחוק על ידי {}", "Settings updated remotely by {}"],["הגדרות עודכנו מרחוק", "Settings updated remotely"],["{} תוכניות", "{} plans"],["קהילה: {}", "community: {}"],["{} משחקים, {} ניצחונות", "{} games, {} wins"],["למחוק סופית את {}?", "Permanently delete {}?"],
 ["{} תשובות נכונות מתוך {}","{} correct out of {}"],["קיבלת {} כוכבים{}","you got {} stars{}"],["מהגלריה, עד {}","from gallery, up to {}"],
@@ -1025,8 +1042,9 @@ const praise = () => { const a=[...PRAISE.slice(0,5), g("אלופה! 🏆","אל
 function topBar(right=""){
   const p=cur();
   setTimeout(()=>{ const m=$("#menu"); if(m) m.onclick=openDrawer; const lb=$("#langbtn"); if(lb) lb.onclick=()=>setLang(LANG==="en"?"he":"en"); },0);
-  const chip = p ? `<div class="userchip"><span class="pill">${icon("star",15)} ${p.stars||0}</span>${avatarHTML(p.avatar,34)}</div>` : "";
-  return `<div class="top"><div style="display:flex;align-items:center;gap:12px"><button class="menu-btn" id="menu" aria-label="תפריט">${icon("menu")}</button><div class="brand"><div class="logo" data-notr>${LOGO_SVG}</div><span>לומדים אנגלית</span>${EDITION==="community"?`<span class="badge sun" style="font-size:11px">קהילה</span>`:""}</div></div><div class="tb-end" style="display:flex;align-items:center;gap:8px">${right||chip}</div><button class="lang-btn" id="langbtn" data-notr aria-label="Language / שפה">${langLabel()}</button></div>`;
+  const chip = p ? `<div class="userchip">${walletChip(p)}<span class="pill">${icon("star",15)} ${p.stars||0}</span>${avatarHTML(p.avatar,34)}</div>` : "";
+  if(p) walletCheck(p);
+  return `<div class="top"><div style="display:flex;align-items:center;gap:12px"><button class="menu-btn" id="menu" aria-label="תפריט">${icon("menu")}</button><div class="brand"><div class="logo" data-notr>${LOGO_SVG}</div><span>לומדים אנגלית</span>${EDITION==="community"?`<span class="badge sun" style="font-size:11px">קהילה</span>`:""}</div></div><div class="tb-end" style="display:flex;align-items:center;gap:8px">${right?(p?walletChip(p):"")+right:chip}</div><button class="lang-btn" id="langbtn" data-notr aria-label="Language / שפה">${langLabel()}</button></div>`;
 }
 const pwField=(id,ph="",ac="current-password")=>`<div class="pw-wrap"><input class="field en" id="${id}" type="password" autocomplete="${ac}" placeholder="${ph}" style="text-align:right"><button type="button" class="pw-eye" data-eye="${id}" aria-label="הצגת סיסמה">${icon("eye",18)}</button></div>`;
 function wireEyes(root=document){ root.querySelectorAll("[data-eye]").forEach(b=>b.onclick=()=>{ const f=document.getElementById(b.dataset.eye); f.type=f.type==="password"?"text":"password"; }); }
@@ -1455,9 +1473,47 @@ function walletCard(p){
     <div class="w-bar"><div style="width:${w.pct}%"></div></div>
     <div class="w-s">עוד ${w.toNext} כוכבים ל-${money(w.amt)} הבאים${w.paid?` · נצבר ${money(w.earned)} · שולם ${money(w.paid)}`:""}</div></div>`;
 }
-function walletCheck(p){ const w=walletOf(p); if(!w.on) return; const seen=Number(p.walletSeen);
-  if(!isNaN(seen)&&p.walletSeen!=null&&w.earned>seen) setTimeout(()=>flash(`כל הכבוד! נכנסו ${money(w.earned-seen)} לקופה שלך`),400);
+function walletChip(p){ const w=walletOf(p); if(!w.on) return "";
+  return `<button type="button" class="wchip" id="wchip" data-wallet aria-label="הקופה שלי">${icon("wallet",16)}<span data-notr>${money(w.bal)}</span></button>`; }
+function walletCheck(p){ const w=walletOf(p); if(!w.on) return;
+  if(p.walletSeen!=null&&w.earned>Number(p.walletSeen)){ const gain=w.earned-Number(p.walletSeen); setTimeout(()=>walletCelebrate(gain),500); }
   if(p.walletSeen!==w.earned){ p.walletSeen=w.earned; save(); } }
+function walletCelebrate(gain){
+  const p=cur(); if(!p) return; const w=walletOf(p);
+  document.querySelectorAll(".wcele").forEach(x=>x.remove());
+  const colors=["#f59e0b","#6366f1","#10b981","#ec4899","#fbbf24","#7c3aed"];
+  const bits=[...Array(36)].map((_,i)=>`<i style="left:${Math.random()*100}%;background:${colors[i%colors.length]};animation-delay:${(Math.random()*.6).toFixed(2)}s;animation-duration:${(1.8+Math.random()*1.2).toFixed(2)}s;transform:rotate(${Math.round(Math.random()*360)}deg)"></i>`).join("");
+  const d=document.createElement("div"); d.className="wcele";
+  d.innerHTML=`<div class="wc-conf">${bits}</div><div class="wc-card pop" role="dialog" aria-live="polite">
+      <div class="wc-coin" data-notr>₪</div>
+      <h2>יש! הרווחת ${money(gain)}</h2>
+      <p>${money(gain)} חדשים נכנסו לקופה שלך. כל הכבוד על ההתמדה!</p>
+      <div class="wc-bal">בקופה עכשיו: <b data-notr>${money(w.bal)}</b></div>
+      <button class="btn block" id="wcok">איזה כיף!</button></div>`;
+  document.body.appendChild(d); tone(true);
+  const close=()=>{ d.remove(); const c=$("#wchip"); if(c){ c.classList.remove("bump"); void c.offsetWidth; c.classList.add("bump"); } };
+  d.querySelector("#wcok").onclick=close; d.onclick=e=>{ if(e.target===d) close(); };
+}
+function walletPop(anchor){
+  const old=document.getElementById("wpop"); if(old){ old.remove(); return; }
+  const p=cur(); if(!p) return; const w=walletOf(p);
+  const d=document.createElement("div"); d.id="wpop"; d.className="wpop pop";
+  d.innerHTML=`<div class="wp-h">${icon("wallet",18)} הקופה שלי</div>
+    <div class="wp-row"><span>צברת עד עכשיו</span><b data-notr>${money(w.earned)}</b></div>
+    ${w.paid?`<div class="wp-row"><span>כבר קיבלת</span><b data-notr>${money(w.paid)}</b></div><div class="wp-row"><span>נשאר בקופה</span><b data-notr style="color:#b45309">${money(w.bal)}</b></div>`:""}
+    <div class="wp-bar"><div style="width:${w.pct}%"></div></div>
+    <div class="wp-next">חסרים לך ${w.toNext} כוכבים ל-${money(w.amt)} הבאים</div>
+    <div class="wp-rule">${money(w.amt)} על כל ${w.per} כוכבים</div>`;
+  d.dataset.y=scrollY; document.body.appendChild(d);
+  const r=anchor.getBoundingClientRect(), W=Math.min(260,innerWidth-16);
+  d.style.width=W+"px"; d.style.top=(r.bottom+8)+"px";
+  d.style.left=Math.max(8,Math.min(innerWidth-W-8,r.left+r.width/2-W/2))+"px";
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-wallet]"); if(b){ e.preventDefault(); walletPop(b); return; }
+  const pop=document.getElementById("wpop"); if(pop&&!pop.contains(e.target)) pop.remove();
+});
+addEventListener("scroll",()=>{ const pop=document.getElementById("wpop"); if(pop&&Math.abs(scrollY-(+pop.dataset.y||0))>60) pop.remove(); },{passive:true});
 function renderHome(){
   PLAN=null;
   const p=cur(); if(!p) return renderLogin();
@@ -1494,7 +1550,7 @@ function renderHome(){
     ${testsTeaser(p)}
     <div class="foot">החשבון שלך פרטי. התפריט ${icon("menu",14)} כולל מבחנים, תוכניות, הגדרות ויציאה.</div>`;
   $("#edit").onclick=settingsModal;
-  wireSchoolCard(p); walletCheck(p);
+  wireSchoolCard(p);
   const nk=$("#ntok"); if(nk) nk.onclick=()=>{ p.notice=null; clearNotice(); renderHome(); };
   if(suggestUp) $("#levelup").onclick=()=>{ p.level++; save(); renderHome(); };
   app.querySelectorAll(".act").forEach(el=>el.onclick=()=>startActivity(el.dataset.a));
