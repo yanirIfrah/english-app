@@ -25,7 +25,7 @@
 html,body{margin:0;padding:0}
 body{font-family:'Heebo',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:16px}
 .wrap{max-width:880px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(64px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left))}
-.drawer{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+.drawer{padding-top:var(--drawerPad,env(safe-area-inset-top));padding-bottom:env(safe-area-inset-bottom)}
 html{overflow-x:hidden}body{overflow-x:clip}
 .card{overflow-wrap:anywhere}
 .hist{table-layout:auto}
@@ -126,7 +126,7 @@ input.type:focus,input.field:focus,select.field:focus{border-color:var(--primary
 .stars{font-size:30px;letter-spacing:6px;color:var(--amber)}
 .big-score{font-size:60px;font-weight:800;letter-spacing:-.02em}
 /* forms & modal */
-.modal{position:fixed;inset:0;background:rgba(15,23,42,.45);display:grid;place-items:center;padding:16px;z-index:30}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.45);display:grid;place-items:center;padding:16px;z-index:60}
 .modal .card{width:100%;max-width:520px;max-height:92vh;overflow:auto}
 label.lbl{display:block;font-weight:600;font-size:14px;margin:14px 0 6px;color:var(--ink-2)}
 input.field,select.field,textarea.field{font-family:inherit;font-size:16px;width:100%;resize:vertical;padding:11px 13px;border-radius:10px;border:1px solid var(--line-2);outline:none;background:#fff;color:var(--ink)}
@@ -168,8 +168,8 @@ input.field,select.field,textarea.field{font-family:inherit;font-size:16px;width
 .shake{animation:shake .35s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 /* drawer */
-.overlay{position:fixed;inset:0;background:rgba(15,23,42,.35);z-index:20;opacity:0;transition:opacity .25s}
-.drawer{position:fixed;top:0;bottom:0;right:0;width:300px;max-width:86vw;background:#fff;z-index:21;border-left:1px solid var(--line);box-shadow:-12px 0 40px rgba(15,23,42,.12);transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;overflow-y:auto}
+.overlay{position:fixed;inset:0;top:var(--topH,0px);background:rgba(15,23,42,.35);z-index:20;opacity:0;transition:opacity .25s}
+.drawer{position:fixed;top:var(--topH,0px);bottom:0;right:0;width:300px;max-width:86vw;background:#fff;z-index:21;border-left:1px solid var(--line);box-shadow:-12px 0 40px rgba(15,23,42,.12);transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;overflow-y:auto}
 .drawer.open{transform:translateX(0)} .overlay.open{opacity:1}
 .d-head{padding:18px 16px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;position:relative}
 .d-head .nm{font-weight:700;font-size:16px}
@@ -262,6 +262,9 @@ input.field,select.field,textarea.field{font-family:inherit;font-size:16px;width
 .wc-conf{position:absolute;inset:0;pointer-events:none} .wc-conf i{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:wfall linear forwards}
 @keyframes wfall{to{top:105%;transform:rotate(540deg) translateX(30px)}}
 @media (max-width:420px){ .wchip{padding:5px 8px;font-size:13px} }
+.wc-gift{background:radial-gradient(circle at 35% 30%,#f9a8d4,#ec4899 60%,#be185d);font-size:0}.wc-gift svg{stroke:#fff}
+.wc-goal{background:#fdf2f8;border-color:#fbcfe8;color:#9d174d;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:600}
+.wpop .wp-goal{margin-top:10px;background:#fdf2f8;border:1px solid #fbcfe8;color:#9d174d;border-radius:10px;padding:8px 10px;font-size:13.5px;font-weight:600;display:flex;gap:6px;align-items:flex-start}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;z-index:60;font-size:14.5px;box-shadow:0 8px 24px rgba(15,23,42,.25);max-width:90vw;text-align:center}
 .lang-btn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 11px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:13.5px;font-weight:600;color:var(--ink-2)}
 .lang-btn:hover{background:var(--bg)}
@@ -508,6 +511,7 @@ const LEVELS = [
 
 /* ========================== ICONS (line icons) ========================== */
 const IC={
+ gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/>',
  wallet:'<path d="M16 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2"/><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M21 12h-4a2 2 0 0 0 0 4h4"/>',
  home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
  cards:'<rect x="3" y="7" width="13" height="14" rx="2"/><path d="M8 3h11a2 2 0 0 1 2 2v12"/>',
@@ -556,7 +560,7 @@ const IC={
 };
 function icon(n,s=20,sw=1.8){ return `<svg class="ic${["back","chev","login","logout"].includes(n)?" dir":""}" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||IC.info}</svg>`; }
 
-const I18N={"צברת עד עכשיו":"Earned so far","כבר קיבלת":"Already received","נשאר בקופה":"Left in the wallet","איזה כיף!":"Awesome!","בקופה עכשיו:":"In your wallet now:","הקופה שלי":"My wallet","קופה":"Wallet","יתרה":"Balance","נצבר":"Earned","שולם":"Paid","רישום תשלום":"Record payment","סכום ששולם (₪)":"Amount paid (₪)","רושמים כאן כסף שנתתם בפועל. היתרה תרד בהתאם.":"Record money you actually gave. The balance goes down accordingly.","נא להזין סכום":"Please enter an amount","התשלום נרשם ✓":"Payment recorded ✓","להציג קופה לכל משתמש":"Show a wallet for every user","₪ על כל":"₪ for every","כוכבים":"stars","רישום תשלומים מהקופה":"Record wallet payments","תרגום כל הטקסט":"Translate the whole text",
+const I18N={"אפשר לפנות להורה לקבלת המתנה":"You can ask a parent for your gift","מעולה, תודה!":"Great, thanks!","יעד למתנה:":"Gift goal:","מחכה למתנה":"waiting for a gift","צברת עד עכשיו":"Earned so far","כבר קיבלת":"Already received","נשאר בקופה":"Left in the wallet","איזה כיף!":"Awesome!","בקופה עכשיו:":"In your wallet now:","הקופה שלי":"My wallet","קופה":"Wallet","יתרה":"Balance","נצבר":"Earned","שולם":"Paid","רישום תשלום":"Record payment","סכום ששולם (₪)":"Amount paid (₪)","רושמים כאן כסף שנתתם בפועל. היתרה תרד בהתאם.":"Record money you actually gave. The balance goes down accordingly.","נא להזין סכום":"Please enter an amount","התשלום נרשם ✓":"Payment recorded ✓","להציג קופה לכל משתמש":"Show a wallet for every user","₪ על כל":"₪ for every","כוכבים":"stars","רישום תשלומים מהקופה":"Record wallet payments","תרגום כל הטקסט":"Translate the whole text",
 "ג׳":"3","ד׳":"4","ה׳":"5","ו׳":"6","ז׳":"7","ח׳":"8","ט׳":"9","י׳":"10","י״א":"11","י״ב":"12","מתחילים":"Start",
 "כיתה":"Grade",
 "(לתלמידים)":"(for students)",
@@ -750,7 +754,7 @@ const I18N={"צברת עד עכשיו":"Earned so far","כבר קיבלת":"Alre
 "שם משתמש: 3–20 תווים, בלי רווחים ":"Username: 3–20 characters, no spaces",
 "אפשר להוסיף עוד עמודים":"you can add more pages","תמונה":"image"
 };
-const I18N_PAT=[["יש! הרווחת {}", "Yay! You earned {}"],["{} חדשים נכנסו לקופה שלך. כל הכבוד על ההתמדה!", "{} new went into your wallet. Great persistence!"],["חסרים לך {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["{} על כל {} כוכבים", "{} for every {} stars"],["עוד {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["עוד {} כוכבים ל-{} הבאים · נצבר {} · שולם {}", "{} more stars to the next {} · earned {} · paid {}"],["כל הכבוד! נכנסו {} לקופה שלך", "Well done! {} went into your wallet"],["{} על כל {} כוכבים · עוד {} כוכבים לתשלום הבא", "{} for every {} stars · {} more stars to the next payment"],
+const I18N_PAT=[["הגעת ל-{} בקופה!", "You reached {} in your wallet!"],["יש לך עכשיו {}. זה הזמן לפנות להורה ולקבל את המתנה שלך!", "You now have {}. Time to ask a parent for your gift!"],["עוד {} נכנסו לקופה, ויש לך עכשיו {}. זה הזמן לפנות להורה ולקבל את המתנה שלך!", "{} more went into your wallet, and you now have {}. Time to ask a parent for your gift!"],["הגעת ל-{}! אפשר לפנות להורה לקבלת המתנה", "You reached {}! You can ask a parent for your gift"],["היעד למתנה: {} (עוד {})", "Gift goal: {} ({} to go)"],["יש! הרווחת {}", "Yay! You earned {}"],["{} חדשים נכנסו לקופה שלך. כל הכבוד על ההתמדה!", "{} new went into your wallet. Great persistence!"],["חסרים לך {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["{} על כל {} כוכבים", "{} for every {} stars"],["עוד {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["עוד {} כוכבים ל-{} הבאים · נצבר {} · שולם {}", "{} more stars to the next {} · earned {} · paid {}"],["כל הכבוד! נכנסו {} לקופה שלך", "Well done! {} went into your wallet"],["{} על כל {} כוכבים · עוד {} כוכבים לתשלום הבא", "{} for every {} stars · {} more stars to the next payment"],
 ["כיתה {} · {}", "Grade {} · {}"],["כיתה {}", "Grade {}"],["רמה אישית {} מתוך 5 · {} מילים בשליטה{}", "Personal level {} of 5 · {} words mastered{}"],[" · אוצר משוער ~{}", " · estimated vocabulary ~{}"],["הסט היומי שלך: {}/{} מילים", "Today's set: {}/{} words"],["הרמה האישית שלך: {}", "Your personal level: {}"],["רמה {}", "Level {}"],["{} מילים לפי רמות תוכנית הלימודים · רמה אישית {}{}", "{} words by curriculum level · personal level {}{}"],[" · {} מילים לחזרה היום", " · {} words to review today"],["הכנה לבגרות · {}", "Bagrut prep · {}"],["{}מבנה הבחינה לפי משרד החינוך", "{}Exam structure per the Ministry of Education"],["כיתה {} · ", "Grade {} · "],["מבנים מרכזיים לרמת {} יח״ל", "Key structures for {} units"],["Unseen · {} יח״ל", "Unseen · {} units"],["אוצר מילים משוער: {} מילים מתוך {} בבנק", "Estimated vocabulary: {} words out of {} in the bank"],["{}/{} · {} מילים", "{}/{} · {} words"],["מתרגם {} מילים…", "Translating {} words…"],["{}/{} תשובות נכונות · +{} כוכבים", "{}/{} correct · +{} stars"],["כותב… {}%", "Writing… {}%"],["חסר תרגום ל-{} מילים. הוסיפו תרגום (word - תרגום).", "{} words have no translation. Add one (word - translation), or open the app inside Claude for automatic translation."],["רשימה של {} מילים שיובאה מבית הספר.", "A list of {} words imported from school."],["יובאה רשימה: {} ({} מילים)", "List imported: {} ({} words)"],["מבחן מיקום: רמה {}", "Placement test: level {}"],
 ["סונכרן {}", "synced {}"],["מנהל: {}", "Manager: {}"],["החשבון נעול: {}. יש לפנות למנהל.", "Account is locked: {}. Please contact an admin."],["הגדרות עודכנו מרחוק על ידי {}", "Settings updated remotely by {}"],["הגדרות עודכנו מרחוק", "Settings updated remotely"],["{} תוכניות", "{} plans"],["קהילה: {}", "community: {}"],["{} משחקים, {} ניצחונות", "{} games, {} wins"],["למחוק סופית את {}?", "Permanently delete {}?"],
 ["{} תשובות נכונות מתוך {}","{} correct out of {}"],["קיבלת {} כוכבים{}","you got {} stars{}"],["מהגלריה, עד {}","from gallery, up to {}"],
@@ -1041,7 +1045,7 @@ const praise = () => { const a=[...PRAISE.slice(0,5), g("אלופה! 🏆","אל
 /* ========================== SCREENS ========================== */
 function topBar(right=""){
   const p=cur();
-  setTimeout(()=>{ const m=$("#menu"); if(m) m.onclick=openDrawer; const lb=$("#langbtn"); if(lb) lb.onclick=()=>setLang(LANG==="en"?"he":"en"); },0);
+  setTimeout(()=>{ const m=$("#menu"); if(m) m.onclick=()=>{ const d=$(".drawer"); if(d&&d.classList.contains("open")) closeDrawer(); else openDrawer(); }; const lb=$("#langbtn"); if(lb) lb.onclick=()=>setLang(LANG==="en"?"he":"en"); },0);
   const chip = p ? `<div class="userchip">${walletChip(p)}<span class="pill">${icon("star",15)} ${p.stars||0}</span>${avatarHTML(p.avatar,34)}</div>` : "";
   if(p) walletCheck(p);
   return `<div class="top"><div style="display:flex;align-items:center;gap:12px"><button class="menu-btn" id="menu" aria-label="תפריט">${icon("menu")}</button><div class="brand"><div class="logo" data-notr>${LOGO_SVG}</div><span>לומדים אנגלית</span>${EDITION==="community"?`<span class="badge sun" style="font-size:11px">קהילה</span>`:""}</div></div><div class="tb-end" style="display:flex;align-items:center;gap:8px">${right?(p?walletChip(p):"")+right:chip}</div><button class="lang-btn" id="langbtn" data-notr aria-label="Language / שפה">${langLabel()}</button></div>`;
@@ -1461,7 +1465,7 @@ const ACTIVITIES = [
  {id:"grammar",ic:"grammar",t:"דקדוק",d:"משלימים את המשפט"}
 ];
 /* ---------- wallet: money earned from stars ---------- */
-function walletCfg(){ const c=(typeof CLOUD!=="undefined"&&CLOUD.cfg)||{}; return {on:c.wallet!==false, per:Math.max(1,parseInt(c.walletPer,10)||100), amt:Math.max(0,Number(c.walletAmt)||5)}; }
+function walletCfg(){ const c=(typeof CLOUD!=="undefined"&&CLOUD.cfg)||{}; return {on:c.wallet!==false, per:Math.max(1,parseInt(c.walletPer,10)||100), amt:Math.max(0,Number(c.walletAmt)||5), goal:Math.max(1,Number(c.walletGoal)||100)}; }
 function walletOf(p){ const w=walletCfg(), stars=p.stars||0, earned=Math.floor(stars/w.per)*w.amt, paid=Number(p.walletPaid)||0;
   return {...w,stars,earned,paid,bal:Math.round((earned-paid)*100)/100,toNext:w.per-(stars%w.per),pct:Math.round((stars%w.per)/w.per*100)}; }
 const money=n=>"₪"+(Math.round(n*100)/100).toLocaleString("he-IL");
@@ -1476,20 +1480,29 @@ function walletCard(p){
 function walletChip(p){ const w=walletOf(p); if(!w.on) return "";
   return `<button type="button" class="wchip" id="wchip" data-wallet aria-label="הקופה שלי">${icon("wallet",16)}<span data-notr>${money(w.bal)}</span></button>`; }
 function walletCheck(p){ const w=walletOf(p); if(!w.on) return;
-  if(p.walletSeen!=null&&w.earned>Number(p.walletSeen)){ const gain=w.earned-Number(p.walletSeen); setTimeout(()=>walletCelebrate(gain),500); }
-  if(p.walletSeen!==w.earned){ p.walletSeen=w.earned; save(); } }
-function walletCelebrate(gain){
+  const goalNow=w.bal>=w.goal, goalNew=goalNow&&!p.walletGoalSeen;
+  if(p.walletSeen!=null&&w.earned>Number(p.walletSeen)){ const gain=w.earned-Number(p.walletSeen); setTimeout(()=>walletCelebrate(gain,goalNew),500); }
+  else if(goalNew&&p.walletSeen!=null) setTimeout(()=>walletCelebrate(0,true),500);
+  let ch=false;
+  if(p.walletSeen!==w.earned){ p.walletSeen=w.earned; ch=true; }
+  if(goalNow!==!!p.walletGoalSeen){ p.walletGoalSeen=goalNow; ch=true; }
+  if(ch) save(); }
+function walletCelebrate(gain,goal){
   const p=cur(); if(!p) return; const w=walletOf(p);
   document.querySelectorAll(".wcele").forEach(x=>x.remove());
   const colors=["#f59e0b","#6366f1","#10b981","#ec4899","#fbbf24","#7c3aed"];
   const bits=[...Array(36)].map((_,i)=>`<i style="left:${Math.random()*100}%;background:${colors[i%colors.length]};animation-delay:${(Math.random()*.6).toFixed(2)}s;animation-duration:${(1.8+Math.random()*1.2).toFixed(2)}s;transform:rotate(${Math.round(Math.random()*360)}deg)"></i>`).join("");
   const d=document.createElement("div"); d.className="wcele";
   d.innerHTML=`<div class="wc-conf">${bits}</div><div class="wc-card pop" role="dialog" aria-live="polite">
-      <div class="wc-coin" data-notr>₪</div>
+      ${goal?`<div class="wc-coin wc-gift">${icon("gift",44)}</div>
+      <h2>הגעת ל-${money(w.goal)} בקופה!</h2>
+      <p>${gain?`עוד ${money(gain)} נכנסו לקופה, ו`:""}יש לך עכשיו ${money(w.bal)}. זה הזמן לפנות להורה ולקבל את המתנה שלך!</p>
+      <div class="wc-bal wc-goal">${icon("gift",18)} אפשר לפנות להורה לקבלת המתנה</div>
+      <button class="btn block" id="wcok">מעולה, תודה!</button>`:`<div class="wc-coin" data-notr>₪</div>
       <h2>יש! הרווחת ${money(gain)}</h2>
       <p>${money(gain)} חדשים נכנסו לקופה שלך. כל הכבוד על ההתמדה!</p>
       <div class="wc-bal">בקופה עכשיו: <b data-notr>${money(w.bal)}</b></div>
-      <button class="btn block" id="wcok">איזה כיף!</button></div>`;
+      <button class="btn block" id="wcok">איזה כיף!</button>`}</div>`;
   document.body.appendChild(d); tone(true);
   const close=()=>{ d.remove(); const c=$("#wchip"); if(c){ c.classList.remove("bump"); void c.offsetWidth; c.classList.add("bump"); } };
   d.querySelector("#wcok").onclick=close; d.onclick=e=>{ if(e.target===d) close(); };
@@ -1503,7 +1516,8 @@ function walletPop(anchor){
     ${w.paid?`<div class="wp-row"><span>כבר קיבלת</span><b data-notr>${money(w.paid)}</b></div><div class="wp-row"><span>נשאר בקופה</span><b data-notr style="color:#b45309">${money(w.bal)}</b></div>`:""}
     <div class="wp-bar"><div style="width:${w.pct}%"></div></div>
     <div class="wp-next">חסרים לך ${w.toNext} כוכבים ל-${money(w.amt)} הבאים</div>
-    <div class="wp-rule">${money(w.amt)} על כל ${w.per} כוכבים</div>`;
+    <div class="wp-rule">${money(w.amt)} על כל ${w.per} כוכבים</div>
+    ${w.bal>=w.goal?`<div class="wp-goal">${icon("gift",16)} הגעת ל-${money(w.goal)}! אפשר לפנות להורה לקבלת המתנה</div>`:`<div class="wp-rule">היעד למתנה: ${money(w.goal)} (עוד ${money(Math.max(0,w.goal-w.bal))})</div>`}`;
   d.dataset.y=scrollY; document.body.appendChild(d);
   const r=anchor.getBoundingClientRect(), W=Math.min(260,innerWidth-16);
   d.style.width=W+"px"; d.style.top=(r.bottom+8)+"px";
@@ -1536,7 +1550,6 @@ function renderHome(){
       </div>
       <div class="progress"><div style="width:${pct}%"></div></div>
     </div>
-    ${walletCard(p)}
     ${schoolCard(p)}
     ${CLOUD.cfg&&CLOUD.cfg.announcement?`<div class="card banner" style="background:var(--primary-soft);border-color:#c7d2fe"><div class="t">${icon("info",18)} <span data-notr>${esc(CLOUD.cfg.announcement)}</span></div></div>`:""}
     ${p.notice&&p.notice.text?`<div class="card banner" style="background:var(--amber-soft);border-color:#fde68a"><div><div class="t">${icon("chat",18)} הודעה מהמנהל</div><div class="s" data-notr>${esc(p.notice.text)}</div></div><button class="btn ghost sm" id="ntok">הבנתי</button></div>`:""}
@@ -1844,6 +1857,8 @@ function openDrawer(){
       ${CLOUD.owner||MGR?`<div class="d-sec">${item("d-cloud","shield",CLOUD.owner?"ניהול האפליקציה (ADMIN)":"ניהול האפליקציה (מנהל)","כל המשתמשים בכל המכשירים")}</div><div class="d-sep"></div>`:""}
       <div class="d-sec">${item("d-settings","settings","הגדרות חשבון","פרופיל, דמות, רמה וסיסמה")}${item("d-phone","phone","פתיחה בטלפון","קוד QR והוספה למסך הבית")}${item("d-logout","logout","התנתקות")}</div>`;
   }
+  const tb=document.querySelector(".top"), tbh=tb?Math.max(0,Math.round(tb.getBoundingClientRect().bottom)):0;
+  document.documentElement.style.setProperty("--topH",tbh+"px"); document.documentElement.style.setProperty("--drawerPad",tbh?"0px":"env(safe-area-inset-top)");
   $("#drawer-root").innerHTML=`<div class="overlay" id="ovl"></div><aside class="drawer" role="dialog" aria-label="תפריט">${body}</aside>`;
   requestAnimationFrame(()=>{ $(".drawer").classList.add("open"); $("#ovl").classList.add("open"); });
   const go=fn=>()=>{ closeDrawer(); fn(); };
@@ -2789,7 +2804,7 @@ function renderCloudBase(){
       return `<div class="card test-card" data-cu="${a.id}" style="cursor:pointer">${avatarHTML(a.avatar,46)}
         <div class="info"><h3>${dot(s)} ${esc(a.name)} <span class="en" style="font-weight:400;color:var(--muted);font-size:13px">${esc(a.user)}</span>${a.locked?` <span class="badge" style="background:var(--bad-soft);color:var(--bad)">נעול</span>`:""}${pend?` <span class="badge sun">ממתין לעדכון</span>`:""}</h3>
           <p>גיל ${a.age} · ${a.grade?`כיתה ${GRADE_NAME[a.grade]}${a.bagrut?` (${a.bagrut} יח״ל)`:""} · רמה אישית ${a.wl}`:`${GROUP_NAME[a.group]||""} · ${LEVELS[(a.level||1)-1].name}`} · ${esc(a.device||"")}</p>
-          <p>${ACT_N[s]}${a.lastSeen?` · ${fmtDT(a.lastSeen)}`:""} · היום ${a.today} דק׳ · ${a.stars} כוכבים${a.wallet&&a.wallet.on?` · קופה ${money(a.wallet.bal)}`:""} · ${a.known}/${a.total} מילים</p></div>
+          <p>${ACT_N[s]}${a.lastSeen?` · ${fmtDT(a.lastSeen)}`:""} · היום ${a.today} דק׳ · ${a.stars} כוכבים${a.wallet&&a.wallet.on?` · קופה ${money(a.wallet.bal)}${a.wallet.bal>=a.wallet.goal?" · מחכה למתנה":""}`:""} · ${a.known}/${a.total} מילים</p></div>
         <span style="color:var(--muted)">${icon("chev",20)}</span></div>`; }).join("")||`<div class="card" style="text-align:center;color:var(--muted)">${all.length?"אין משתמשים שמתאימים לסינון.":"עוד לא דווחו משתמשים. משתמשים מופיעים כאן כשהם פותחים את האפליקציה בתוך Claude, אחרי שקיבלו ממך שיתוף אישי."}</div>`}</div>`);
   const cq=$("#cq"); cq.oninput=()=>{ CL.q=cq.value; clearTimeout(cq._t); cq._t=setTimeout(()=>{ renderCloud(); const n=$("#cq"); n.focus(); n.setSelectionRange(n.value.length,n.value.length); },300); };
   $("#cf").onchange=e=>{ CL.filter=e.target.value; renderCloud(); };
@@ -2868,12 +2883,13 @@ function renderCloudSettings(){
     <div class="divider" style="margin:14px 0"></div><b style="font-size:15px">קופה</b>
     <label class="check"><input type="checkbox" id="gw" ${G.wallet!==false?"checked":""} ${ro?"disabled":""}> להציג קופה לכל משתמש</label>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px"><input class="field" id="gwa" type="number" min="0" step="0.5" value="${G.walletAmt||5}" style="max-width:90px" ${ro?"disabled":""}> <span>₪ על כל</span> <input class="field" id="gwp" type="number" min="1" value="${G.walletPer||100}" style="max-width:100px" ${ro?"disabled":""}> <span>כוכבים</span></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px"><span>יעד למתנה:</span> <input class="field" id="gwg" type="number" min="1" value="${G.walletGoal||100}" style="max-width:100px" ${ro?"disabled":""}> <span>₪</span></div>
     <div class="divider" style="margin:14px 0"></div>
     <label class="lbl">הגבלת זמן יומית כברירת מחדל (דקות, 0 = ללא)</label><input class="field" id="gl" type="number" min="0" max="600" value="${G.limitMin||0}" style="max-width:160px" ${ro?"disabled":""}>
     <div class="hint">חלה על משתמשים שאין להם הגבלה אישית.</div>
     <label class="lbl">הודעה לכל המשתמשים</label><input class="field" id="ga" maxlength="200" value="${esc(G.announcement||"")}" ${ro?"disabled":""} placeholder="למשל: אתגר השבוע – 20 מילים חדשות!">
     <div class="row"><div class="okmsg" id="gok" style="margin:0"></div><button class="btn" id="gsave" ${ro?"disabled":""}>שמירה</button></div></div>`);
-  if(!ro) $("#gsave").onclick=async()=>{ const c={allowSignup:$("#gs").checked,upload:$("#gu").checked,scan:$("#gc").checked,community:$("#gm").checked,limitMin:Math.max(0,parseInt($("#gl").value,10)||0),announcement:$("#ga").value.trim(),wallet:$("#gw").checked,walletAmt:Math.max(0,Number($("#gwa").value)||5),walletPer:Math.max(1,parseInt($("#gwp").value,10)||100),at:Date.now()};
+  if(!ro) $("#gsave").onclick=async()=>{ const c={allowSignup:$("#gs").checked,upload:$("#gu").checked,scan:$("#gc").checked,community:$("#gm").checked,limitMin:Math.max(0,parseInt($("#gl").value,10)||0),announcement:$("#ga").value.trim(),wallet:$("#gw").checked,walletAmt:Math.max(0,Number($("#gwa").value)||5),walletPer:Math.max(1,parseInt($("#gwp").value,10)||100),walletGoal:Math.max(1,Number($("#gwg").value)||100),at:Date.now()};
     try{ const {error}=await WEB.sb.from("app_config").update({data:c}).eq("id",1); if(error) throw error; CLOUD.cfg=c; $("#gok").textContent="נשמר ✓"; }catch(e){ $("#gok").className="err"; $("#gok").textContent="השמירה נכשלה"; } };
 }
 function renderCloudManagers(){
