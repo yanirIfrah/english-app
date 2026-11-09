@@ -280,6 +280,35 @@ input.field,select.field,textarea.field{font-family:inherit;font-size:16px;width
 .sq-b:hover{border-color:var(--primary)}.sq-b.sel{background:var(--primary);border-color:var(--primary);color:#fff;transform:scale(1.05)}
 .sq-ends{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted);margin-top:6px}
 .login-new{margin:10px 0 4px;background:var(--primary-soft);border-radius:12px;padding:10px 12px;font-size:14px;color:var(--ink-2);line-height:1.55}
+.scan .sc-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}.scan .sc-head h2{font-size:20px;margin:0}.scan .sc-head p{margin:2px 0 0;color:var(--muted);font-size:13.5px}
+.sc-hic{width:40px;height:40px;border-radius:12px;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;flex:none}
+.sc-tabs{display:flex;gap:6px;background:#eef0f4;border-radius:12px;padding:4px;margin-bottom:12px}.sc-tabs button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;border-radius:9px;font-weight:600;font-size:14px;color:var(--muted);background:none;border:0;cursor:pointer}.sc-tabs .on{background:#fff;color:var(--primary);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.sc-cam{position:relative;background:#0b1020;border-radius:20px;overflow:hidden;height:min(62vh,520px);min-height:340px}
+.sc-cam video{width:100%;height:100%;object-fit:cover;display:block}.sc-cam.shot::after{content:"";position:absolute;inset:0;background:#fff;animation:scshot .35s ease forwards}
+@keyframes scshot{from{opacity:.85}to{opacity:0}}
+.sc-vf{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:22px 22px 110px;pointer-events:none}
+.sc-frame{position:relative;width:100%;max-width:520px;aspect-ratio:4/3;border:2px solid rgba(129,140,248,.45);border-radius:18px;display:grid;place-items:center}
+.sc-frame i{position:absolute;width:26px;height:26px;border:4px solid #818cf8}.sc-frame .c1{top:-3px;left:-3px;border-right:0;border-bottom:0;border-radius:10px 0 0 0}.sc-frame .c2{top:-3px;right:-3px;border-left:0;border-bottom:0;border-radius:0 10px 0 0}.sc-frame .c3{bottom:-3px;left:-3px;border-right:0;border-top:0;border-radius:0 0 0 10px}.sc-frame .c4{bottom:-3px;right:-3px;border-left:0;border-top:0;border-radius:0 0 10px 0}
+.sc-frame span{font-size:12.5px;color:#e0e7ff;background:rgba(15,23,42,.6);padding:4px 12px;border-radius:999px;border:1px solid rgba(129,140,248,.3)}
+.sc-ctrl{position:absolute;bottom:18px;inset-inline:0;display:flex;align-items:center;justify-content:space-around;padding:0 28px;z-index:2}
+.sc-round{width:50px;height:50px;border-radius:50%;background:rgba(15,23,42,.75);border:1px solid #334155;color:#e2e8f0;display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(6px)}
+.sc-shutter{width:78px;height:78px;border-radius:50%;border:4px solid rgba(129,140,248,.4);padding:4px;background:rgba(99,102,241,.2);cursor:pointer}.sc-shutter span{width:100%;height:100%;border-radius:50%;background:#6366f1;color:#fff;display:grid;place-items:center;box-shadow:0 6px 18px rgba(99,102,241,.55)}.sc-shutter:active{transform:scale(.92)}
+.sc-camerr{position:absolute;inset:0;background:#0b1020;color:#e2e8f0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:24px 24px 120px}.sc-camerr p{color:#94a3b8;font-size:14px;margin:0 0 6px;max-width:300px}.sc-camerr[hidden]{display:none}
+.sc-foot{text-align:center;margin-top:10px}.sc-eng{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 10px}.sc-eng.ai{color:var(--primary);border-color:#c7d2fe}
+.sc-prev{position:relative;border-radius:18px;overflow:hidden;background:#0b1020;margin-bottom:12px}.sc-prev img{width:100%;max-height:220px;object-fit:cover;display:block}.sc-prev.busy img{filter:brightness(.45) blur(1px)}
+.sc-busy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#fff;text-align:center;padding:12px}.sc-busy b{font-size:14.5px;font-weight:600}
+.sc-spin{width:46px;height:46px;border-radius:50%;border:3px solid rgba(129,140,248,.3);border-top-color:#a5b4fc;animation:scspin 1s linear infinite}@keyframes scspin{to{transform:rotate(360deg)}}
+.sc-busy2{display:flex;align-items:center;gap:8px;color:var(--ink-2)}
+.sc-out .sc-lbl{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;color:var(--primary);letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.sc-tools{display:flex;gap:4px}.sc-ib{width:32px;height:32px;border-radius:9px;background:var(--bg);border:1px solid var(--line);color:var(--ink-2);display:grid;place-items:center;cursor:pointer}
+.sc-en{font-size:16.5px}.sc-he{font-size:16px;line-height:1.7;color:#047857;font-weight:500;white-space:pre-line}.sc-he.muted{color:var(--muted);font-size:14px;font-weight:400}
+.sc-exp{margin-top:12px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px;color:var(--ink-2);display:flex;gap:8px;align-items:flex-start}.sc-exp svg{color:var(--primary);flex:none;margin-top:2px}
+.sc-vocab{display:grid;gap:8px}.sc-w{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;transition:border-color .2s}.sc-w.on{border-color:#a5b4fc;background:#fafaff}
+.sc-say{width:40px;height:40px;border-radius:12px;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;flex:none;border:0;cursor:pointer}
+.sc-wb{flex:1;min-width:0}.sc-wt{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}.sc-wt b{font-size:16px}.sc-pos{font-size:11px;background:var(--bg);color:var(--muted);border-radius:999px;padding:2px 8px}.sc-emo{font-size:16px}
+.sc-wh{font-size:14px;color:#047857;font-weight:500}.sc-ph{font-size:12px;color:var(--muted)}
+.sc-pick{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--line);background:#fff;color:#cbd5e1;display:grid;place-items:center;cursor:pointer;flex:none}.sc-w.on .sc-pick{background:var(--primary);border-color:var(--primary);color:#fff}
+.sc-acts{margin-top:14px}.sc-act{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:6px 0}.sc-act+.sc-act{border-top:1px solid var(--line);padding-top:12px;margin-top:6px}.sc-act b{display:block;font-size:15px}.sc-act span{font-size:13px;color:var(--muted)}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;z-index:60;font-size:14.5px;box-shadow:0 8px 24px rgba(15,23,42,.25);max-width:90vw;text-align:center}
 .lang-btn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 11px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:13.5px;font-weight:600;color:var(--ink-2)}
 .lang-btn:hover{background:var(--bg)}
@@ -526,6 +555,9 @@ const LEVELS = [
 
 /* ========================== ICONS (line icons) ========================== */
 const IC={
+ refresh:'<path d="M21 12a9 9 0 0 1-15.4 6.4L3 16"/><path d="M3 12a9 9 0 0 1 15.4-6.4L21 8"/><path d="M21 3v5h-5M3 21v-5h5"/>',
+ copy:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>',
+ pencil:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>',
  gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/>',
  wallet:'<path d="M16 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2"/><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M21 12h-4a2 2 0 0 0 0 4h4"/>',
  home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
@@ -575,7 +607,7 @@ const IC={
 };
 function icon(n,s=20,sw=1.8){ return `<svg class="ic${["back","chev","login","logout"].includes(n)?" dir":""}" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||IC.info}</svg>`; }
 
-const I18N={"אפשר לפנות להורה לקבלת המתנה":"You can ask a parent for your gift","מעולה, תודה!":"Great, thanks!","יעד למתנה:":"Gift goal:","מחכה למתנה":"waiting for a gift","צברת עד עכשיו":"Earned so far","כבר קיבלת":"Already received","נשאר בקופה":"Left in the wallet","איזה כיף!":"Awesome!","בקופה עכשיו:":"In your wallet now:","הקופה שלי":"My wallet","קופה":"Wallet","יתרה":"Balance","נצבר":"Earned","שולם":"Paid","רישום תשלום":"Record payment","סכום ששולם (₪)":"Amount paid (₪)","רושמים כאן כסף שנתתם בפועל. היתרה תרד בהתאם.":"Record money you actually gave. The balance goes down accordingly.","נא להזין סכום":"Please enter an amount","התשלום נרשם ✓":"Payment recorded ✓","להציג קופה לכל משתמש":"Show a wallet for every user","₪ על כל":"₪ for every","כוכבים":"stars","רישום תשלומים מהקופה":"Record wallet payments","תרגום כל הטקסט":"Translate the whole text",
+const I18N={"סורק ותרגום חכם":"Smart scanner & translator","צלמו טקסט באנגלית לתרגום, למידה ובניית מבחן":"Photograph English text to translate, learn and build a test","סריקה חדשה":"New scan","מצלמה":"Camera","הקלדה":"Type","כוונו לטקסט באנגלית":"Point at English text","אין גישה למצלמה":"No camera access","אפשר לצלם עם מצלמת הטלפון או לבחור תמונה מהגלריה.":"You can take a photo with the phone camera or pick one from the gallery.","צילום":"Photo","הקלידו או הדביקו טקסט באנגלית":"Type or paste English text","ניתוח ותרגום":"Analyze & translate","זיהוי ותרגום חכם (AI)":"Smart recognition & translation (AI)","זיהוי טקסט במכשיר · תרגום מילים מהמילון":"On-device text recognition · word translation from the dictionary","תרגום לעברית":"Hebrew translation","עצירה":"Stop","לצלם שוב":"Take another photo","תרגום משפטים מלא זמין כשהמנהל מחבר מפתח AI באתר. בינתיים יש תרגום לכל מילה – בלחיצה על המילה, וברשימת המילים למטה.":"Full sentence translation is available once the admin connects an AI key. Meanwhile every word has a translation – tap a word, or see the list below.","ניקוי הבחירה":"Clear selection","בחירת הכול":"Select all","לא נמצאו במילון מילים עם תרגום. אפשר לתקן את הטקסט ולנסות שוב.":"No dictionary words with a translation were found. You can fix the text and try again.","מילים שאין להן תרגום במילון:":"Words with no dictionary translation:","שמירת המילים לתרגול":"Save words for practice","בניית שאלות ומבחן מהטקסט":"Build questions and a test from the text","יצירה":"Create","כדי לבנות מבחן צריך לבחור לפחות 4 מילים.":"Pick at least 4 words to build a test.","ביטול":"Cancel","ניתוח מחדש":"Analyze again","הטקסט הועתק":"Text copied","לא הצלחתי להעתיק":"Couldn't copy","החלפת מצלמה":"Switch camera","גלריה":"Gallery","תיקון הטקסט":"Fix the text","העתקה":"Copy","השמעה":"Listen","איזו מילה חסרה במשפט?":"Which word is missing?","לא מצאתי טקסט באנגלית. נסו צילום קרוב, ישר ומואר יותר.":"No English text found. Try a closer, straighter, brighter photo.","הסריקה נעצרה.":"Scan stopped.","לא הצלחתי לטעון את מנוע הזיהוי. בדקו את החיבור לאינטרנט ונסו שוב.":"Couldn't load the recognition engine. Check your connection and try again.","לא הצלחתי לפתוח את התמונה. נסו תמונה אחרת.":"Couldn't open the image. Try another one.","נא להקליד טקסט באנגלית.":"Please type some English text.","מזהה טקסט ומתרגם…":"Recognizing and translating…","מכין את הזיהוי…":"Preparing recognition…","מזהה טקסט…":"Recognizing text…","טוען את מנוע הזיהוי (בפעם הראשונה זה לוקח כמה שניות)…":"Loading the recognition engine (takes a few seconds the first time)…","לא אושרה גישה למצלמה":"Camera access was not allowed","לא נמצאה מצלמה זמינה":"No camera available","המכשיר הזה לא מאפשר מצלמה חיה בדפדפן":"This device doesn't support a live camera in the browser","אפשר לפנות להורה לקבלת המתנה":"You can ask a parent for your gift","מעולה, תודה!":"Great, thanks!","יעד למתנה:":"Gift goal:","מחכה למתנה":"waiting for a gift","צברת עד עכשיו":"Earned so far","כבר קיבלת":"Already received","נשאר בקופה":"Left in the wallet","איזה כיף!":"Awesome!","בקופה עכשיו:":"In your wallet now:","הקופה שלי":"My wallet","קופה":"Wallet","יתרה":"Balance","נצבר":"Earned","שולם":"Paid","רישום תשלום":"Record payment","סכום ששולם (₪)":"Amount paid (₪)","רושמים כאן כסף שנתתם בפועל. היתרה תרד בהתאם.":"Record money you actually gave. The balance goes down accordingly.","נא להזין סכום":"Please enter an amount","התשלום נרשם ✓":"Payment recorded ✓","להציג קופה לכל משתמש":"Show a wallet for every user","₪ על כל":"₪ for every","כוכבים":"stars","רישום תשלומים מהקופה":"Record wallet payments","תרגום כל הטקסט":"Translate the whole text",
 "ג׳":"3","ד׳":"4","ה׳":"5","ו׳":"6","ז׳":"7","ח׳":"8","ט׳":"9","י׳":"10","י״א":"11","י״ב":"12","מתחילים":"Start",
 "כיתה":"Grade",
 "(לתלמידים)":"(for students)",
@@ -769,7 +801,7 @@ const I18N={"אפשר לפנות להורה לקבלת המתנה":"You can ask 
 "שם משתמש: 3–20 תווים, בלי רווחים ":"Username: 3–20 characters, no spaces",
 "אפשר להוסיף עוד עמודים":"you can add more pages","תמונה":"image"
 };
-const I18N_PAT=[["הערכה עצמית בהרשמה: {}/5","Self-assessment at sign-up: {}/5"],["הגעת ל-{} בקופה!", "You reached {} in your wallet!"],["יש לך עכשיו {}. זה הזמן לפנות להורה ולקבל את המתנה שלך!", "You now have {}. Time to ask a parent for your gift!"],["עוד {} נכנסו לקופה, ויש לך עכשיו {}. זה הזמן לפנות להורה ולקבל את המתנה שלך!", "{} more went into your wallet, and you now have {}. Time to ask a parent for your gift!"],["הגעת ל-{}! אפשר לפנות להורה לקבלת המתנה", "You reached {}! You can ask a parent for your gift"],["היעד למתנה: {} (עוד {})", "Gift goal: {} ({} to go)"],["יש! הרווחת {}", "Yay! You earned {}"],["{} חדשים נכנסו לקופה שלך. כל הכבוד על ההתמדה!", "{} new went into your wallet. Great persistence!"],["חסרים לך {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["{} על כל {} כוכבים", "{} for every {} stars"],["עוד {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["עוד {} כוכבים ל-{} הבאים · נצבר {} · שולם {}", "{} more stars to the next {} · earned {} · paid {}"],["כל הכבוד! נכנסו {} לקופה שלך", "Well done! {} went into your wallet"],["{} על כל {} כוכבים · עוד {} כוכבים לתשלום הבא", "{} for every {} stars · {} more stars to the next payment"],
+const I18N_PAT=[["אוצר מילים לתרגול ({})", "Vocabulary to practice ({})"],["שמירה ({})", "Save ({})"],["מזהה טקסט… {}%", "Recognizing text… {}%"],["מתרגם… {}%", "Translating… {}%"],["המילים שנבחרו נכנסות לרשימה \"המילים שסרקתי\"", "Selected words go into the \"Words I scanned\" list"],["תוכנית עם כרטיסיות, חידון, האזנה ומבחן", "A plan with flashcards, a quiz, listening and a test"],["תוכנית עם כרטיסיות, חידון, האזנה, {} שאלות על הטקסט ומבחן", "A plan with flashcards, a quiz, listening, {} questions on the text and a test"],["לחצו על מילה כדי לשמוע אותה ולראות תרגום · הזיהוי לא בטוח – אפשר לתקן את הטקסט בעיפרון", "Tap a word to hear it and see a translation · Recognition is uncertain – you can fix the text with the pencil"],["נשמרו {} מילים חדשות ({} ברשימה).", "Saved {} new words ({} in the list)."],["צריך לפחות 4 מילים כדי לתרגל (יש {}).", "You need at least 4 words to practice (there are {})."],["הערכה עצמית בהרשמה: {}/5","Self-assessment at sign-up: {}/5"],["הגעת ל-{} בקופה!", "You reached {} in your wallet!"],["יש לך עכשיו {}. זה הזמן לפנות להורה ולקבל את המתנה שלך!", "You now have {}. Time to ask a parent for your gift!"],["עוד {} נכנסו לקופה, ויש לך עכשיו {}. זה הזמן לפנות להורה ולקבל את המתנה שלך!", "{} more went into your wallet, and you now have {}. Time to ask a parent for your gift!"],["הגעת ל-{}! אפשר לפנות להורה לקבלת המתנה", "You reached {}! You can ask a parent for your gift"],["היעד למתנה: {} (עוד {})", "Gift goal: {} ({} to go)"],["יש! הרווחת {}", "Yay! You earned {}"],["{} חדשים נכנסו לקופה שלך. כל הכבוד על ההתמדה!", "{} new went into your wallet. Great persistence!"],["חסרים לך {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["{} על כל {} כוכבים", "{} for every {} stars"],["עוד {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["עוד {} כוכבים ל-{} הבאים · נצבר {} · שולם {}", "{} more stars to the next {} · earned {} · paid {}"],["כל הכבוד! נכנסו {} לקופה שלך", "Well done! {} went into your wallet"],["{} על כל {} כוכבים · עוד {} כוכבים לתשלום הבא", "{} for every {} stars · {} more stars to the next payment"],
 ["כיתה {} · {}", "Grade {} · {}"],["כיתה {}", "Grade {}"],["רמה אישית {} מתוך 5 · {} מילים בשליטה{}", "Personal level {} of 5 · {} words mastered{}"],[" · אוצר משוער ~{}", " · estimated vocabulary ~{}"],["הסט היומי שלך: {}/{} מילים", "Today's set: {}/{} words"],["הרמה האישית שלך: {}", "Your personal level: {}"],["רמה {}", "Level {}"],["{} מילים לפי רמות תוכנית הלימודים · רמה אישית {}{}", "{} words by curriculum level · personal level {}{}"],[" · {} מילים לחזרה היום", " · {} words to review today"],["הכנה לבגרות · {}", "Bagrut prep · {}"],["{}מבנה הבחינה לפי משרד החינוך", "{}Exam structure per the Ministry of Education"],["כיתה {} · ", "Grade {} · "],["מבנים מרכזיים לרמת {} יח״ל", "Key structures for {} units"],["Unseen · {} יח״ל", "Unseen · {} units"],["אוצר מילים משוער: {} מילים מתוך {} בבנק", "Estimated vocabulary: {} words out of {} in the bank"],["{}/{} · {} מילים", "{}/{} · {} words"],["מתרגם {} מילים…", "Translating {} words…"],["{}/{} תשובות נכונות · +{} כוכבים", "{}/{} correct · +{} stars"],["כותב… {}%", "Writing… {}%"],["חסר תרגום ל-{} מילים. הוסיפו תרגום (word - תרגום).", "{} words have no translation. Add one (word - translation), or open the app inside Claude for automatic translation."],["רשימה של {} מילים שיובאה מבית הספר.", "A list of {} words imported from school."],["יובאה רשימה: {} ({} מילים)", "List imported: {} ({} words)"],["מבחן מיקום: רמה {}", "Placement test: level {}"],
 ["סונכרן {}", "synced {}"],["מנהל: {}", "Manager: {}"],["החשבון נעול: {}. יש לפנות למנהל.", "Account is locked: {}. Please contact an admin."],["הגדרות עודכנו מרחוק על ידי {}", "Settings updated remotely by {}"],["הגדרות עודכנו מרחוק", "Settings updated remotely"],["{} תוכניות", "{} plans"],["קהילה: {}", "community: {}"],["{} משחקים, {} ניצחונות", "{} games, {} wins"],["למחוק סופית את {}?", "Permanently delete {}?"],
 ["{} תשובות נכונות מתוך {}","{} correct out of {}"],["קיבלת {} כוכבים{}","you got {} stars{}"],["מהגלריה, עד {}","from gallery, up to {}"],
@@ -1059,7 +1091,7 @@ const praise = () => { const a=[...PRAISE.slice(0,5), g("אלופה! 🏆","אל
 
 /* ========================== SCREENS ========================== */
 function topBar(right=""){
-  const p=cur();
+  const p=cur(); if(typeof scanStopCam==="function") scanStopCam();
   setTimeout(()=>{ const m=$("#menu"); if(m) m.onclick=()=>{ const d=$(".drawer"); if(d&&d.classList.contains("open")) closeDrawer(); else openDrawer(); }; const lb=$("#langbtn"); if(lb) lb.onclick=()=>setLang(LANG==="en"?"he":"en"); },0);
   const chip = p ? `<div class="userchip">${walletChip(p)}<span class="pill">${icon("star",15)} ${p.stars||0}</span>${avatarHTML(p.avatar,34)}</div>` : "";
   if(p) walletCheck(p);
@@ -2321,6 +2353,7 @@ function localTr(t){
 const TR_STORY=(()=>{ const T={"At the Café": "מלצר: בוקר טוב! מה תרצה?\nדן: בוקר טוב. אני רוצה קפה וקרואסון, בבקשה.\nמלצר: קפה קטן או גדול?\nדן: גדול, בבקשה. כמה זה עולה?\nמלצר: זה שתים-עשרה דולר.\nדן: הנה, בבקשה. תודה!\nמלצר: בבקשה. שיהיה לך יום נעים!", "Asking for Directions": "סליחה, איפה בית המרקחת? לכו ישר שני רחובות, ואז פנו שמאלה. בית המרקחת נמצא ליד הבנק. הוא פתוח היום עד שמונה בערב. תודה רבה!", "An Email to a Colleague": "היי נועה,\nאני מקווה שאת בטוב. לצערי לא אוכל להגיע לפגישה שלנו ביום שלישי, כי הטיסה שלי חזרה מברלין התעכבה. אפשר לקבוע מחדש ליום חמישי בבוקר? אני פנוי בכל שעה אחרי תשע. בינתיים אשלח לך את לוח הזמנים המעודכן, כדי שתוכלי להתעדכן בשינויים האחרונים. למרות שהמועד האחרון קרוב, אני חושב שנוכל לטפל יחד במשימות שנשארו.\nבברכה,\nתום", "A Hotel Problem": "כשמאיה הגיעה למלון, התברר לה שאין הזמנה על שמה. היא ביקשה לדבר עם המנהל. אחרי שבדק במערכת, המנהל התנצל והסביר שהייתה תקלה טכנית. הוא הציע לה חדר טוב יותר בלי תוספת תשלום וארוחת בוקר חינם. מאיה החליטה לא להתלונן יותר, ונהנתה משאר השהות.", "Is Remote Work Here to Stay?": "כשהמשרדים נסגרו ב-2020, מנהלים רבים הניחו שהתפוקה תקרוס. בגדול, זה לא קרה. כמה מחקרים מצאו שעובדים שעבדו מהבית היו פרודוקטיביים כמו קודם, אם כי עם הבדלים משמעותיים בין תפקידים. עם זאת, העבודה מרחוק יצרה צווארי בקבוק חדשים: שיחות ספונטניות הפכו לנדירות, ועובדים צעירים מתקשים לא פעם להשתלט על התפקיד בלי הכוונה לא רשמית. כתוצאה מכך, חברות רבות אימצו מודלים היברידיים, ומקצות ימים מסוימים לשיתוף פעולה פנים אל פנים. המבקרים טוענים שפשרות כאלה לא מספקות אף אחד, ואילו התומכים רואים בהן איזון אפשרי בין גמישות לחיבור. מה שנראה ברור הוא שחזרה מלאה למשרד המסורתי אינה סבירה; השאלה האמיתית היא איך ארגונים יצמצמו את החסרונות של הריחוק וישמרו על היתרונות שלו.", "The Art of Saying No": "אנשי מקצוע רבים מתקשים לסרב לבקשות חדשות, כי הם חוששים להיראות לא משתפי פעולה. אבל הסכמה מתמדת עלולה להוביל לתוצאות רציניות: מועדים מתפספסים, האיכות יורדת והלחץ מצטבר. מומחים מציעים גישה פשוטה. קודם כול, להכיר בבקשה ולהראות שהיא חשובה לכם. שנית, להסביר בכנות מה סדרי העדיפויות שלכם כרגע. ולבסוף, להציע חלופה, כמו מועד מאוחר יותר או עמית שאולי יוכל לעזור. סירוב בדרך הזו אינו סימן לחולשה; להפך, הוא מראה יוזמה והבנה ברורה של מה שהכי חשוב.", "My Dog": "יש לי כלב. הכלב שלי שחור. קוראים לו מקס. מקס אוהב לרוץ. אני אוהב את מקס!", "Noa's Day": "נועה בת שמונה. היא הולכת לבית הספר כל יום. החברה הכי טובה שלה היא דנה. אחרי בית הספר הן משחקות בכדור בפארק. אחר כך נועה הולכת הביתה ואוכלת פיצה.", "The Cat and the Ball": "חתול קטן רואה כדור אדום. החתול רץ אל הכדור. הכדור מתגלגל מתחת למיטה. החתול עצוב. ואז בא ילד ומוצא את הכדור. עכשיו החתול שמח!", "A Surprise Party": "אתמול היה יום ההולדת של תום. בבוקר הוא היה עצוב, כי אף אחד לא אמר לו מזל טוב. אחרי בית הספר הוא הלך הביתה. כשהוא פתח את הדלת, כל החברים שלו צעקו \"הפתעה!\" תום היה מופתע ושמח מאוד. הוא קיבל אופניים חדשים במתנה. זה היה היום הכי טוב אי פעם!", "A Rainy Day": "ביום שני ירד גשם כל היום. מאיה לא יכלה ללכת לפארק, אז היא נשארה בבית. בהתחלה היה לה משעמם. אחר כך היא בנתה אוהל עם אחיה בסלון. הם קראו ספרים בתוך האוהל ואכלו פופקורן. מאיה אומרת שעכשיו ימים גשומים הם כיף!", "My Weekend": "קוראים לי ליה ואני בת ארבע-עשרה. באמצע השבוע אני עסוקה מאוד בבית הספר ובשיעורי בית, אז אני אוהבת את סוף השבוע. ביום שישי אני בדרך כלל נפגשת עם החברים שלי בקניון. אנחנו לא קונים הרבה כי הכול יקר, אבל אנחנו נהנים. בשבת אני ישנה עד מאוחר, ואחר הצהריים אני משחקת כדורסל עם הקבוצה שלי. בערב המשפחה שלי צופה יחד בסרט.", "A New Phone": "בן רצה טלפון חדש כבר הרבה זמן. הטלפון הישן שלו היה איטי והמסך היה שבור. הוא חסך כסף במשך שישה חודשים. הוא עשה עבודות בשביל השכנים, כמו להוציא את הכלבים שלהם לטיול. בסוף היה לו מספיק כסף. הוא הלך לחנות וקנה את הטלפון. הוא היה גאה מאוד, כי שילם עליו בעצמו.", "A Week Without Phones": "בחודש שעבר הכיתה שלנו עשתה ניסוי: שבוע שלם בלי טלפונים. בהתחלה רובנו דאגנו. איך נדבר עם החברים? איך נדע מה קורה? היומיים הראשונים היו ממש קשים. כל הזמן הושטתי יד לכיס. אבל עד יום רביעי משהו השתנה. התחלתי לקרוא ספר שקניתי לפני כמה חודשים, ואפילו דיברתי עם המשפחה שלי בארוחת הערב. בסוף השבוע דיברנו על החוויה. אף אחד לא רצה לוותר על הטלפון לתמיד, אבל כמעט כולם הסכימו שינסו לבלות פחות זמן מול המסכים.", "Learning the Guitar": "כשעומר הגיע לגיל שלוש-עשרה, סבא שלו נתן לו גיטרה ישנה. עומר מעולם לא ניגן על כלי נגינה, והאצבעות שלו כאבו אחרי עשר דקות בלבד. הוא כמעט ויתר. ואז סבא שלו גילה לו סוד: \"תתאמן קצת כל יום, ולא הרבה פעם בשבוע.\" עומר החליט להתאמן רבע שעה בכל ערב. שלושה חודשים אחר כך הוא ניגן שיר שלם בשביל המשפחה. עכשיו הוא בטוח בעצמו מספיק כדי לנגן במופע הכישרונות של בית הספר, והוא מחכה לזה בקוצר רוח.", "Are Teens Really Addicted to Social Media?": "מבוגרים רבים מניחים שבני נוער מכורים לרשתות החברתיות, ויש ראיות מסוימות שתומכות בדאגה הזו. מחקרים מראים ששימוש כבד עלול להשפיע על השינה ועל הריכוז. עם זאת, התמונה מורכבת יותר ממה שנראה במבט ראשון. עבור בני נוער רבים, הפלטפורמות ברשת הן דרך לשמור על קשר עם חברים, לחקור תחומי עניין יצירתיים ולמצוא קהילות שאין להם בסביבה הקרובה. חוקרים טוענים יותר ויותר שהשאלה החשובה היא לא כמה זמן בני נוער מבלים ברשת, אלא איך הם מבלים אותו. גלילה פסיבית נוטה לגרום לאנשים להרגיש רע יותר, ואילו יצירת תוכן פעילה או התכתבות עם חברים קרובים עשויות להשפיע באופן ניטרלי ואפילו חיובי. במקום לאסור על טלפונים, חלק מהמומחים מעודדים משפחות לדבר יחד על הרגלים בריאים, כדי שבני הנוער ילמדו להתמודד בעצמם עם זרם המידע העצום.", "The Four-Day School Week": "בכמה מדינות ניסו בתי ספר שבוע לימודים של ארבעה ימים. התומכים טוענים שיום החופש הנוסף מאפשר לתלמידים לנוח, לעסוק בתחביבים ולחזור לכיתה עם יותר מוטיבציה. המורים, מצידם, מדווחים שיש להם יותר זמן לתכנן שיעורים. המבקרים, לעומת זאת, מהססים לאמץ את הרעיון. הם מציינים שימי לימודים ארוכים יותר עלולים להיות מתישים, במיוחד לילדים צעירים, ושהורים עובדים עלולים להתקשות למצוא מסגרת לילדים ביום החופשי. התוצאות הראשונות מעורבות: בחלק מבתי הספר הנוכחות השתפרה, ובאחרים נרשמה ירידה קלה בציונים במבחנים. נראה שאין מנוס מכך שהוויכוח יימשך עד שיהיו נתונים אמינים יותר."}; const m=new Map(); Object.values(CONTENT).forEach(tr=>(tr.reading||[]).forEach(s=>{ if(T[s.title]) m.set(s.text.trim(),T[s.title]); })); return m; })();
 async function translate(text){
   const st=TR_STORY.get(String(text).trim()); if(st) return st;
+  { const p0=cur(), k=String(text).trim(); if(p0) for(const pl of p0.plans||[]) for(const s of (pl.data&&pl.data.reading)||[]) if(s.he&&s.text&&s.text.trim()===k) return s.he; }
   const loc=localTr(text); if(loc) return loc;
   if(TR_CACHE.has(text)) return TR_CACHE.get(text);
   if(!SAMPLE) throw {code:"noclaude"};
@@ -2357,96 +2390,229 @@ document.addEventListener("click",async e=>{
   }
 },true);
 
-/* ========================== SCANNER ========================== */
-let SC={files:[],text:"",res:null,ctl:null};
+/* ========================== SCANNER: smart camera translator ========================== */
+let SC={img:null,text:"",res:null,busy:false,err:"",prog:"",saved:new Set(),facing:"environment",mode:"camera",camErr:"",ctl:null,edit:false};
+let SCAM=null, OCR_W=null;
 function lockedCard(t,s){ return `<div class="auth"><div class="card pop" style="text-align:center"><div class="result-ic">${icon("lock",34)}</div><h1>${t}</h1><p class="sub">${s}</p><div class="nav"><button class="btn ghost" id="lkb">לדף הבית</button></div></div></div>`; }
-function renderScan(note=""){
+function scanStopCam(){ if(SCAM){ try{ SCAM.getTracks().forEach(t=>t.stop()); }catch(e){} SCAM=null; } }
+const OCR_BASE=()=>new URL("ocr/",location.href).href;
+function loadScript(src){ return new Promise((res,rej)=>{ if(document.querySelector(`script[data-src="${src}"]`)&&window.Tesseract) return res(); const s=document.createElement("script"); s.src=src; s.dataset.src=src; s.onload=()=>res(); s.onerror=()=>rej(new Error("lib")); document.head.appendChild(s); }); }
+async function ocrWorker(){
+  if(!window.Tesseract) await loadScript(OCR_BASE()+"tesseract.min.js");
+  if(!OCR_W) OCR_W=Tesseract.createWorker("eng",1,{workerPath:OCR_BASE()+"worker.min.js",corePath:OCR_BASE()+"core",langPath:OCR_BASE()+"lang",gzip:false,
+    logger:m=>{ if(SC.busy&&m&&m.status){ const pct=Math.round((m.progress||0)*100); const lab=/recogniz/.test(m.status)?`מזהה טקסט… ${pct}%`:/load|initializ/.test(m.status)?"טוען את מנוע הזיהוי (בפעם הראשונה זה לוקח כמה שניות)…":""; if(lab) scanProg(lab); } }}).catch(e=>{ OCR_W=null; throw e; });
+  return OCR_W;
+}
+function scanProg(t){ SC.prog=t; const el=$("#scprog"); if(el) el.textContent=t; }
+const scanAI=()=>!!SAMPLE;
+// load an image (File/Blob/dataURL) → scaled canvas, jpeg dataURL and Blob
+async function scanPrep(src){
+  const url=typeof src==="string"?src:URL.createObjectURL(src);
+  const img=await new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=()=>rej(new Error("img")); i.src=url; });
+  const s=Math.min(1,1800/Math.max(img.naturalWidth,img.naturalHeight)); const c=document.createElement("canvas");
+  c.width=Math.round(img.naturalWidth*s); c.height=Math.round(img.naturalHeight*s);
+  const g=c.getContext("2d"); g.fillStyle="#fff"; g.fillRect(0,0,c.width,c.height); g.drawImage(img,0,0,c.width,c.height);
+  if(typeof src!=="string") URL.revokeObjectURL(url);
+  const blob=await new Promise(r=>c.toBlob(r,"image/jpeg",0.88));
+  return {canvas:c,dataUrl:c.toDataURL("image/jpeg",0.8),blob};
+}
+const STOPW=new Set("a an the and or but if of to in on at by for with from as is am are was were be been being it its this that these those i you he she we they me him her us them my your his our their not no yes do does did have has had will would can could shall should may might must so than then there here what which who whom whose when where why how all any some each every one two very just also only too up down out over into about".split(" "));
+// offline analysis: dictionary lookup + fill-in-the-blank questions
+function scanLocal(text){
+  const lv=w=>{ const b=BANK_IDX.get(w); return b?b.lv:0; };
+  const base=w=>{ const cs=[w,w.replace(/'s$/,""),w.replace(/ies$/,"y"),w.replace(/s$/,""),w.replace(/es$/,""),w.replace(/ied$/,"y"),w.replace(/ed$/,"e"),w.replace(/ed$/,""),w.replace(/ing$/,"e"),w.replace(/ing$/,""),w.replace(/ly$/,"")];
+    for(const c of cs) if(c.length>1&&DICT.has(c)) return c; for(const c of cs) if(c.length>1&&localTr(c)) return c; return null; };
+  const seen=new Set(), vocab=[], unknown=[];
+  (text.toLowerCase().match(/[a-z][a-z'-]*[a-z]|[a-z]/g)||[]).forEach(raw=>{
+    if(raw.length<2||STOPW.has(raw)||seen.has(raw)) return; seen.add(raw);
+    const b=base(raw); if(!b){ if(raw.length>2&&unknown.length<20) unknown.push(raw); return; }
+    if(seen.has("#"+b)) return; seen.add("#"+b);
+    const B=BANK_IDX.get(b); vocab.push({word:b,translation:localTr(b),pos:"",phonetic:"",emoji:(B&&B.emoji)||"📌",lv:lv(b)});
+  });
+  vocab.sort((a,b)=>b.lv-a.lv||b.word.length-a.word.length);
+  const pick=vocab.slice(0,15);
+  return {vocab:pick,unknown,questions:scanCloze(text,pick)};
+}
+function scanCloze(text,vocab){
+  const sents=text.replace(/\s+/g," ").split(/(?<=[.!?])\s+/).map(s=>s.trim()).filter(s=>{ const n=s.split(" ").length; return n>=4&&n<=30; });
+  const pool=vocab.map(v=>v.word), qs=[], used=new Set();
+  for(const v of vocab){ if(qs.length>=5) break;
+    const re=new RegExp(`\\b${v.word.replace(/[-']/g,"\\$&")}[a-z]*\\b`,"i");
+    const s=sents.find(x=>re.test(x)&&!used.has(x)); if(!s) continue; used.add(s);
+    const m=s.match(re)[0]; let others=pool.filter(w=>w!==v.word).sort(()=>Math.random()-.5).slice(0,2);
+    if(others.length<2) others=[...others,...BANK_ALL.filter(b=>b.lv===(v.lv||2)&&b.en!==m).sort(()=>Math.random()-.5).slice(0,2-others.length).map(b=>b.en)];
+    const opts=[m,...others]; for(let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+    qs.push({q:s.replace(re,"_____"),he:"איזו מילה חסרה במשפט?",opts,a:opts.indexOf(m)});
+  }
+  return qs;
+}
+function scanPrompt(p,hasImg,text){
+  return `You help a Hebrew-speaking English learner (age ${p.age}, ${["beginner","intermediate","advanced"][p.level-1]} level).
+Analyze the ${hasImg?"attached image (a photo of a sign, page, book, screen, worksheet or object)":"English text below"} for English learning.
+${hasImg?"":`TEXT:\n<<<\n${text.slice(0,15000)}\n>>>\n`}Return ONLY this JSON:
+{"title":"","detectedText":"","hebrewTranslation":"","explanation":"","vocabulary":[{"word":"","translation":"","pos":"","phonetic":"","emoji":""}],"questions":[{"q":"","he":"","opts":["","",""],"a":0}]}
+RULES
+- "detectedText": the English exactly as written, in reading order (fix only obvious OCR noise). If there is no English text, describe the main objects or signs in one or two simple English sentences.
+- "hebrewTranslation": a natural Hebrew translation of detectedText.
+- "explanation": one or two short Hebrew sentences on the context (what this is, when it is used).
+- "vocabulary": 4-15 useful or difficult words/phrases from the text: Hebrew "translation", Hebrew part of speech in "pos" (שם עצם / פועל / שם תואר / תואר הפועל / ביטוי), "phonetic" as Hebrew letters followed by IPA in parentheses, and one fitting emoji.
+- "questions": 3-5 multiple-choice questions in simple English about the text (comprehension; for a very short text ask about word meanings), each with a Hebrew translation of the question in "he", exactly 3 short English options and the index "a" of the correct one.
+- If the image is a test or worksheet: translate it, but never solve or hint at the answers to its own questions.
+- "title": a short Hebrew title.${LANG==="en"?" (UI is English: write title and explanation in English, keep translations in Hebrew.)":""}`;
+}
+async function scanRun(input){
+  const p=cur(); if(!p) return;
+  SC.busy=true; SC.err=""; SC.res=null; SC.edit=false; SC.saved=new Set(); scanStopCam();
+  let prep=null;
+  try{ if(input.file){ prep=await scanPrep(input.file); SC.img=prep.dataUrl; } else if(!input.keepImg) SC.img=null; }
+  catch(e){ SC.busy=false; SC.err="לא הצלחתי לפתוח את התמונה. נסו תמונה אחרת."; return renderScan(); }
+  SC.prog=scanAI()?"מזהה טקסט ומתרגם…":"מכין את הזיהוי…"; renderScan();
+  const S=x=>String(x==null?"":x).trim();
+  try{
+    let res;
+    if(scanAI()){
+      SC.ctl=new AbortController();
+      let images; if(prep){ const lim=LIMITS&&LIMITS.images; images=[lim?await imageToBlob(prep.blob,lim):prep.blob]; }
+      const j=await SAMPLE.json(scanPrompt(p,!!prep,input.text||""),{images,signal:SC.ctl.signal,modelTier:"default",onText:({text})=>scanProg(`מתרגם… ${Math.min(99,Math.round(text.length/30))}%`)});
+      const vocab=(Array.isArray(j&&j.vocabulary)?j.vocabulary:[]).map(v=>({word:S(v&&v.word),translation:S(v&&v.translation),pos:S(v&&v.pos),phonetic:S(v&&v.phonetic),emoji:S(v&&v.emoji)||"📌"})).filter(v=>v.word&&v.translation);
+      const questions=(Array.isArray(j&&j.questions)?j.questions:[]).map(q=>({q:S(q&&q.q),he:S(q&&q.he),opts:(Array.isArray(q&&q.opts)?q.opts:[]).map(S).filter(Boolean),a:Number(q&&q.a)})).filter(q=>q.q&&q.opts.length>=2&&q.a>=0&&q.a<q.opts.length);
+      res={src:"ai",title:S(j&&j.title),text:S(j&&j.detectedText)||S(input.text),he:S(j&&j.hebrewTranslation),explanation:S(j&&j.explanation),vocab,questions,unknown:[]};
+      if(!res.text) throw {message:"empty"};
+      vocab.forEach(v=>TR_CACHE.set(v.word,v.translation));
+    } else {
+      let text=S(input.text), conf=null;
+      if(prep){ const w=await ocrWorker(); scanProg("מזהה טקסט…"); const {data}=await w.recognize(prep.canvas); conf=Math.round(data.confidence||0);
+        text=(data.text||"").split("\n").map(l=>l.replace(/\s+/g," ").trim()).filter(l=>(l.match(/[A-Za-z]/g)||[]).length>=2).join("\n"); }
+      if(!text) throw {message:"empty"};
+      const L=scanLocal(text);
+      res={src:"ocr",title:"",text,he:"",explanation:"",vocab:L.vocab,questions:L.questions,unknown:L.unknown,conf};
+    }
+    res.vocab.forEach(v=>SC.saved.add(v.word));
+    SC.res=res; SC.text=res.text; logEvent(p,"scan",`סריקה: ${res.title||res.text.slice(0,40)}`);
+  }catch(e){
+    SC.err=e&&e.message==="empty"?"לא מצאתי טקסט באנגלית. נסו צילום קרוב, ישר ומואר יותר.":e&&e.code==="cancelled"?"הסריקה נעצרה.":e&&e.message==="lib"?"לא הצלחתי לטעון את מנוע הזיהוי. בדקו את החיבור לאינטרנט ונסו שוב.":(ERR_HE[e&&e.code]||"משהו השתבש. נסו שוב.");
+  }
+  SC.busy=false; SC.ctl=null; if(document.getElementById("scan-screen")) renderScan();
+}
+function renderScan(){
   PLAN=null;
   const p=cur(); if(!p) return renderLogin();
   if(!ctrlOf(p).scan){ app.innerHTML=topBar()+lockedCard("הסורק כבוי בחשבון הזה","אפשר להפעיל אותו בניהול ההורים."); $("#lkb").onclick=renderHome; return; }
-  const r=SC.res, mx=maxImgs();
-  app.innerHTML=topBar()+`
-    <div class="card">
-      <div class="hero"><div class="tile-ic">${icon("scan",22)}</div><div><h2>סורק ותרגום</h2><div style="color:var(--muted);font-size:14px">צלמו מבחן, דף, ספר, שלט או מילה אחת – ותקבלו את הטקסט באנגלית עם תרגום לעברית.</div></div></div>
-      <div class="src-row" style="margin-top:16px">
-        <label class="src">${icon("camera",26)}<span>צילום</span><small>במצלמה</small><input type="file" id="scam" accept="image/*" capture="environment" hidden></label>
-        <label class="src">${icon("image",26)}<span>תמונה</span><small>מהגלריה, עד ${mx}</small><input type="file" id="sgal" accept="image/*" multiple hidden></label>
-        <button class="src" id="stype">${icon("grammar",26)}<span>הקלדה</span><small>מילה או טקסט</small></button>
-      </div>
-      ${SC.files.length?`<div class="thumbs">${SC.files.map((f,i)=>`<div class="thumb"><img src="${thumbURL(f)}" alt=""><button class="rm" data-srm="${i}" aria-label="הסרה">${icon("close",13,2.4)}</button></div>`).join("")}${SC.files.length<mx?`<label class="thumb" style="display:grid;place-items:center;cursor:pointer;color:var(--muted)">${icon("plus",26)}<input type="file" id="smore" accept="image/*" capture="environment" hidden></label>`:""}</div>`:""}
-      <textarea class="field en" id="stxt" rows="3" style="margin-top:12px;text-align:left;${SC.files.length?"display:none":""}" placeholder="Type or paste English here…">${esc(SC.text)}</textarea>
-      ${note?`<div class="hint" style="color:var(--amber)">${esc(note)}</div>`:""}
-      <div class="row"><div id="upl-conn" style="font-size:14px">${SAMPLE===null?`<span style="color:var(--bad)">הסריקה לא זמינה כרגע – המנהל צריך להגדיר מפתח Claude בשרת.</span>${EDITION==="community"?` ${edLink(PUBLIC_URL,"פתיחה בגרסה הציבורית","link")}`:""}`:""}</div>
-        <div style="display:flex;gap:8px"><button class="btn ghost" id="sstop" hidden>עצירה</button><button class="btn" id="sgo" ${SAMPLE?"":"disabled"}>${icon("scan",18)} סריקה ותרגום</button></div></div>
-      <div id="sst" class="upl-status"></div>
+  const showRes=SC.busy||SC.res||SC.err&&SC.img;
+  app.innerHTML=topBar()+`<div id="scan-screen" class="scan">
+    <div class="sc-head"><div class="sc-hic">${icon("camera",20)}</div><div style="flex:1"><h2>סורק ותרגום חכם</h2><p>צלמו טקסט באנגלית לתרגום, למידה ובניית מבחן</p></div>
+      ${showRes&&!SC.busy?`<button class="btn ghost sm" id="scnew">${icon("refresh",14)} סריקה חדשה</button>`:""}</div>
+    ${showRes?scanResultView():scanCaptureView()}</div>`;
+  if(showRes) wireScanResult(); else wireScanCapture();
+}
+function scanCaptureView(){
+  const engine=scanAI()?`<span class="sc-eng ai">${icon("spark",13)} זיהוי ותרגום חכם (AI)</span>`:`<span class="sc-eng">${icon("scan",13)} זיהוי טקסט במכשיר · תרגום מילים מהמילון</span>`;
+  return `<div class="sc-tabs"><button class="${SC.mode==="camera"?"on":""}" data-scm="camera">${icon("camera",15)} מצלמה</button><button class="${SC.mode==="text"?"on":""}" data-scm="text">${icon("grammar",15)} הקלדה</button></div>
+    ${SC.mode==="camera"?`<div class="sc-cam">
+      <video id="scvid" autoplay playsinline muted></video>
+      <div class="sc-vf"><div class="sc-frame"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i><span>כוונו לטקסט באנגלית</span></div></div>
+      <div class="sc-camerr" id="sccamerr" hidden><div>${icon("camera",30)}</div><b id="sccamerrt">אין גישה למצלמה</b><p>אפשר לצלם עם מצלמת הטלפון או לבחור תמונה מהגלריה.</p>
+        <label class="btn">${icon("camera",16)} צילום<input type="file" id="sccap" accept="image/*" capture="environment" hidden></label></div>
+      <div class="sc-ctrl">
+        <label class="sc-round" title="גלריה" aria-label="גלריה">${icon("image",20)}<input type="file" id="scgal" accept="image/*" hidden></label>
+        <button class="sc-shutter" id="scshot" aria-label="צילום"><span>${icon("camera",26)}</span></button>
+        <button class="sc-round" id="scflip" title="החלפת מצלמה" aria-label="החלפת מצלמה">${icon("refresh",19)}</button>
+      </div></div>`:`<div class="card" style="margin-top:0"><label class="lbl" style="margin-top:0">הקלידו או הדביקו טקסט באנגלית</label>
+      <textarea class="field en" id="sctxt" rows="6" style="text-align:left" placeholder="Type or paste English here…">${esc(SC.text||"")}</textarea>
+      <div class="row"><span></span><button class="btn" id="sctgo">${icon("translate",16)} ניתוח ותרגום</button></div></div>`}
+    ${SC.err?`<div class="err" style="margin-top:10px">${esc(SC.err)}</div>`:""}
+    <div class="sc-foot">${engine}</div>`;
+}
+function wireScanCapture(){
+  app.querySelectorAll("[data-scm]").forEach(b=>b.onclick=()=>{ SC.mode=b.dataset.scm; SC.err=""; renderScan(); });
+  if(SC.mode==="text"){ $("#sctgo").onclick=()=>{ const t=$("#sctxt").value.trim(); if(!t){ SC.err="נא להקליד טקסט באנגלית."; return renderScan(); } SC.text=t; scanRun({text:t}); }; return; }
+  const onFile=el=>{ if(el.files&&el.files[0]) scanRun({file:el.files[0]}); };
+  ["scgal","sccap"].forEach(id=>{ const el=$("#"+id); if(el) el.onchange=()=>onFile(el); });
+  $("#scflip").onclick=()=>{ SC.facing=SC.facing==="environment"?"user":"environment"; renderScan(); };
+  $("#scshot").onclick=()=>{
+    const v=$("#scvid"); if(!SCAM||!v||!v.videoWidth){ const c=$("#sccap"); if(c) c.click(); return; }
+    const c=document.createElement("canvas"); c.width=v.videoWidth; c.height=v.videoHeight; c.getContext("2d").drawImage(v,0,0,c.width,c.height);
+    const flash=document.querySelector(".sc-cam"); if(flash){ flash.classList.add("shot"); }
+    c.toBlob(b=>scanRun({file:b}),"image/jpeg",0.9);
+  };
+  scanStartCam();
+}
+async function scanStartCam(){
+  const v=$("#scvid"), err=$("#sccamerr"); if(!v) return;
+  const fail=t=>{ scanStopCam(); if(err){ err.hidden=false; $("#sccamerrt").textContent=t; } };
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) return fail("המכשיר הזה לא מאפשר מצלמה חיה בדפדפן");
+  try{
+    const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:SC.facing,width:{ideal:1920},height:{ideal:1080}},audio:false});
+    if(!document.getElementById("scvid")){ s.getTracks().forEach(t=>t.stop()); return; }
+    scanStopCam(); SCAM=s; v.srcObject=s; try{ await v.play(); }catch(e){}
+  }catch(e){ fail(e&&e.name==="NotAllowedError"?"לא אושרה גישה למצלמה":"לא נמצאה מצלמה זמינה"); }
+}
+function scanResultView(){
+  const r=SC.res;
+  const img=SC.img?`<div class="sc-prev${SC.busy?" busy":""}"><img src="${SC.img}" alt="">${SC.busy?`<div class="sc-busy"><div class="sc-spin"></div><b id="scprog">${esc(SC.prog)}</b>${scanAI()?`<button class="btn ghost sm" id="scstop" style="margin-top:8px">עצירה</button>`:""}</div>`:""}</div>`
+    :SC.busy?`<div class="card sc-busy2"><span class="spin"></span> <span id="scprog">${esc(SC.prog)}</span></div>`:"";
+  if(!r) return img+(SC.err?`<div class="card"><div class="err" style="margin:0">${esc(SC.err)}</div><div class="row"><span></span><button class="btn" id="scretry">${icon("camera",16)} לצלם שוב</button></div></div>`:"");
+  const vocabN=r.vocab.length, sel=r.vocab.filter(v=>SC.saved.has(v.word)).length;
+  return img+`
+    ${r.title?`<div class="section-title">${esc(r.title)}</div>`:""}
+    <div class="card sc-out">
+      <div class="sc-lbl" dir="ltr"><span>English Original</span><span class="sc-tools">
+        <button class="sc-ib" data-say="${esc(r.text)}" title="השמעה" aria-label="השמעה">${icon("sound",16)}</button>
+        <button class="sc-ib" id="sccopy" title="העתקה" aria-label="העתקה">${icon("copy",16)}</button>
+        <button class="sc-ib" id="scedit" title="תיקון הטקסט" aria-label="תיקון הטקסט">${icon("pencil",16)}</button></span></div>
+      ${SC.edit?`<textarea class="field en" id="scedt" rows="6" style="text-align:left">${esc(r.text)}</textarea><div class="row" style="margin-top:8px"><button class="link" id="sceditx">ביטול</button><button class="btn sm" id="sceditgo">${icon("spark",14)} ניתוח מחדש</button></div>`
+        :`<div class="passage sc-en">${wrapWords(r.text)}</div><div class="hint">לחצו על מילה כדי לשמוע אותה ולראות תרגום${r.src==="ocr"&&r.conf!=null&&r.conf<70?" · הזיהוי לא בטוח – אפשר לתקן את הטקסט בעיפרון":""}</div>`}
+      <div class="divider" style="margin:14px 0"></div>
+      <div class="sc-lbl"><span>תרגום לעברית</span></div>
+      ${r.he?`<div class="sc-he">${esc(r.he)}</div>`:`<div class="sc-he muted">${scanAI()?trBtn(r.text,"תרגום כל הטקסט"):"תרגום משפטים מלא זמין כשהמנהל מחבר מפתח AI באתר. בינתיים יש תרגום לכל מילה – בלחיצה על המילה, וברשימת המילים למטה."}</div>`}
+      ${r.explanation?`<div class="sc-exp">${icon("spark",14)} <span>${esc(r.explanation)}</span></div>`:""}
     </div>
-    ${r?scanResultHTML(r):""}`;
-  const add=list=>{ const im=[...list].filter(isImg); if(!im.length) return; SC.files=[...SC.files,...im].slice(0,mx); SC.text=""; SC.res=null; renderScan(); };
-  ["scam","sgal","smore"].forEach(id=>{ const el=$("#"+id); if(el) el.onchange=()=>add(el.files); });
-  app.querySelectorAll("[data-srm]").forEach(b=>b.onclick=()=>{ SC.files.splice(+b.dataset.srm,1); renderScan(); });
-  $("#stype").onclick=()=>{ SC.files=[]; renderScan(); setTimeout(()=>$("#stxt").focus(),30); };
-  $("#sgo").onclick=doScan; $("#sstop").onclick=()=>SC.ctl&&SC.ctl.abort();
-  if(r) wireScanResult(r);
+    <div class="section-title" style="display:flex;justify-content:space-between;align-items:center"><span>${icon("cards",15)} אוצר מילים לתרגול (${vocabN})</span>${vocabN?`<button class="link" id="scall" style="font-size:13px">${sel===vocabN?"ניקוי הבחירה":"בחירת הכול"}</button>`:""}</div>
+    ${vocabN?`<div class="sc-vocab">${r.vocab.map((v,i)=>`<div class="sc-w${SC.saved.has(v.word)?" on":""}">
+        <button class="sc-say" data-say="${esc(v.word)}" aria-label="השמעה">${icon("sound",17)}</button>
+        <div class="sc-wb"><div class="sc-wt" dir="ltr"><b class="en">${esc(v.word)}</b>${v.pos?`<span class="sc-pos">${esc(v.pos)}</span>`:""}${v.emoji&&v.emoji!=="📌"?`<span class="sc-emo">${esc(v.emoji)}</span>`:""}</div>
+          <div class="sc-wh">${esc(v.translation)}</div>${v.phonetic?`<div class="sc-ph" dir="ltr">${esc(v.phonetic)}</div>`:""}</div>
+        <button class="sc-pick" data-scw="${i}" aria-label="בחירה" title="${SC.saved.has(v.word)?"נבחרה":"בחירה"}">${icon("check",16,2.6)}</button></div>`).join("")}</div>`
+      :`<div class="card" style="color:var(--muted);font-size:14px">לא נמצאו במילון מילים עם תרגום. אפשר לתקן את הטקסט ולנסות שוב.</div>`}
+    ${r.unknown&&r.unknown.length?`<div class="hint" style="margin-top:8px">מילים שאין להן תרגום במילון: <span class="en" data-notr>${r.unknown.slice(0,12).map(esc).join(", ")}</span></div>`:""}
+    <div class="card sc-acts">
+      <div class="sc-act"><div><b>שמירת המילים לתרגול</b><span>המילים שנבחרו נכנסות לרשימה "המילים שסרקתי"</span></div><button class="btn ghost" id="scsave" ${sel?"":"disabled"}>${icon("plus",16)} שמירה (${sel})</button></div>
+      <div class="sc-act"><div><b>בניית שאלות ומבחן מהטקסט</b><span>תוכנית עם כרטיסיות, חידון, האזנה${r.questions.length?`, ${r.questions.length} שאלות על הטקסט`:""} ומבחן</span></div><button class="btn" id="scplan" ${sel>=4?"":"disabled"}>${icon("test",16)} יצירה</button></div>
+      ${sel<4&&vocabN?`<div class="hint">כדי לבנות מבחן צריך לבחור לפחות 4 מילים.</div>`:""}
+      <div class="okmsg" id="scmsg"></div></div>`;
 }
-function scanResultHTML(r){
-  return `<div class="section-title">${esc(r.title||"תוצאה")}</div>
-    ${r.note?`<div class="card" style="padding:12px 16px;color:var(--ink-2);font-size:14.5px">${esc(r.note)}</div>`:""}
-    <div class="card lines" style="margin-top:10px;padding:6px 18px">${r.lines.map(l=>`<div class="line"><div style="display:flex;gap:8px;align-items:flex-start"><button class="speak slow" data-say="${esc(l.en)}" aria-label="השמעה" style="height:32px;padding:0 9px;flex-shrink:0">${icon("sound",15)}</button><div class="en" style="flex:1;text-align:left;font-size:17px;line-height:1.6">${wrapWords(l.en)}</div></div><div style="color:var(--ink-2);margin-top:4px;padding-inline-start:44px">${esc(l.he)}</div></div>`).join("")}</div>
-    ${r.words.length?`<div class="section-title">מילים חשובות</div><div class="card" style="padding:8px 16px"><table class="hist">${r.words.map((w,i)=>`<tr><td style="width:30px"><input type="checkbox" data-sw="${i}" checked style="width:17px;height:17px;accent-color:var(--primary)"></td><td style="font-size:20px;width:32px">${w[2]}</td><td class="en" style="font-weight:600">${esc(w[0])}</td><td>${esc(w[1])}</td><td style="text-align:left"><button class="speak slow" data-say="${esc(w[0])}" style="height:32px;padding:0 9px">${icon("sound",15)}</button></td></tr>`).join("")}</table>
-      <div class="row" style="margin-top:10px"><div class="okmsg" id="swmsg" style="margin:0"></div><div style="display:flex;gap:8px;flex-wrap:wrap">${ctrlOf(cur()).upload&&SC.files.length?`<button class="btn ghost" id="sfull">${icon("map",16)} תוכנית למידה מלאה</button>`:""}<button class="btn" id="ssave">${icon("plus",16)} שמירת המילים לתרגול</button></div></div></div>`:""}`;
-}
-function wireScanResult(r){
+function wireScanResult(){
   wireSpeak();
-  const sv=$("#ssave"); if(sv) sv.onclick=()=>{
-    const p=cur(), pick=r.words.filter((_,i)=>$(`[data-sw="${i}"]`).checked); if(!pick.length) return;
+  const nw=$("#scnew"); if(nw) nw.onclick=()=>{ SC.res=null; SC.img=null; SC.err=""; SC.text=""; renderScan(); };
+  const st=$("#scstop"); if(st) st.onclick=()=>SC.ctl&&SC.ctl.abort();
+  const rt=$("#scretry"); if(rt) rt.onclick=()=>{ SC.res=null; SC.img=null; SC.err=""; renderScan(); };
+  const r=SC.res; if(!r) return;
+  $("#sccopy").onclick=async()=>{ try{ await navigator.clipboard.writeText(r.text); flash("הטקסט הועתק"); }catch(e){ flash("לא הצלחתי להעתיק"); } };
+  $("#scedit").onclick=()=>{ SC.edit=!SC.edit; renderScan(); };
+  const ex=$("#sceditx"); if(ex) ex.onclick=()=>{ SC.edit=false; renderScan(); };
+  const eg=$("#sceditgo"); if(eg) eg.onclick=()=>{ const t=$("#scedt").value.trim(); if(t) scanRun({text:t,keepImg:true}); };
+  app.querySelectorAll("[data-scw]").forEach(b=>b.onclick=()=>{ const w=r.vocab[+b.dataset.scw].word; SC.saved.has(w)?SC.saved.delete(w):SC.saved.add(w); renderScan(); });
+  const al=$("#scall"); if(al) al.onclick=()=>{ const all=r.vocab.every(v=>SC.saved.has(v.word)); SC.saved=new Set(all?[]:r.vocab.map(v=>v.word)); renderScan(); };
+  const picked=()=>r.vocab.filter(v=>SC.saved.has(v.word)).map(v=>[v.word,v.translation,v.emoji||"📌"]);
+  $("#scsave").onclick=()=>{
+    const p=cur(), pick=picked(); if(!pick.length) return;
     p.plans=p.plans||[]; let pl=p.plans.find(x=>x.scanBank);
     if(!pl){ pl={id:"pl"+Date.now(),scanBank:true,fileName:"מהסורק",createdAt:Date.now(),level:p.level,done:[],data:{title:"המילים שסרקתי",icon:"🔎",summary:"מילים שנשמרו מהסורק לתרגול.",vocab:[],sentences:[],grammar:[],reading:[],plan:[{title:"כרטיסיות",desc:"",activity:"cards"},{title:"האזנה",desc:"",activity:"listen"},{title:"חידון",desc:"",activity:"quiz"},{title:"מבחן",desc:"",activity:"test"}]}}; p.plans.push(pl); }
     let n=0; pick.forEach(w=>{ if(!pl.data.vocab.some(v=>v[0].toLowerCase()===w[0].toLowerCase())){ pl.data.vocab.push(w); n++; } });
     save(); logEvent(p,"scan",`נשמרו ${n} מילים מהסורק`);
-    $("#swmsg").innerHTML=`נשמרו ${n} מילים חדשות. <button class="link" id="sgoplan">לתרגול</button>`;
-    $("#sgoplan").onclick=()=>{ if(pl.data.vocab.length<4){ $("#swmsg").textContent=`צריך לפחות 4 מילים כדי לתרגל (יש ${pl.data.vocab.length}).`; return; } renderPlan(pl.id); };
+    $("#scmsg").innerHTML=`נשמרו ${n} מילים חדשות (${pl.data.vocab.length} ברשימה). <button class="link" id="scgopl">לתרגול</button>`;
+    $("#scgopl").onclick=()=>{ if(pl.data.vocab.length<4){ $("#scmsg").textContent=`צריך לפחות 4 מילים כדי לתרגל (יש ${pl.data.vocab.length}).`; return; } renderPlan(pl.id); };
   };
-  const fu=$("#sfull"); if(fu) fu.onclick=()=>{ U={files:[...SC.files],doc:null,ctl:null}; renderUpload(); };
-}
-async function doScan(){
-  const p=cur(), st=$("#sst"), txt=($("#stxt").value||"").trim();
-  const status=(m,c="")=>{ st.className="upl-status "+c; st.innerHTML=m; };
-  if(!SAMPLE) return;
-  if(!SC.files.length && !txt) return status("צלמו, בחרו תמונה או הקלידו טקסט.","bad");
-  SC.text=txt; $("#sgo").disabled=true;
-  let images=[];
-  try{ if(SC.files.length){ const lim=LIMITS&&LIMITS.images; if(!lim) throw new Error("noimg"); status(`<span class="spin"></span>מכין את התמונות…`); for(const f of SC.files.slice(0,lim.maxCount)) images.push(await imageToBlob(f,lim)); } }
-  catch(e){ $("#sgo").disabled=false; return status(e.message==="noimg"?"אי אפשר לשלוח תמונות כאן. אפשר להקליד את הטקסט.":"לא הצלחתי לפתוח את התמונה. נסו לבחור אותה מהגלריה.","bad"); }
-  SC.ctl=new AbortController(); $("#sstop").hidden=false;
-  status(`<span class="spin"></span>סורק ומתרגם…`);
-  const prompt=`You help a Hebrew-speaking English learner (age ${p.age}, ${["beginner","intermediate","advanced"][p.level-1]} level).
-Read the English ${images.length?`in the attached image(s) — a photo of a test, worksheet, book page, sign, screen or a single word`:"text below"} and translate it to Hebrew.
-${images.length?"":`TEXT:\n<<<\n${txt.slice(0,20000)}\n>>>\n`}
-RULES
-- "lines": the English split into sentences or lines in the original order (max 60), each with a natural Hebrew translation. Copy the English exactly as written (fix only obvious OCR noise).
-- For a test or worksheet: translate the instructions, the questions AND the answer options, but do NOT solve, hint at, or mark any answers.
-- "words": 4-15 useful or difficult words/phrases from the text, each with its Hebrew meaning and one fitting emoji. For a single word input, give that word, plus 2 short example sentences in "lines".
-- "kind": word | text | test | other. "title": a short Hebrew title. "note": one short Hebrew sentence on what this is (for a single word, its part of speech and usage).
-- If there is no English at all, put the original text in "en" and its Hebrew translation in "he".
-${LANG==="en"?"- UI language is ENGLISH: write \"title\" and \"note\" in English (keep \"he\" translations in Hebrew).\n":""}Reply with ONLY this JSON:
-{"kind":"text","title":"","note":"","lines":[{"en":"","he":""}],"words":[{"en":"","he":"","emoji":""}]}`;
-  try{
-    const j=await SAMPLE.json(prompt,{images:images.length?images:undefined,signal:SC.ctl.signal,modelTier:"default",onText:({text})=>status(`<span class="spin"></span>מתרגם… ${Math.min(99,Math.round(text.length/40))}%`)});
-    const S=x=>String(x==null?"":x).trim();
-    const lines=(Array.isArray(j&&j.lines)?j.lines:[]).map(l=>({en:S(l&&l.en),he:S(l&&l.he)})).filter(l=>l.en||l.he);
-    const words=(Array.isArray(j&&j.words)?j.words:[]).map(w=>[S(w&&w.en),S(w&&w.he),S(w&&w.emoji)||"📌"]).filter(w=>w[0]&&w[1]);
-    if(!lines.length) throw {message:"shape"};
-    SC.res={kind:S(j.kind),title:S(j.title),note:S(j.note),lines,words};
-    words.forEach(w=>TR_CACHE.set(w[0],w[1]));
-    logEvent(p,"scan",`סריקה: ${SC.res.title||"טקסט"}`);
-    SC.ctl=null; renderScan();
-    setTimeout(()=>{ const t=document.querySelector(".lines"); if(t) t.scrollIntoView({behavior:"smooth",block:"start"}); },60);
-  }catch(e){
-    SC.ctl=null; $("#sstop").hidden=true; $("#sgo").disabled=false;
-    if(e&&e.code==="cancelled") return status("נעצר.");
-    status(e&&e.message==="shape"?"לא נמצא טקסט לתרגום. נסו צילום ברור יותר.":(ERR_HE[e&&e.code]||"משהו השתבש. נסו שוב."),"bad");
-    if(EDITION==="community"&&e&&["not_granted","sampling_disabled"].includes(e.code)) st.innerHTML+=` ${edLink(PUBLIC_URL,"סריקה בגרסה הציבורית","link")}`;
-  }
+  $("#scplan").onclick=()=>{
+    const p=cur(), vocab=picked(); if(vocab.length<4) return;
+    const qs=r.questions.filter(q=>q.opts.length>=2);
+    const title=r.title||(r.text.split(/\s+/).slice(0,5).join(" ")+(r.text.split(/\s+/).length>5?"…":""));
+    const reading=qs.length?[{title:r.title||"Scanned text",text:r.text,qs,he:r.he||""}]:[];
+    const steps=[{title:"היכרות עם המילים",desc:"כרטיסיות עם הקראה",activity:"cards"},{title:"חידון מילים",desc:"",activity:"quiz"},{title:"האזנה",desc:"שומעים ובוחרים",activity:"listen"},...(reading.length?[{title:"שאלות על הטקסט",desc:"קריאה והבנה",activity:"read"}]:[]),{title:"מבחן",desc:"בודקים מה נלמד",activity:"test"}];
+    const pl={id:"pl"+Date.now(),fileName:"מהסורק",createdAt:Date.now(),level:p.level,done:[],data:{title,icon:"📷",summary:`תוכנית מטקסט שנסרק: ${vocab.length} מילים${qs.length?` ו-${qs.length} שאלות`:""}.`,vocab,sentences:[],grammar:[],reading,plan:steps}};
+    p.plans=p.plans||[]; p.plans.push(pl); save(); logEvent(p,"plan",`תוכנית מהסורק: ${title}`); tone(true);
+    SC.res=null; SC.img=null; renderPlan(pl.id);
+  };
 }
 
 /* ========================== COMMUNITY & ONLINE GAMES ========================== */

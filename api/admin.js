@@ -26,10 +26,6 @@ const can = (staff, perm) => staff && (staff.role === "admin" || (staff.role ===
 
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
-  if (req.method === "GET") { // health check: is the server key valid? (reveals nothing else)
-    const r = await admin("/auth/v1/admin/users?per_page=1");
-    return res.status(200).json({ configured: !!(SB_URL && SRK), serverKeyOk: r.ok });
-  }
   if (req.method !== "POST") return res.status(405).json({ error: "method" });
   if (!SB_URL || !SRK) return res.status(500).json({ error: "not_configured" });
   const b = body(req);

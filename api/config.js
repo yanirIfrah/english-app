@@ -4,6 +4,6 @@ export default function handler(req, res) {
   res.status(200).json({
     supabaseUrl: process.env.SUPABASE_URL || "",
     supabaseAnonKey: process.env.SUPABASE_ANON_KEY || "",
-    claude: !!process.env.ANTHROPIC_API_KEY
+    claude: !!(process.env.ANTHROPIC_API_KEY || process.env.GEMINI_API_KEY)
   });
 }
