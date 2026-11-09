@@ -25,6 +25,8 @@ create table if not exists public.profiles (
 );
 
 alter table public.profiles enable row level security;
+-- wallet: money paid out to the user (earned amount is computed from stars)
+alter table public.profiles add column if not exists wallet_paid numeric not null default 0;
 
 create or replace function public.my_role() returns text
 language sql stable security definer set search_path = public as $$
@@ -71,7 +73,7 @@ begin
   if me.id is null or me.role not in ('admin','manager') then raise exception 'forbidden'; end if;
   if me.role = 'manager' and exists (select 1 from public.profiles where id = target and role = 'admin') then raise exception 'forbidden'; end if;
   perms := case when me.role = 'admin'
-                then '{"editProfile":true,"editPerms":true,"lock":true,"notice":true}'::jsonb
+                then '{"editProfile":true,"editPerms":true,"lock":true,"notice":true,"wallet":true}'::jsonb
                 else me.mgr_perms end;
   if patch ? 'profile' and coalesce((perms->>'editProfile')::boolean, false) then
     update public.profiles set
@@ -92,6 +94,9 @@ begin
   end if;
   if patch ? 'notice' and coalesce((perms->>'notice')::boolean, false) then
     update public.profiles set notice = nullif(patch->>'notice',''), admin_at = now() where id = target;
+  end if;
+  if patch ? 'walletPay' and coalesce((perms->>'wallet')::boolean, false) then
+    update public.profiles set wallet_paid = wallet_paid + round((patch->>'walletPay')::numeric, 2) where id = target;
   end if;
   if patch ? 'role' and me.role = 'admin' and target <> me.id and patch->>'role' in ('manager','user') then
     update public.profiles set role = patch->>'role', mgr_perms = coalesce(patch->'mgr_perms', '{}'::jsonb), admin_at = now() where id = target;

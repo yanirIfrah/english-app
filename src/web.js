@@ -2,10 +2,10 @@
 const EMAIL_DOMAIN="users.lomdim-anglit.app";
 const toEmail=u=>"u"+[...new TextEncoder().encode(String(u).toLowerCase())].map(b=>b.toString(16).padStart(2,"0")).join("")+"@"+EMAIL_DOMAIN;
 const SYNC={t:null,last:{},busy:false}; let MY_SUBS=[];
-const STAFF_COLS=["id","user","name","age","gender","level","grade","bagrut","avatar","stars","ctrl","locked","lockMsg","notice","role","mgrPerms","hash","salt","_adminAt"];
+const STAFF_COLS=["id","user","name","age","gender","level","grade","bagrut","avatar","stars","ctrl","locked","lockMsg","notice","role","mgrPerms","hash","salt","_adminAt","walletPaid","lastSeen"];
 function rowToProfile(r){
   return {...(r.data||{}),id:r.id,user:r.username,name:r.name,age:r.age,gender:r.gender||"f",level:r.level||1,grade:r.grade||null,bagrut:r.bagrut||null,avatar:r.avatar||"a1",stars:r.stars||0,
-    ctrl:r.ctrl||{},locked:!!r.locked,lockMsg:r.lock_msg||"",notice:r.notice?{text:r.notice}:null,role:r.role,mgrPerms:r.mgr_perms||{},hash:"sb",_adminAt:r.admin_at||null};
+    ctrl:r.ctrl||{},locked:!!r.locked,lockMsg:r.lock_msg||"",notice:r.notice?{text:r.notice}:null,role:r.role,mgrPerms:r.mgr_perms||{},walletPaid:Number(r.wallet_paid)||0,hash:"sb",_adminAt:r.admin_at||null};
 }
 function profileCols(p){ const data={}; for(const k in p) if(!STAFF_COLS.includes(k)) data[k]=p[k];
   return {name:p.name,age:p.age,gender:p.gender||"f",level:p.level||1,grade:p.grade||null,bagrut:p.bagrut||null,avatar:p.avatar||"a1",stars:p.stars||0,data}; }
@@ -38,7 +38,7 @@ function subscribeMe(id){
 }
 function applyRow(r){
   const p=cur(); if(!p||!r||r.id!==p.id) return;
-  p.ctrl=r.ctrl||{}; p.locked=!!r.locked; p.lockMsg=r.lock_msg||""; p.notice=r.notice?{text:r.notice}:null; p.role=r.role; applyRole(r);
+  p.ctrl=r.ctrl||{}; p.locked=!!r.locked; p.lockMsg=r.lock_msg||""; p.notice=r.notice?{text:r.notice}:null; p.role=r.role; p.walletPaid=Number(r.wallet_paid)||0; applyRole(r);
   if(r.admin_at&&r.admin_at!==p._adminAt){ p._adminAt=r.admin_at; ["name","age","level","gender","grade","bagrut"].forEach(k=>{ p[k]=r[k]; SYNC.last[k]=JSON.stringify(r[k]); }); logEvent(p,"admin","הגדרות עודכנו על ידי המנהל"); }
   if(p.locked) return signOutLocal("החשבון נעול"+(p.lockMsg?": "+p.lockMsg:""));
   if(document.getElementById("home-screen")) renderHome();

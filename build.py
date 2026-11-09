@@ -54,8 +54,8 @@ rep_tr("ניהול האפליקציה זמין בתוך Claude", "ניהול ה�
 # --- scripts ---
 shim = (ROOT / "src/shim.js").read_text(encoding="utf-8")
 web = (ROOT / "src/web.js").read_text(encoding="utf-8")
-rep('<script>\nconst EDITION="web";',
-    '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js"></script>\n<script>\n' + shim + '\n</script>\n<script>\nconst EDITION="web";')
+rep('<script>\nconst LOGO_SVG=',
+    '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js"></script>\n<script>\n' + shim + '\n</script>\n<script>\nconst LOGO_SVG=')
 i = h.index("/* ========================== BOOT ========================== */")
 j = h.index("</script>", i)
 h = h[:i] + web + "\n" + h[j:]

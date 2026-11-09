@@ -36,7 +36,7 @@ svg.ic{display:inline-block;vertical-align:middle;flex-shrink:0}
 /* app bar */
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
-.logo{width:34px;height:34px;border-radius:9px;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:800;font-size:17px;font-family:Georgia,serif}
+.logo{width:36px;height:36px;border-radius:10px;display:block;overflow:hidden;flex:none}.logo svg{display:block}
 .menu-btn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;color:var(--ink-2)}
 .menu-btn:hover{background:var(--bg)}
 .pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:6px;color:var(--ink-2)}
@@ -239,6 +239,12 @@ input.field,select.field,textarea.field{font-family:inherit;font-size:16px;width
 .reacts{display:flex;justify-content:center;gap:8px;margin-top:12px} .reacts button{font-size:22px;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--line)}
 .float-emoji{position:fixed;bottom:80px;font-size:44px;z-index:50;animation:floatup 1.6s ease-out forwards;pointer-events:none}
 @keyframes floatup{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-260px);opacity:0}}
+.wallet{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fde68a}
+.wallet .w-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.wallet .w-ic{background:#fff;color:#b45309}
+.wallet .w-l{font-size:13px;color:#92400e;font-weight:600}.wallet .w-v{font-size:28px;font-weight:800;color:#78350f;line-height:1.1}
+.wallet .w-rule{font-size:12.5px;color:#92400e;background:#fff;border-radius:999px;padding:4px 10px;border:1px solid #fde68a}
+.wallet .w-bar{height:8px;background:#fff;border-radius:99px;margin-top:12px;overflow:hidden}.wallet .w-bar>div{height:100%;background:linear-gradient(90deg,#f59e0b,#d97706);border-radius:99px}
+.wallet .w-s{font-size:13px;color:#92400e;margin-top:6px}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;z-index:60;font-size:14.5px;box-shadow:0 8px 24px rgba(15,23,42,.25);max-width:90vw;text-align:center}
 .lang-btn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 11px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:13.5px;font-weight:600;color:var(--ink-2)}
 .lang-btn:hover{background:var(--bg)}
@@ -363,6 +369,7 @@ input.field,select.field,textarea.field{font-family:inherit;font-size:16px;width
 
 </script>
 <script>
+const LOGO_SVG='<svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#lg1)"/><path d="M11 12h18a6 6 0 0 1 6 6v10a6 6 0 0 1-6 6H19l-6 5.5V34h-2a6 6 0 0 1-6-6V18a6 6 0 0 1 6-6z" fill="#fbbf24"/><text x="20" y="29.5" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="16" fill="#78350f" text-anchor="middle">א</text><path d="M53 25H36a6 6 0 0 0-6 6v11a6 6 0 0 0 6 6h11l6.5 6v-6a6 6 0 0 0 5.5-6V31a6 6 0 0 0-6-6z" fill="#fff" stroke="#6d4aed" stroke-width="2.5"/><text x="44.5" y="43" font-family="Georgia,serif" font-weight="800" font-size="18" fill="#4f46e5" text-anchor="middle">A</text></svg>';
 const EDITION="web";
 const PUBLIC_URL="https://claude.ai/artifact/R2F5Wx2KXZ6wf7mHBsFtRv";
 const COMMUNITY_URL="https://claude.ai/artifact/DQdyG8QXCrPXChfDmSF1GN";
@@ -484,6 +491,7 @@ const LEVELS = [
 
 /* ========================== ICONS (line icons) ========================== */
 const IC={
+ wallet:'<path d="M16 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2"/><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M21 12h-4a2 2 0 0 0 0 4h4"/>',
  home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
  cards:'<rect x="3" y="7" width="13" height="14" rx="2"/><path d="M8 3h11a2 2 0 0 1 2 2v12"/>',
  quiz:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
@@ -531,7 +539,7 @@ const IC={
 };
 function icon(n,s=20,sw=1.8){ return `<svg class="ic${["back","chev","login","logout"].includes(n)?" dir":""}" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||IC.info}</svg>`; }
 
-const I18N={
+const I18N={"הקופה שלי":"My wallet","קופה":"Wallet","יתרה":"Balance","נצבר":"Earned","שולם":"Paid","רישום תשלום":"Record payment","סכום ששולם (₪)":"Amount paid (₪)","רושמים כאן כסף שנתתם בפועל. היתרה תרד בהתאם.":"Record money you actually gave. The balance goes down accordingly.","נא להזין סכום":"Please enter an amount","התשלום נרשם ✓":"Payment recorded ✓","להציג קופה לכל משתמש":"Show a wallet for every user","₪ על כל":"₪ for every","כוכבים":"stars","רישום תשלומים מהקופה":"Record wallet payments","תרגום כל הטקסט":"Translate the whole text",
 "ג׳":"3","ד׳":"4","ה׳":"5","ו׳":"6","ז׳":"7","ח׳":"8","ט׳":"9","י׳":"10","י״א":"11","י״ב":"12","מתחילים":"Start",
 "כיתה":"Grade",
 "(לתלמידים)":"(for students)",
@@ -725,7 +733,7 @@ const I18N={
 "שם משתמש: 3–20 תווים, בלי רווחים ":"Username: 3–20 characters, no spaces",
 "אפשר להוסיף עוד עמודים":"you can add more pages","תמונה":"image"
 };
-const I18N_PAT=[
+const I18N_PAT=[["{} על כל {} כוכבים", "{} for every {} stars"],["עוד {} כוכבים ל-{} הבאים", "{} more stars to the next {}"],["עוד {} כוכבים ל-{} הבאים · נצבר {} · שולם {}", "{} more stars to the next {} · earned {} · paid {}"],["כל הכבוד! נכנסו {} לקופה שלך", "Well done! {} went into your wallet"],["{} על כל {} כוכבים · עוד {} כוכבים לתשלום הבא", "{} for every {} stars · {} more stars to the next payment"],
 ["כיתה {} · {}", "Grade {} · {}"],["כיתה {}", "Grade {}"],["רמה אישית {} מתוך 5 · {} מילים בשליטה{}", "Personal level {} of 5 · {} words mastered{}"],[" · אוצר משוער ~{}", " · estimated vocabulary ~{}"],["הסט היומי שלך: {}/{} מילים", "Today's set: {}/{} words"],["הרמה האישית שלך: {}", "Your personal level: {}"],["רמה {}", "Level {}"],["{} מילים לפי רמות תוכנית הלימודים · רמה אישית {}{}", "{} words by curriculum level · personal level {}{}"],[" · {} מילים לחזרה היום", " · {} words to review today"],["הכנה לבגרות · {}", "Bagrut prep · {}"],["{}מבנה הבחינה לפי משרד החינוך", "{}Exam structure per the Ministry of Education"],["כיתה {} · ", "Grade {} · "],["מבנים מרכזיים לרמת {} יח״ל", "Key structures for {} units"],["Unseen · {} יח״ל", "Unseen · {} units"],["אוצר מילים משוער: {} מילים מתוך {} בבנק", "Estimated vocabulary: {} words out of {} in the bank"],["{}/{} · {} מילים", "{}/{} · {} words"],["מתרגם {} מילים…", "Translating {} words…"],["{}/{} תשובות נכונות · +{} כוכבים", "{}/{} correct · +{} stars"],["כותב… {}%", "Writing… {}%"],["חסר תרגום ל-{} מילים. הוסיפו תרגום (word - תרגום).", "{} words have no translation. Add one (word - translation), or open the app inside Claude for automatic translation."],["רשימה של {} מילים שיובאה מבית הספר.", "A list of {} words imported from school."],["יובאה רשימה: {} ({} מילים)", "List imported: {} ({} words)"],["מבחן מיקום: רמה {}", "Placement test: level {}"],
 ["סונכרן {}", "synced {}"],["מנהל: {}", "Manager: {}"],["החשבון נעול: {}. יש לפנות למנהל.", "Account is locked: {}. Please contact an admin."],["הגדרות עודכנו מרחוק על ידי {}", "Settings updated remotely by {}"],["הגדרות עודכנו מרחוק", "Settings updated remotely"],["{} תוכניות", "{} plans"],["קהילה: {}", "community: {}"],["{} משחקים, {} ניצחונות", "{} games, {} wins"],["למחוק סופית את {}?", "Permanently delete {}?"],
 ["{} תשובות נכונות מתוך {}","{} correct out of {}"],["קיבלת {} כוכבים{}","you got {} stars{}"],["מהגלריה, עד {}","from gallery, up to {}"],
@@ -1018,7 +1026,7 @@ function topBar(right=""){
   const p=cur();
   setTimeout(()=>{ const m=$("#menu"); if(m) m.onclick=openDrawer; const lb=$("#langbtn"); if(lb) lb.onclick=()=>setLang(LANG==="en"?"he":"en"); },0);
   const chip = p ? `<div class="userchip"><span class="pill">${icon("star",15)} ${p.stars||0}</span>${avatarHTML(p.avatar,34)}</div>` : "";
-  return `<div class="top"><div style="display:flex;align-items:center;gap:12px"><button class="menu-btn" id="menu" aria-label="תפריט">${icon("menu")}</button><div class="brand"><div class="logo">A</div><span>לומדים אנגלית</span>${EDITION==="community"?`<span class="badge sun" style="font-size:11px">קהילה</span>`:""}</div></div><div class="tb-end" style="display:flex;align-items:center;gap:8px">${right||chip}</div><button class="lang-btn" id="langbtn" data-notr aria-label="Language / שפה">${langLabel()}</button></div>`;
+  return `<div class="top"><div style="display:flex;align-items:center;gap:12px"><button class="menu-btn" id="menu" aria-label="תפריט">${icon("menu")}</button><div class="brand"><div class="logo" data-notr>${LOGO_SVG}</div><span>לומדים אנגלית</span>${EDITION==="community"?`<span class="badge sun" style="font-size:11px">קהילה</span>`:""}</div></div><div class="tb-end" style="display:flex;align-items:center;gap:8px">${right||chip}</div><button class="lang-btn" id="langbtn" data-notr aria-label="Language / שפה">${langLabel()}</button></div>`;
 }
 const pwField=(id,ph="",ac="current-password")=>`<div class="pw-wrap"><input class="field en" id="${id}" type="password" autocomplete="${ac}" placeholder="${ph}" style="text-align:right"><button type="button" class="pw-eye" data-eye="${id}" aria-label="הצגת סיסמה">${icon("eye",18)}</button></div>`;
 function wireEyes(root=document){ root.querySelectorAll("[data-eye]").forEach(b=>b.onclick=()=>{ const f=document.getElementById(b.dataset.eye); f.type=f.type==="password"?"text":"password"; }); }
@@ -1434,6 +1442,22 @@ const ACTIVITIES = [
  {id:"read",ic:"read",t:"קריאה והבנה",d:"סיפור קצר ושאלות"},
  {id:"grammar",ic:"grammar",t:"דקדוק",d:"משלימים את המשפט"}
 ];
+/* ---------- wallet: money earned from stars ---------- */
+function walletCfg(){ const c=(typeof CLOUD!=="undefined"&&CLOUD.cfg)||{}; return {on:c.wallet!==false, per:Math.max(1,parseInt(c.walletPer,10)||100), amt:Math.max(0,Number(c.walletAmt)||5)}; }
+function walletOf(p){ const w=walletCfg(), stars=p.stars||0, earned=Math.floor(stars/w.per)*w.amt, paid=Number(p.walletPaid)||0;
+  return {...w,stars,earned,paid,bal:Math.round((earned-paid)*100)/100,toNext:w.per-(stars%w.per),pct:Math.round((stars%w.per)/w.per*100)}; }
+const money=n=>"₪"+(Math.round(n*100)/100).toLocaleString("he-IL");
+function walletCard(p){
+  const w=walletOf(p); if(!w.on) return "";
+  return `<div class="card wallet"><div class="w-top"><div class="tile-ic w-ic">${icon("wallet",22)}</div>
+      <div style="flex:1"><div class="w-l">הקופה שלי</div><div class="w-v" data-notr>${money(w.bal)}</div></div>
+      <div class="w-rule">${money(w.amt)} על כל ${w.per} כוכבים</div></div>
+    <div class="w-bar"><div style="width:${w.pct}%"></div></div>
+    <div class="w-s">עוד ${w.toNext} כוכבים ל-${money(w.amt)} הבאים${w.paid?` · נצבר ${money(w.earned)} · שולם ${money(w.paid)}`:""}</div></div>`;
+}
+function walletCheck(p){ const w=walletOf(p); if(!w.on) return; const seen=Number(p.walletSeen);
+  if(!isNaN(seen)&&p.walletSeen!=null&&w.earned>seen) setTimeout(()=>flash(`כל הכבוד! נכנסו ${money(w.earned-seen)} לקופה שלך`),400);
+  if(p.walletSeen!==w.earned){ p.walletSeen=w.earned; save(); } }
 function renderHome(){
   PLAN=null;
   const p=cur(); if(!p) return renderLogin();
@@ -1456,6 +1480,7 @@ function renderHome(){
       </div>
       <div class="progress"><div style="width:${pct}%"></div></div>
     </div>
+    ${walletCard(p)}
     ${schoolCard(p)}
     ${CLOUD.cfg&&CLOUD.cfg.announcement?`<div class="card banner" style="background:var(--primary-soft);border-color:#c7d2fe"><div class="t">${icon("info",18)} <span data-notr>${esc(CLOUD.cfg.announcement)}</span></div></div>`:""}
     ${p.notice&&p.notice.text?`<div class="card banner" style="background:var(--amber-soft);border-color:#fde68a"><div><div class="t">${icon("chat",18)} הודעה מהמנהל</div><div class="s" data-notr>${esc(p.notice.text)}</div></div><button class="btn ghost sm" id="ntok">הבנתי</button></div>`:""}
@@ -1469,7 +1494,7 @@ function renderHome(){
     ${testsTeaser(p)}
     <div class="foot">החשבון שלך פרטי. התפריט ${icon("menu",14)} כולל מבחנים, תוכניות, הגדרות ויציאה.</div>`;
   $("#edit").onclick=settingsModal;
-  wireSchoolCard(p);
+  wireSchoolCard(p); walletCheck(p);
   const nk=$("#ntok"); if(nk) nk.onclick=()=>{ p.notice=null; clearNotice(); renderHome(); };
   if(suggestUp) $("#levelup").onclick=()=>{ p.level++; save(); renderHome(); };
   app.querySelectorAll(".act").forEach(el=>el.onclick=()=>startActivity(el.dataset.a));
@@ -1680,7 +1705,7 @@ function startActivity(type){
         return;
       }
       const q=story.qs[S.i-1];
-      frame(`<details style="text-align:right;margin-bottom:12px"><summary style="cursor:pointer;color:var(--primary);font-weight:700">להציג שוב את הטקסט</summary><div class="passage" style="margin-top:8px">${esc(story.text)}</div></details>
+      frame(`<details style="text-align:right;margin-bottom:12px"><summary style="cursor:pointer;color:var(--primary);font-weight:700">להציג שוב את הטקסט</summary><div class="passage" style="margin-top:8px">${wrapWords(story.text)}</div>${trBtn(story.text,"תרגום כל הטקסט")}</details>
         <div class="q en">${esc(q.q)}</div>${kid||p.level===1?`<div class="he" style="font-size:16px">${esc(q.he)}</div>`:`<button class="link" id="tr">תרגום השאלה</button><div class="he" id="trq" style="font-size:16px;display:none">${esc(q.he)}</div>`}
         <div class="options one">${q.opts.map((o,i)=>`<button class="opt en" data-i="${i}">${esc(o)}</button>`).join("")}</div><div class="feedback" id="fb"></div>`);
       const tr=$("#tr"); if(tr) tr.onclick=()=>{$("#trq").style.display="block";tr.remove();};
@@ -2207,7 +2232,9 @@ function localTr(t){
   const p=cur(); if(p) for(const pl of (p.plans||[])) for(const v of pl.data.vocab) if(v[0].toLowerCase()===k) return v[1];
   return DICT.get(k) || (k.endsWith("s")&&DICT.get(k.slice(0,-1))) || null;
 }
+const TR_STORY=(()=>{ const T={"At the Café": "מלצר: בוקר טוב! מה תרצה?\nדן: בוקר טוב. אני רוצה קפה וקרואסון, בבקשה.\nמלצר: קפה קטן או גדול?\nדן: גדול, בבקשה. כמה זה עולה?\nמלצר: זה שתים-עשרה דולר.\nדן: הנה, בבקשה. תודה!\nמלצר: בבקשה. שיהיה לך יום נעים!", "Asking for Directions": "סליחה, איפה בית המרקחת? לכו ישר שני רחובות, ואז פנו שמאלה. בית המרקחת נמצא ליד הבנק. הוא פתוח היום עד שמונה בערב. תודה רבה!", "An Email to a Colleague": "היי נועה,\nאני מקווה שאת בטוב. לצערי לא אוכל להגיע לפגישה שלנו ביום שלישי, כי הטיסה שלי חזרה מברלין התעכבה. אפשר לקבוע מחדש ליום חמישי בבוקר? אני פנוי בכל שעה אחרי תשע. בינתיים אשלח לך את לוח הזמנים המעודכן, כדי שתוכלי להתעדכן בשינויים האחרונים. למרות שהמועד האחרון קרוב, אני חושב שנוכל לטפל יחד במשימות שנשארו.\nבברכה,\nתום", "A Hotel Problem": "כשמאיה הגיעה למלון, התברר לה שאין הזמנה על שמה. היא ביקשה לדבר עם המנהל. אחרי שבדק במערכת, המנהל התנצל והסביר שהייתה תקלה טכנית. הוא הציע לה חדר טוב יותר בלי תוספת תשלום וארוחת בוקר חינם. מאיה החליטה לא להתלונן יותר, ונהנתה משאר השהות.", "Is Remote Work Here to Stay?": "כשהמשרדים נסגרו ב-2020, מנהלים רבים הניחו שהתפוקה תקרוס. בגדול, זה לא קרה. כמה מחקרים מצאו שעובדים שעבדו מהבית היו פרודוקטיביים כמו קודם, אם כי עם הבדלים משמעותיים בין תפקידים. עם זאת, העבודה מרחוק יצרה צווארי בקבוק חדשים: שיחות ספונטניות הפכו לנדירות, ועובדים צעירים מתקשים לא פעם להשתלט על התפקיד בלי הכוונה לא רשמית. כתוצאה מכך, חברות רבות אימצו מודלים היברידיים, ומקצות ימים מסוימים לשיתוף פעולה פנים אל פנים. המבקרים טוענים שפשרות כאלה לא מספקות אף אחד, ואילו התומכים רואים בהן איזון אפשרי בין גמישות לחיבור. מה שנראה ברור הוא שחזרה מלאה למשרד המסורתי אינה סבירה; השאלה האמיתית היא איך ארגונים יצמצמו את החסרונות של הריחוק וישמרו על היתרונות שלו.", "The Art of Saying No": "אנשי מקצוע רבים מתקשים לסרב לבקשות חדשות, כי הם חוששים להיראות לא משתפי פעולה. אבל הסכמה מתמדת עלולה להוביל לתוצאות רציניות: מועדים מתפספסים, האיכות יורדת והלחץ מצטבר. מומחים מציעים גישה פשוטה. קודם כול, להכיר בבקשה ולהראות שהיא חשובה לכם. שנית, להסביר בכנות מה סדרי העדיפויות שלכם כרגע. ולבסוף, להציע חלופה, כמו מועד מאוחר יותר או עמית שאולי יוכל לעזור. סירוב בדרך הזו אינו סימן לחולשה; להפך, הוא מראה יוזמה והבנה ברורה של מה שהכי חשוב.", "My Dog": "יש לי כלב. הכלב שלי שחור. קוראים לו מקס. מקס אוהב לרוץ. אני אוהב את מקס!", "Noa's Day": "נועה בת שמונה. היא הולכת לבית הספר כל יום. החברה הכי טובה שלה היא דנה. אחרי בית הספר הן משחקות בכדור בפארק. אחר כך נועה הולכת הביתה ואוכלת פיצה.", "The Cat and the Ball": "חתול קטן רואה כדור אדום. החתול רץ אל הכדור. הכדור מתגלגל מתחת למיטה. החתול עצוב. ואז בא ילד ומוצא את הכדור. עכשיו החתול שמח!", "A Surprise Party": "אתמול היה יום ההולדת של תום. בבוקר הוא היה עצוב, כי אף אחד לא אמר לו מזל טוב. אחרי בית הספר הוא הלך הביתה. כשהוא פתח את הדלת, כל החברים שלו צעקו \"הפתעה!\" תום היה מופתע ושמח מאוד. הוא קיבל אופניים חדשים במתנה. זה היה היום הכי טוב אי פעם!", "A Rainy Day": "ביום שני ירד גשם כל היום. מאיה לא יכלה ללכת לפארק, אז היא נשארה בבית. בהתחלה היה לה משעמם. אחר כך היא בנתה אוהל עם אחיה בסלון. הם קראו ספרים בתוך האוהל ואכלו פופקורן. מאיה אומרת שעכשיו ימים גשומים הם כיף!", "My Weekend": "קוראים לי ליה ואני בת ארבע-עשרה. באמצע השבוע אני עסוקה מאוד בבית הספר ובשיעורי בית, אז אני אוהבת את סוף השבוע. ביום שישי אני בדרך כלל נפגשת עם החברים שלי בקניון. אנחנו לא קונים הרבה כי הכול יקר, אבל אנחנו נהנים. בשבת אני ישנה עד מאוחר, ואחר הצהריים אני משחקת כדורסל עם הקבוצה שלי. בערב המשפחה שלי צופה יחד בסרט.", "A New Phone": "בן רצה טלפון חדש כבר הרבה זמן. הטלפון הישן שלו היה איטי והמסך היה שבור. הוא חסך כסף במשך שישה חודשים. הוא עשה עבודות בשביל השכנים, כמו להוציא את הכלבים שלהם לטיול. בסוף היה לו מספיק כסף. הוא הלך לחנות וקנה את הטלפון. הוא היה גאה מאוד, כי שילם עליו בעצמו.", "A Week Without Phones": "בחודש שעבר הכיתה שלנו עשתה ניסוי: שבוע שלם בלי טלפונים. בהתחלה רובנו דאגנו. איך נדבר עם החברים? איך נדע מה קורה? היומיים הראשונים היו ממש קשים. כל הזמן הושטתי יד לכיס. אבל עד יום רביעי משהו השתנה. התחלתי לקרוא ספר שקניתי לפני כמה חודשים, ואפילו דיברתי עם המשפחה שלי בארוחת הערב. בסוף השבוע דיברנו על החוויה. אף אחד לא רצה לוותר על הטלפון לתמיד, אבל כמעט כולם הסכימו שינסו לבלות פחות זמן מול המסכים.", "Learning the Guitar": "כשעומר הגיע לגיל שלוש-עשרה, סבא שלו נתן לו גיטרה ישנה. עומר מעולם לא ניגן על כלי נגינה, והאצבעות שלו כאבו אחרי עשר דקות בלבד. הוא כמעט ויתר. ואז סבא שלו גילה לו סוד: \"תתאמן קצת כל יום, ולא הרבה פעם בשבוע.\" עומר החליט להתאמן רבע שעה בכל ערב. שלושה חודשים אחר כך הוא ניגן שיר שלם בשביל המשפחה. עכשיו הוא בטוח בעצמו מספיק כדי לנגן במופע הכישרונות של בית הספר, והוא מחכה לזה בקוצר רוח.", "Are Teens Really Addicted to Social Media?": "מבוגרים רבים מניחים שבני נוער מכורים לרשתות החברתיות, ויש ראיות מסוימות שתומכות בדאגה הזו. מחקרים מראים ששימוש כבד עלול להשפיע על השינה ועל הריכוז. עם זאת, התמונה מורכבת יותר ממה שנראה במבט ראשון. עבור בני נוער רבים, הפלטפורמות ברשת הן דרך לשמור על קשר עם חברים, לחקור תחומי עניין יצירתיים ולמצוא קהילות שאין להם בסביבה הקרובה. חוקרים טוענים יותר ויותר שהשאלה החשובה היא לא כמה זמן בני נוער מבלים ברשת, אלא איך הם מבלים אותו. גלילה פסיבית נוטה לגרום לאנשים להרגיש רע יותר, ואילו יצירת תוכן פעילה או התכתבות עם חברים קרובים עשויות להשפיע באופן ניטרלי ואפילו חיובי. במקום לאסור על טלפונים, חלק מהמומחים מעודדים משפחות לדבר יחד על הרגלים בריאים, כדי שבני הנוער ילמדו להתמודד בעצמם עם זרם המידע העצום.", "The Four-Day School Week": "בכמה מדינות ניסו בתי ספר שבוע לימודים של ארבעה ימים. התומכים טוענים שיום החופש הנוסף מאפשר לתלמידים לנוח, לעסוק בתחביבים ולחזור לכיתה עם יותר מוטיבציה. המורים, מצידם, מדווחים שיש להם יותר זמן לתכנן שיעורים. המבקרים, לעומת זאת, מהססים לאמץ את הרעיון. הם מציינים שימי לימודים ארוכים יותר עלולים להיות מתישים, במיוחד לילדים צעירים, ושהורים עובדים עלולים להתקשות למצוא מסגרת לילדים ביום החופשי. התוצאות הראשונות מעורבות: בחלק מבתי הספר הנוכחות השתפרה, ובאחרים נרשמה ירידה קלה בציונים במבחנים. נראה שאין מנוס מכך שהוויכוח יימשך עד שיהיו נתונים אמינים יותר."}; const m=new Map(); Object.values(CONTENT).forEach(tr=>(tr.reading||[]).forEach(s=>{ if(T[s.title]) m.set(s.text.trim(),T[s.title]); })); return m; })();
 async function translate(text){
+  const st=TR_STORY.get(String(text).trim()); if(st) return st;
   const loc=localTr(text); if(loc) return loc;
   if(TR_CACHE.has(text)) return TR_CACHE.get(text);
   if(!SAMPLE) throw {code:"noclaude"};
@@ -2584,7 +2611,7 @@ function phoneModal(){
 const CLOUD={db:undefined,user:null,owner:false,cfg:{},mgrs:{},roster:[],managed:{},subs:{},deviceId:null,lastSync:0,syncT:null,ready:false};
 try{ CLOUD.deviceId=localStorage.getItem("englishApp.device"); if(!CLOUD.deviceId){ CLOUD.deviceId="d"+Date.now().toString(36)+Math.random().toString(36).slice(2,8); localStorage.setItem("englishApp.device",CLOUD.deviceId); } }catch(e){ CLOUD.deviceId="d"+Math.random().toString(36).slice(2,10); }
 let MGR=null; try{ MGR=JSON.parse(sessionStorage.getItem("englishApp.mgr")||"null"); }catch(e){}
-const MGR_PERMS=[["editProfile","עריכת פרופיל, גיל ורמה"],["editPerms","הרשאות והגבלת זמן"],["resetPw","איפוס סיסמה"],["lock","נעילה ושחרור חשבון"],["notice","שליחת הודעה למשתמש"],["delete","מחיקת חשבון"]];
+const MGR_PERMS=[["editProfile","עריכת פרופיל, גיל ורמה"],["editPerms","הרשאות והגבלת זמן"],["resetPw","איפוס סיסמה"],["lock","נעילה ושחרור חשבון"],["notice","שליחת הודעה למשתמש"],["delete","מחיקת חשבון"],["wallet","רישום תשלומים מהקופה"]];
 const isAdminNow=()=>CLOUD.owner;
 const canDo=k=>CLOUD.owner || !!(MGR && MGR.perms && MGR.perms[k]);
 function deviceLabel(){ const u=navigator.userAgent; const os=/iPhone/.test(u)?"iPhone":/iPad/.test(u)?"iPad":/Android/.test(u)?"Android":/Mac/.test(u)?"Mac":/Windows/.test(u)?"Windows":/Linux/.test(u)?"Linux":"מכשיר"; const br=/Edg\//.test(u)?"Edge":/Chrome\//.test(u)?"Chrome":/Safari\//.test(u)?"Safari":/Firefox\//.test(u)?"Firefox":""; return os+(br?" · "+br:""); }
@@ -2617,7 +2644,7 @@ function summary(p){
   const key=group(p)+p.level, [k,t]=knownFor(p,key), week=[...Array(7)].map((_,i)=>dayKey(new Date(Date.now()-i*864e5)));
   return {id:p.id,name:p.name,user:p.user||"",grade:p.grade||null,bagrut:p.bagrut||null,wl:p.grade?Math.round(wlOf(p)*10)/10:null,age:p.age,gender:p.gender||"f",level:p.level,group:group(p),avatar:p.avatar,stars:p.stars||0,known:k,total:t,passed:passedFor(p,key),
     today:minsOn(p,dayKey()),week:week.reduce((a,d)=>a+minsOn(p,d),0),lastSeen:p.lastSeen||0,created:p.created||0,plans:(p.plans||[]).length,
-    community:p.community?p.community.code:"",games:p.games||null,ctrl:rawCtrl(p),locked:!!p.locked,managedAt:p.managedAt||0,hasPw:!!p.hash,log:(p.log||[]).slice(-15)};
+    community:p.community?p.community.code:"",games:p.games||null,ctrl:rawCtrl(p),locked:!!p.locked,managedAt:p.managedAt||0,hasPw:!!p.hash,log:(p.log||[]).slice(-15),wallet:walletOf(p)};
 }
 function scheduleSync(now){
   if(!CLOUD.db) return; clearTimeout(CLOUD.syncT);
@@ -2706,7 +2733,7 @@ function renderCloudBase(){
       return `<div class="card test-card" data-cu="${a.id}" style="cursor:pointer">${avatarHTML(a.avatar,46)}
         <div class="info"><h3>${dot(s)} ${esc(a.name)} <span class="en" style="font-weight:400;color:var(--muted);font-size:13px">${esc(a.user)}</span>${a.locked?` <span class="badge" style="background:var(--bad-soft);color:var(--bad)">נעול</span>`:""}${pend?` <span class="badge sun">ממתין לעדכון</span>`:""}</h3>
           <p>גיל ${a.age} · ${a.grade?`כיתה ${GRADE_NAME[a.grade]}${a.bagrut?` (${a.bagrut} יח״ל)`:""} · רמה אישית ${a.wl}`:`${GROUP_NAME[a.group]||""} · ${LEVELS[(a.level||1)-1].name}`} · ${esc(a.device||"")}</p>
-          <p>${ACT_N[s]}${a.lastSeen?` · ${fmtDT(a.lastSeen)}`:""} · היום ${a.today} דק׳ · ${a.stars} כוכבים · ${a.known}/${a.total} מילים</p></div>
+          <p>${ACT_N[s]}${a.lastSeen?` · ${fmtDT(a.lastSeen)}`:""} · היום ${a.today} דק׳ · ${a.stars} כוכבים${a.wallet&&a.wallet.on?` · קופה ${money(a.wallet.bal)}`:""} · ${a.known}/${a.total} מילים</p></div>
         <span style="color:var(--muted)">${icon("chev",20)}</span></div>`; }).join("")||`<div class="card" style="text-align:center;color:var(--muted)">${all.length?"אין משתמשים שמתאימים לסינון.":"עוד לא דווחו משתמשים. משתמשים מופיעים כאן כשהם פותחים את האפליקציה בתוך Claude, אחרי שקיבלו ממך שיתוף אישי."}</div>`}</div>`);
   const cq=$("#cq"); cq.oninput=()=>{ CL.q=cq.value; clearTimeout(cq._t); cq._t=setTimeout(()=>{ renderCloud(); const n=$("#cq"); n.focus(); n.setSelectionRange(n.value.length,n.value.length); },300); };
   $("#cf").onchange=e=>{ CL.filter=e.target.value; renderCloud(); };
@@ -2732,6 +2759,11 @@ function renderCloudUser(id){
       <div class="hint">${ACT_N[actState(a)]}${a.lastSeen?` · ${fmtDT(a.lastSeen)}`:""} · סונכרן ${fmtDT(a.syncedAt)}</div></div></div>
       <div class="stat-row"><div class="stat"><div class="v">${a.stars}</div><div class="l">כוכבים</div></div><div class="stat"><div class="v">${a.known}/${a.total}</div><div class="l">מילים ברמה</div></div><div class="stat"><div class="v">${a.week}</div><div class="l">דקות השבוע</div></div></div>
       ${pend?`<div class="hint" style="color:var(--amber)">יש שינויים שממתינים להחלה – הם יחולו בפעם הבאה שהמכשיר פותח את האפליקציה.</div>`:""}</div>
+    ${a.wallet&&a.wallet.on?`<div class="section-title">קופה</div>
+    <div class="card"><div class="stat-row" style="margin-top:0"><div class="stat"><div class="v" style="color:#b45309">${money(a.wallet.bal)}</div><div class="l">יתרה</div></div><div class="stat"><div class="v">${money(a.wallet.earned)}</div><div class="l">נצבר</div></div><div class="stat"><div class="v">${money(a.wallet.paid)}</div><div class="l">שולם</div></div></div>
+      <div class="hint">${money(a.wallet.amt)} על כל ${a.wallet.per} כוכבים · עוד ${a.wallet.toNext} כוכבים לתשלום הבא</div>
+      ${canDo("wallet")?`<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><input class="field" id="xwamt" type="number" min="0" step="0.5" inputmode="decimal" placeholder="סכום ששולם (₪)" style="flex:1;min-width:150px" value="${a.wallet.bal>0?a.wallet.bal:""}"><button class="btn ghost" id="xwpay">רישום תשלום</button></div><div class="hint">רושמים כאן כסף שנתתם בפועל. היתרה תרד בהתאם.</div>`:""}
+      <div class="okmsg" id="xwm"></div></div>`:""}
     <div class="section-title">פרופיל</div>
     <div class="card"><div class="two"><div><label class="lbl">שם</label><input class="field" id="xn" value="${esc(P.name||a.name)}" ${dis("editProfile")?"disabled":""}></div><div><label class="lbl">גיל</label><input class="field" id="xa" type="number" min="2" max="120" value="${P.age||a.age}" ${dis("editProfile")?"disabled":""}></div></div>
       <label class="lbl">מין</label><div id="xgn">${genderChoices(st.gender)}</div><label class="lbl">רמה</label><div id="xlv">${levelChoices(st.level)}</div>
@@ -2764,6 +2796,7 @@ function renderCloudUser(id){
   $("#xps").onclick=()=>{ const age=parseInt($("#xa").value,10), name=$("#xn").value.trim(); if(!name||!(age>=2&&age<=120)) return $("#xpm").textContent="שם וגיל בין 2 ל-120"; W({profile:{name,age,level:st.level,gender:st.gender}},"#xpm","נשמר ✓"); };
   $("#xcs").onclick=()=>{ const c={...C,acts:{}}; ACTIVITIES.forEach(x=>c.acts[x.id]=$("#xa-"+x.id).checked); c.upload=$("#xc-upload").checked; c.scan=$("#xc-scan").checked; c.community=$("#xc-comm").checked; c.trTests=$("#xc-tr").checked; c.selfLevel=$("#xc-lv").checked; c.quick=$("#xc-quick").checked; c.limitMin=Math.max(0,parseInt($("#xlim").value,10)||0); if(!ACTIVITIES.some(x=>c.acts[x.id])) c.acts.cards=true; W({ctrl:c},"#xcm","נשמר ✓"); };
   $("#xnotego").onclick=()=>W({notice:$("#xnote").value.trim()},null,"ההודעה נשלחה");
+  const wp=$("#xwpay"); if(wp) wp.onclick=async()=>{ const v=Math.round(Number($("#xwamt").value)*100)/100; if(!(v>0)) return $("#xwm").textContent="נא להזין סכום"; await W({walletPay:v},"#xwm","התשלום נרשם ✓"); if(cloudCanRefresh()) renderCloud(); };
   $("#xpwgo").onclick=async()=>{ const v=$("#xpw").value; if(v.length<6) return err("סיסמה: לפחות 6 תווים"); W({pwPlain:v},null,"הסיסמה הוחלפה"); $("#xpw").value=""; };
   const lk=$("#xlock"); if(lk) lk.onclick=()=>W({locked:true,lockMsg:$("#xlockmsg").value.trim()},null,"החשבון ננעל");
   const ul=$("#xunlock"); if(ul) ul.onclick=()=>W({locked:false,lockMsg:""},null,"הנעילה שוחררה");
@@ -2776,11 +2809,15 @@ function renderCloudSettings(){
     <label class="check"><input type="checkbox" id="gu" ${G.upload?"checked":""} ${ro?"disabled":""}> יצירת תוכניות מקבצים וצילומים</label>
     <label class="check"><input type="checkbox" id="gc" ${G.scan?"checked":""} ${ro?"disabled":""}> סורק ותרגום</label>
     <label class="check"><input type="checkbox" id="gm" ${G.community?"checked":""} ${ro?"disabled":""}> קהילה ומשחקים אונליין</label>
+    <div class="divider" style="margin:14px 0"></div><b style="font-size:15px">קופה</b>
+    <label class="check"><input type="checkbox" id="gw" ${G.wallet!==false?"checked":""} ${ro?"disabled":""}> להציג קופה לכל משתמש</label>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px"><input class="field" id="gwa" type="number" min="0" step="0.5" value="${G.walletAmt||5}" style="max-width:90px" ${ro?"disabled":""}> <span>₪ על כל</span> <input class="field" id="gwp" type="number" min="1" value="${G.walletPer||100}" style="max-width:100px" ${ro?"disabled":""}> <span>כוכבים</span></div>
+    <div class="divider" style="margin:14px 0"></div>
     <label class="lbl">הגבלת זמן יומית כברירת מחדל (דקות, 0 = ללא)</label><input class="field" id="gl" type="number" min="0" max="600" value="${G.limitMin||0}" style="max-width:160px" ${ro?"disabled":""}>
     <div class="hint">חלה על משתמשים שאין להם הגבלה אישית.</div>
     <label class="lbl">הודעה לכל המשתמשים</label><input class="field" id="ga" maxlength="200" value="${esc(G.announcement||"")}" ${ro?"disabled":""} placeholder="למשל: אתגר השבוע – 20 מילים חדשות!">
     <div class="row"><div class="okmsg" id="gok" style="margin:0"></div><button class="btn" id="gsave" ${ro?"disabled":""}>שמירה</button></div></div>`);
-  if(!ro) $("#gsave").onclick=async()=>{ const c={allowSignup:$("#gs").checked,upload:$("#gu").checked,scan:$("#gc").checked,community:$("#gm").checked,limitMin:Math.max(0,parseInt($("#gl").value,10)||0),announcement:$("#ga").value.trim(),at:Date.now()};
+  if(!ro) $("#gsave").onclick=async()=>{ const c={allowSignup:$("#gs").checked,upload:$("#gu").checked,scan:$("#gc").checked,community:$("#gm").checked,limitMin:Math.max(0,parseInt($("#gl").value,10)||0),announcement:$("#ga").value.trim(),wallet:$("#gw").checked,walletAmt:Math.max(0,Number($("#gwa").value)||5),walletPer:Math.max(1,parseInt($("#gwp").value,10)||100),at:Date.now()};
     try{ const {error}=await WEB.sb.from("app_config").update({data:c}).eq("id",1); if(error) throw error; CLOUD.cfg=c; $("#gok").textContent="נשמר ✓"; }catch(e){ $("#gok").className="err"; $("#gok").textContent="השמירה נכשלה"; } };
 }
 function renderCloudManagers(){
@@ -3081,10 +3118,10 @@ function showUnseen(){
 const EMAIL_DOMAIN="users.lomdim-anglit.app";
 const toEmail=u=>"u"+[...new TextEncoder().encode(String(u).toLowerCase())].map(b=>b.toString(16).padStart(2,"0")).join("")+"@"+EMAIL_DOMAIN;
 const SYNC={t:null,last:{},busy:false}; let MY_SUBS=[];
-const STAFF_COLS=["id","user","name","age","gender","level","grade","bagrut","avatar","stars","ctrl","locked","lockMsg","notice","role","mgrPerms","hash","salt","_adminAt"];
+const STAFF_COLS=["id","user","name","age","gender","level","grade","bagrut","avatar","stars","ctrl","locked","lockMsg","notice","role","mgrPerms","hash","salt","_adminAt","walletPaid","lastSeen"];
 function rowToProfile(r){
   return {...(r.data||{}),id:r.id,user:r.username,name:r.name,age:r.age,gender:r.gender||"f",level:r.level||1,grade:r.grade||null,bagrut:r.bagrut||null,avatar:r.avatar||"a1",stars:r.stars||0,
-    ctrl:r.ctrl||{},locked:!!r.locked,lockMsg:r.lock_msg||"",notice:r.notice?{text:r.notice}:null,role:r.role,mgrPerms:r.mgr_perms||{},hash:"sb",_adminAt:r.admin_at||null};
+    ctrl:r.ctrl||{},locked:!!r.locked,lockMsg:r.lock_msg||"",notice:r.notice?{text:r.notice}:null,role:r.role,mgrPerms:r.mgr_perms||{},walletPaid:Number(r.wallet_paid)||0,hash:"sb",_adminAt:r.admin_at||null};
 }
 function profileCols(p){ const data={}; for(const k in p) if(!STAFF_COLS.includes(k)) data[k]=p[k];
   return {name:p.name,age:p.age,gender:p.gender||"f",level:p.level||1,grade:p.grade||null,bagrut:p.bagrut||null,avatar:p.avatar||"a1",stars:p.stars||0,data}; }
@@ -3117,7 +3154,7 @@ function subscribeMe(id){
 }
 function applyRow(r){
   const p=cur(); if(!p||!r||r.id!==p.id) return;
-  p.ctrl=r.ctrl||{}; p.locked=!!r.locked; p.lockMsg=r.lock_msg||""; p.notice=r.notice?{text:r.notice}:null; p.role=r.role; applyRole(r);
+  p.ctrl=r.ctrl||{}; p.locked=!!r.locked; p.lockMsg=r.lock_msg||""; p.notice=r.notice?{text:r.notice}:null; p.role=r.role; p.walletPaid=Number(r.wallet_paid)||0; applyRole(r);
   if(r.admin_at&&r.admin_at!==p._adminAt){ p._adminAt=r.admin_at; ["name","age","level","gender","grade","bagrut"].forEach(k=>{ p[k]=r[k]; SYNC.last[k]=JSON.stringify(r[k]); }); logEvent(p,"admin","הגדרות עודכנו על ידי המנהל"); }
   if(p.locked) return signOutLocal("החשבון נעול"+(p.lockMsg?": "+p.lockMsg:""));
   if(document.getElementById("home-screen")) renderHome();
