@@ -105,6 +105,19 @@ svg.i{width:18px;height:18px;flex:none}
 .rep .sum div{border:1px solid #cbd5e1;border-radius:6px;padding:5px 8px}.rep .sum b{display:block;font-size:14px}
 .rep .sig{display:flex;justify-content:space-between;margin-top:26px;gap:30px}.rep .sig div{flex:1;border-top:1px solid #000;padding-top:4px;text-align:center}
 .rep .foot{margin-top:10px;font-size:10px;color:#64748b}
+
+.lfs{display:grid;gap:8px;margin-top:6px}.lf{display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--ink-2)}
+.lfi{width:30px;height:30px;border-radius:9px;background:var(--pri-soft);color:var(--pri-2);display:grid;place-items:center;flex:none}
+.tab .cnt{background:#ef4444;color:#fff;border-radius:999px;font-size:11.5px;min-width:19px;height:19px;padding:0 5px;display:inline-grid;place-items:center;margin-inline-start:2px}
+.dmain .nt.pend{color:var(--warn);white-space:normal}.dmain .nt.rej{color:var(--bad);white-space:normal}
+.note-box{display:flex;gap:8px;align-items:flex-start;background:var(--warn-soft);color:#7c4a03;border-radius:12px;padding:10px 12px;margin-top:10px;font-size:14px;line-height:1.55}.note-box svg{margin-top:3px}
+.pendcard{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:var(--warn-soft);border-color:#fcd34d;color:#7c4a03;cursor:pointer}.pendcard b{flex:1}
+.req .cmp{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:10px}
+.req .cmp>div{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px}.req .cmp span{display:block;font-size:12px;color:var(--muted)}
+.req .cmp .new{background:#f3f8fe;border-color:#bcd6f4}.req .cmp i{display:block;font-style:normal;font-size:12.5px;color:var(--muted)}.req .arrow{color:var(--muted);font-size:18px}
+.emps{max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:2px 12px 10px;margin-top:8px}
+.seg.two-seg{grid-template-columns:1fr 1fr}
+.prev{overflow:auto}.prev .rep{min-width:640px}.prev .rep+.rep{margin-top:24px;border-top:2px dashed var(--line);padding-top:16px}
 </style>
 </head>
 <body>
@@ -121,16 +134,17 @@ const EMAIL_DOMAIN="users.lirad-shaon.app";
 const toEmail=u=>"u"+[...new TextEncoder().encode(String(u).toLowerCase())].map(b=>b.toString(16).padStart(2,"0")).join("")+"@"+EMAIL_DOMAIN;
 const normUser=u=>String(u||"").trim().toLowerCase();
 const validUser=u=>/^[a-z0-9֐-׿._-]{3,20}$/.test(u);
+const validEmail=e=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
 const APP_NAME="לירד שעון נוכחות";
 const LOGO=`<img src="logo.png" alt="lirad" class="lg">`;
 const ICONS={clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/>',
- user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',cog:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',cog:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
  left:'<path d="M15 18l-6-6 6-6"/>',right:'<path d="M9 18l6-6-6-6"/>',plus:'<path d="M12 5v14M5 12h14"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
  file:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',sheet:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
  out:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3L21 2M16 7l3 3"/>',
- menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',x:'<path d="M18 6L6 18M6 6l12 12"/>',back:'<path d="M9 18l6-6-6-6"/>',trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15"/>',
- sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
- note:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',check:'<path d="M5 12l5 5L20 7"/>'};
+ x:'<path d="M18 6L6 18M6 6l12 12"/>',back:'<path d="M9 18l6-6-6-6"/>',trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15"/>',
+ note:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',check:'<path d="M5 12l5 5L20 7"/>',inbox:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/>',
+ chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',send:'<path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/>'};
 const icon=(n,s=18)=>`<svg class="i" viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||""}</svg>`;
 function toast(t,ms=2600){ document.querySelectorAll(".toast").forEach(x=>x.remove()); const d=document.createElement("div"); d.className="toast"; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),ms); }
 const closeModal=()=>{ $("#modal-root").innerHTML=""; };
@@ -140,34 +154,39 @@ const HEB_MONTHS=["ינואר","פברואר","מרץ","אפריל","מאי","י
 const HEB_DAYS=["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"], HEB_D1=["א׳","ב׳","ג׳","ד׳","ה׳","ו׳","ש׳"];
 const pad=n=>String(n).padStart(2,"0");
 const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-const todayStr=()=>ymd(new Date());
+const parseD=s=>{ const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); };
+const addDays=(s,n)=>{ const d=parseD(s); d.setDate(d.getDate()+n); return ymd(d); };
+// Israel date, whatever the device clock zone is
+const todayStr=()=>{ try{ return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Jerusalem",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()); }catch(e){ return ymd(new Date()); } };
 const curYM=()=>todayStr().slice(0,7);
 const ymAdd=(ym,n)=>{ const [y,m]=ym.split("-").map(Number); const d=new Date(y,m-1+n,1); return `${d.getFullYear()}-${pad(d.getMonth()+1)}`; };
 const ymLabel=ym=>{ const [y,m]=ym.split("-").map(Number); return `${HEB_MONTHS[m-1]} ${y}`; };
 const daysIn=ym=>{ const [y,m]=ym.split("-").map(Number); return new Date(y,m,0).getDate(); };
-const dowOf=s=>{ const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d).getDay(); };
-const dLabel=s=>{ const [y,m,d]=s.split("-").map(Number); return `יום ${HEB_DAYS[dowOf(s)]}, ${d}.${m}.${y}`; };
+const dowOf=s=>parseD(s).getDay();
+const dShort=s=>{ const [y,m,d]=s.split("-").map(Number); return `${d}.${m}.${y}`; };
+const dLabel=s=>`יום ${HEB_DAYS[dowOf(s)]}, ${dShort(s)}`;
 const tmin=t=>{ if(!t) return null; const [h,m]=String(t).split(":").map(Number); return h*60+m; };
 const hhmm=t=>t?String(t).slice(0,5):"";
 function entryMin(e){ if(!e||e.kind!=="work"||!e.start_time||!e.end_time) return 0; let m=tmin(e.end_time)-tmin(e.start_time); if(m<=0) m+=1440; return Math.max(0,m-(e.break_min||0)); }
 const fmtH=m=>`${Math.floor(m/60)}:${pad(Math.round(m%60))}`;
 const decH=m=>(Math.round(m/60*100)/100).toFixed(2);
 function splitOT(m){ const std=Math.round((Number(S.cfg.stdHours)||8.6)*60); const reg=Math.min(m,std), o1=Math.min(Math.max(m-std,0),120), o2=Math.max(m-std-120,0); return {reg,o1,o2}; }
-function editWindow(){ const n=Math.max(0,parseInt(S.cfg.editMonths,10)||2), cm=curYM(); return {from:ymAdd(cm,-n)+"-01", to:ymAdd(cm,2)+"-01"}; } // to = exclusive
-function canEditDay(uid,day){ if(canDo("editHours")) return true; if(uid!==S.me.id) return false; const w=editWindow(); return day>=w.from&&day<w.to; }
+const VIEW_FROM=()=>ymAdd(curYM(),-2);                 // employee sees this month and two back
+const CORR_FROM=()=>ymAdd(curYM(),-1)+"-01";           // corrections: from the 1st of last month, until yesterday
+function entryText(e){ if(!e) return "לא הוזן"; if(e.action==="delete") return "מחיקת הרישום"; if(e.kind==="vacation") return "יום חופש"; if(e.kind==="sick") return "יום מחלה"; return `\u2066${hhmm(e.start_time)}–${hhmm(e.end_time)}\u2069${e.break_min?` (הפסקה ${e.break_min} דק׳)`:""} · ${fmtH(entryMin(e))}`; }
 
 /* ========================== state & server ========================== */
-const S={sb:null,cfg:{},me:null,tab:"my",ym:curYM(),view:null,users:[],ent:{},chan:null};
-const isStaff=()=>S.me&&(S.me.role==="admin"||S.me.role==="manager");
-const canDo=p=>S.me&&!S.me.locked&&(S.me.role==="admin"||(S.me.role==="manager"&&!!(S.me.perms||{})[p]));
+const S={sb:null,cfg:{},me:null,tab:"my",ym:curYM(),view:null,users:[],ent:{},corr:{},chan:null,pending:0};
+const isAdmin=()=>!!S.me&&S.me.role==="admin"&&!S.me.locked;
 async function api(action,payload={}){
   const {data}=await S.sb.auth.getSession(); const tok=data&&data.session&&data.session.access_token;
   const r=await fetch("/api/admin",{method:"POST",headers:{"content-type":"application/json",...(tok?{authorization:"Bearer "+tok}:{})},body:JSON.stringify({action,...payload})});
   let j={}; try{ j=await r.json(); }catch(e){}
   if(!r.ok) throw {code:j.error||"error"}; return j;
 }
-const API_ERR={taken:"שם המשתמש הזה כבר תפוס",signup_closed:"ההרשמה סגורה. חשבונות חדשים נפתחים על ידי המנהל.",weak_password:"הסיסמה צריכה להכיל לפחות 6 תווים",
- bad_username:"שם משתמש: 3–20 תווים – אותיות, מספרים, נקודה, קו תחתון או מקף, בלי רווחים",bad_name:"נא להזין שם",forbidden:"אין הרשאה לפעולה הזו",not_configured:"השרת עוד לא הוגדר",auth:"צריך להתחבר מחדש",email_taken:"כתובת האימייל הזו כבר רשומה אצל עובד אחר",bad_email:"כתובת האימייל לא תקינה",need_login:"צריך להזין אימייל או שם משתמש",no_email:"לעובד הזה אין אימייל",mail_failed:"שליחת המייל נכשלה. צריך להגדיר שליחת מיילים ב-Supabase (ראו הוראות).",rate_limited:"יותר מדי ניסיונות. נסו שוב בעוד כמה דקות.",invalid_login:"פרטי הכניסה לא נכונים"};
+const API_ERR={taken:"שם המשתמש הזה כבר תפוס",email_taken:"כתובת האימייל הזו כבר רשומה אצל עובד אחר",signup_closed:"ההרשמה סגורה. חשבונות חדשים נפתחים על ידי המנהל.",weak_password:"הסיסמה צריכה להכיל לפחות 6 תווים",
+ bad_username:"שם משתמש: 3–20 תווים – אותיות, מספרים, נקודה, קו תחתון או מקף, בלי רווחים",bad_email:"כתובת האימייל לא תקינה",bad_name:"נא להזין שם",need_login:"צריך להזין אימייל או שם משתמש",
+ forbidden:"אין הרשאה לפעולה הזו",not_configured:"השרת עוד לא הוגדר",auth:"צריך להתחבר מחדש",rate_limited:"יותר מדי ניסיונות. נסו שוב בעוד כמה דקות."};
 const apiErr=e=>API_ERR[e&&e.code]||"משהו השתבש. נסו שוב.";
 async function loadCfg(){ try{ const {data}=await S.sb.from("app_config").select("data").eq("id",1).maybeSingle(); S.cfg=(data&&data.data)||{}; }catch(e){ S.cfg={}; } }
 async function loadMe(){
@@ -175,18 +194,26 @@ async function loadMe(){
   const {data}=await S.sb.from("profiles").select("*").eq("id",session.user.id).maybeSingle();
   if(!data) return null; S.me=data; return data;
 }
-async function loadEntries(ym,uid){ // uid null → all users visible to me
-  const from=ym+"-01", to=ymAdd(ym,1)+"-01";
+async function loadEntries(from,to,uid){ // [from, to)
   let q=S.sb.from("entries").select("*").gte("day",from).lt("day",to).order("day",{ascending:true});
   if(uid) q=q.eq("user_id",uid);
   const {data,error}=await q; if(error) throw error; return data||[];
 }
+async function loadCorr(from,to,uid){
+  let q=S.sb.from("corrections").select("*").gte("day",from).lt("day",to).order("created_at",{ascending:true});
+  if(uid) q=q.eq("user_id",uid);
+  const {data,error}=await q; if(error) throw error; return data||[];
+}
+async function loadPendingCount(){ if(!isAdmin()) return 0; const {data}=await S.sb.from("corrections").select("id").eq("status","pending"); S.pending=(data||[]).length; return S.pending; }
 async function loadUsers(){ const {data}=await S.sb.from("profiles").select("*").order("name",{ascending:true}); S.users=data||[]; return S.users; }
+const employees=()=>S.users.filter(u=>u.role!=="admin");
 function subscribe(){
   if(S.chan){ try{ S.sb.removeChannel(S.chan); }catch(e){} }
+  const again=()=>{ clearTimeout(S._rt); S._rt=setTimeout(async()=>{ if(isAdmin()){ await loadPendingCount(); paintBadge(); } if(!$(".modal")&&S.tab!=="reports") refresh(); },700); };
   S.chan=S.sb.channel("live-"+S.me.id)
-    .on("postgres_changes",{event:"*",schema:"public",table:"entries"},()=>{ clearTimeout(S._rt); S._rt=setTimeout(()=>{ if(!$(".modal")) refresh(); },700); })
-    .on("postgres_changes",{event:"UPDATE",schema:"public",table:"profiles",filter:"id=eq."+S.me.id},pl=>{ const r=pl.new; if(r.locked) return signOut("החשבון נחסם. יש לפנות למנהל."); S.me={...S.me,...r}; if(!$(".modal")) render(); })
+    .on("postgres_changes",{event:"*",schema:"public",table:"entries"},again)
+    .on("postgres_changes",{event:"*",schema:"public",table:"corrections"},again)
+    .on("postgres_changes",{event:"UPDATE",schema:"public",table:"profiles",filter:"id=eq."+S.me.id},pl=>{ const r=pl.new; if(r.locked) return signOut("החשבון נחסם. יש לפנות למנהל."); S.me={...S.me,...r}; })
     .on("postgres_changes",{event:"DELETE",schema:"public",table:"profiles",filter:"id=eq."+S.me.id},()=>signOut("החשבון נמחק."))
     .subscribe();
 }
@@ -196,21 +223,28 @@ async function signOut(msg){
   S.me=null; S.tab="my"; S.view=null; S.ym=curYM(); closeModal(); renderLogin(msg||"");
 }
 
-/* ========================== auth screens ========================== */
+/* ========================== landing & auth ========================== */
 function pwField(id,ac="current-password"){ return `<input class="field ltr" id="${id}" type="password" autocomplete="${ac}" dir="ltr">`; }
 function authShell(inner){ app.innerHTML=`<div class="auth"><div class="card">${LOGO.replace('class="lg"','class="lgbig"')}${inner}</div><p class="hint" style="text-align:center">${APP_NAME}</p></div>`; }
-const validEmail=e=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
-function renderSetupNeeded(){ authShell(`<h1>האתר עוד לא מחובר</h1><p class="sub">יש להגדיר ב-Vercel את SUPABASE_URL ו-SUPABASE_ANON_KEY ולפרסם מחדש.</p>`); }
+function renderSetupNeeded(){ authShell(`<h1 style="text-align:center">האתר עוד לא מחובר</h1><p class="sub">יש להגדיר ב-Vercel את SUPABASE_URL ו-SUPABASE_ANON_KEY ולפרסם מחדש.</p>`); }
+function renderLanding(){
+  const f=(ic,t)=>`<div class="lf"><span class="lfi">${icon(ic,17)}</span><span>${t}</span></div>`;
+  authShell(`<h1 style="text-align:center">${APP_NAME}</h1>
+    <p class="sub" style="font-size:15.5px;line-height:1.65">דיווח שעות עבודה פשוט, מכל מכשיר. כל עובד מזין את שעות הכניסה והיציאה שלו, ימי חופש ומחלה, ורואה את השעות שלו לחודש הנוכחי ולחודשיים שקדמו לו.</p>
+    <div class="lfs">${f("clock","הזנת שעות יומית בכמה שניות")}${f("note","בקשות תיקון לחודש האחרון – באישור המנהל")}${f("file","דוחות יומיים, שבועיים וחודשיים ב-PDF וב-Excel")}${f("lock","כל עובד רואה רק את הנתונים שלו")}</div>
+    <button class="btn block" id="golog" style="margin-top:16px">${icon("user",17)} התחברות</button>`);
+  $("#golog").onclick=()=>renderLogin();
+}
 let FAILS=0, LOCK_UNTIL=0;
 function renderLogin(msg=""){
-  authShell(`<h1 style="text-align:center">${APP_NAME}</h1><p class="sub">כניסה לחשבון – מכל מכשיר</p>
+  authShell(`<h1 style="text-align:center">התחברות</h1><p class="sub">היכנסו עם האימייל או שם המשתמש והסיסמה שקיבלתם מהמנהל</p>
     <form id="lf" autocomplete="on"><label class="lbl" for="lu">אימייל או שם משתמש</label><input class="field ltr" id="lu" autocomplete="username" autocapitalize="off" spellcheck="false" dir="ltr" inputmode="email">
     <label class="lbl" for="lp">סיסמה</label>${pwField("lp")}
     <div class="err" id="lerr">${esc(msg)}</div><button class="btn block" id="lgo" type="submit">כניסה</button></form>
-    <div class="row" style="font-size:14px"><button class="link" id="first" type="button">כניסה ראשונה? הגדרת סיסמה</button><button class="link" id="forgot" type="button">שכחתי סיסמה</button></div>
+    <div class="row" style="font-size:14px"><button class="link" id="back" type="button">→ חזרה</button><button class="link" id="forgot" type="button">שכחתי סיסמה</button></div>
     ${S.cfg.allowSignup===true?`<div class="row" style="font-size:14px;justify-content:center"><span>אין חשבון? <button class="link" id="tosign" type="button">הרשמה</button></span></div>`:""}`);
-  $("#forgot").onclick=()=>renderResetRequest(false);
-  $("#first").onclick=()=>renderResetRequest(true);
+  $("#back").onclick=renderLanding;
+  $("#forgot").onclick=()=>{ const e=$("#lerr"); e.style.color="var(--ink-2)"; e.textContent="פנו למנהל המערכת – הוא יקבע לכם סיסמה חדשה."; };
   const ts=$("#tosign"); if(ts) ts.onclick=renderSignup;
   $("#lf").onsubmit=async ev=>{
     ev.preventDefault(); const err=$("#lerr"); err.style.color="";
@@ -218,47 +252,18 @@ function renderLogin(msg=""){
     const login=$("#lu").value.trim(), pw=$("#lp").value; if(!login||!pw) return err.textContent="נא למלא אימייל או שם משתמש, וסיסמה";
     $("#lgo").disabled=true; err.innerHTML='<span class="spin"></span>';
     let ok=false, rl=false;
-    if(login.includes("@")){ const {error}=await S.sb.auth.signInWithPassword({email:login.toLowerCase(),password:pw}); ok=!error; rl=error&&error.status===429; }
+    if(login.includes("@")){ const {error}=await S.sb.auth.signInWithPassword({email:login.toLowerCase(),password:pw}); ok=!error; rl=!!error&&error.status===429; }
     else { const u=normUser(login);
       const {error}=await S.sb.auth.signInWithPassword({email:toEmail(u),password:pw}); ok=!error;
-      if(!ok){ try{ const t=await api("login_username",{username:u,password:pw}); const {error:se}=await S.sb.auth.setSession({access_token:t.access_token,refresh_token:t.refresh_token}); ok=!se; }catch(x){ rl=x&&x.code==="rate_limited"; } } }
+      if(!ok){ try{ const t=await api("login_username",{username:u,password:pw}); const {error:se}=await S.sb.auth.setSession({access_token:t.access_token,refresh_token:t.refresh_token}); ok=!se; }catch(x){ rl=!!x&&x.code==="rate_limited"; } } }
     if(!ok){ $("#lgo").disabled=false; if(++FAILS>=5){ LOCK_UNTIL=Date.now()+30000; FAILS=0; } $("#lp").value=""; return err.textContent=rl?API_ERR.rate_limited:"פרטי הכניסה או הסיסמה לא נכונים"; }
     FAILS=0; await enter(err);
   };
-}
-function renderResetRequest(first){
-  authShell(`<h1 style="text-align:center">${first?"כניסה ראשונה":"איפוס סיסמה"}</h1>
-    <p class="sub">${first?"הזינו את כתובת האימייל שהמנהל רשם עבורכם. נשלח אליה קישור, ובו תבחרו סיסמה משלכם.":"הזינו את כתובת האימייל שלכם, ונשלח אליה קישור לבחירת סיסמה חדשה."}</p>
-    <form id="rf"><label class="lbl" for="re">אימייל</label><input class="field ltr" id="re" type="email" autocomplete="email" dir="ltr" inputmode="email">
-    <div class="err" id="rerr"></div><button class="btn block" id="rgo" type="submit">שליחת קישור</button></form>
-    <div class="hint">מי שנכנס עם שם משתמש בלי אימייל – פנו למנהל לאיפוס הסיסמה.</div>
-    <div class="row"><button class="link" id="tol" type="button">חזרה לכניסה</button></div>`);
-  $("#tol").onclick=()=>renderLogin();
-  $("#rf").onsubmit=async ev=>{
-    ev.preventDefault(); const e=$("#rerr"), em=$("#re").value.trim().toLowerCase(); e.className="err";
-    if(!validEmail(em)) return e.textContent=API_ERR.bad_email;
-    $("#rgo").disabled=true; e.innerHTML='<span class="spin"></span>';
-    const {error}=await S.sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+"/"});
-    $("#rgo").disabled=false;
-    if(error){ e.textContent=error.status===429?"נשלחו כבר כמה מיילים לאחרונה. נסו שוב בעוד כמה דקות.":"לא הצלחתי לשלוח מייל כרגע. נסו שוב מאוחר יותר או פנו למנהל."; return; }
-    e.className="ok"; e.textContent="אם הכתובת רשומה במערכת, נשלח אליה קישור. בדקו את תיבת המייל (גם בספאם).";
-  };
-}
-function renderSetPassword(){
-  authShell(`<h1 style="text-align:center">בחירת סיסמה</h1><p class="sub">בחרו סיסמה משלכם. איתה תיכנסו מעכשיו, מכל מכשיר.</p>
-    <form id="nf"><label class="lbl">סיסמה חדשה (לפחות 6 תווים)</label>${pwField("np1","new-password")}<label class="lbl">אימות סיסמה</label>${pwField("np2","new-password")}
-    <div class="err" id="nerr"></div><button class="btn block" id="ngo" type="submit">שמירה וכניסה</button></form>`);
-  $("#nf").onsubmit=async ev=>{
-    ev.preventDefault(); const e=$("#nerr"), a=$("#np1").value;
-    if(a.length<6) return e.textContent=API_ERR.weak_password; if(a!==$("#np2").value) return e.textContent="הסיסמאות לא תואמות";
-    $("#ngo").disabled=true; const {error}=await S.sb.auth.updateUser({password:a});
-    if(error){ $("#ngo").disabled=false; return e.textContent=/same|different/i.test(error.message||"")?"זו הסיסמה הקיימת. בחרו סיסמה אחרת.":"השמירה נכשלה. בקשו קישור חדש ונסו שוב."; }
-    toast("הסיסמה נשמרה ✓"); await enter(null);
-  };
+  setTimeout(()=>{ const f=$("#lu"); if(f&&!("ontouchstart" in window)) f.focus(); },50);
 }
 async function enter(errEl){
   const me=await loadMe();
-  if(!me){ await S.sb.auth.signOut(); if(errEl) errEl.textContent="לא נמצא חשבון פעיל."; else renderLogin(); return; }
+  if(!me){ await S.sb.auth.signOut(); if(errEl){ errEl.textContent="לא נמצא חשבון פעיל."; $("#lgo").disabled=false; } else renderLogin(); return; }
   if(me.locked){ await S.sb.auth.signOut(); S.me=null; const m="החשבון נחסם. יש לפנות למנהל."; if(errEl){ errEl.textContent=m; $("#lgo").disabled=false; } else renderLogin(m); return; }
   S.sb.from("profiles").update({last_seen:new Date().toISOString()}).eq("id",me.id).then(()=>{});
   subscribe(); S.tab=me.role==="admin"?"team":"my"; S.view=null; S.ym=curYM(); render();
@@ -288,29 +293,28 @@ function wireSignup(first){
     await enter(null);
   };
 }
-function renderFirstRun(){ authShell(`<h1>ברוכים הבאים</h1><p class="sub">זו הפעם הראשונה של ${APP_NAME}. יוצרים עכשיו את חשבון המנהל הראשי (ADMIN). אחר כך פותחים חשבונות לעובדים.</p>${signupForm(true)}`); wireSignup(true); }
-function renderSignup(){ authShell(`<h1>הרשמה</h1><p class="sub">יצירת חשבון עובד</p>${signupForm(false)}<div class="row"><button class="link" id="tol" type="button">כבר יש לי חשבון</button></div>`); wireSignup(false); $("#tol").onclick=()=>renderLogin(); }
+function renderFirstRun(){ authShell(`<h1 style="text-align:center">ברוכים הבאים</h1><p class="sub">זו הפעם הראשונה של ${APP_NAME}. יוצרים עכשיו את חשבון המנהל הראשי (ADMIN). אחר כך פותחים חשבונות לעובדים.</p>${signupForm(true)}`); wireSignup(true); }
+function renderSignup(){ authShell(`<h1 style="text-align:center">הרשמה</h1><p class="sub">יצירת חשבון עובד</p>${signupForm(false)}<div class="row"><button class="link" id="tol" type="button">כבר יש לי חשבון</button></div>`); wireSignup(false); $("#tol").onclick=()=>renderLogin(); }
 
 /* ========================== app shell ========================== */
 function topBar(){
-  const me=S.me, role=me.role==="admin"?`<span class="badge">ADMIN</span>`:me.role==="manager"?`<span class="badge mgr">מנהל</span>`:"";
+  const me=S.me, role=me.role==="admin"?`<span class="badge">ADMIN</span>`:"";
   return `<div class="top"><div class="brand">${LOGO}<span>שעון נוכחות</span></div>
     <button class="chip" id="mebtn" aria-label="החשבון שלי"><b>${esc(me.name)}</b>${role}<span class="av">${esc((me.name||"?").trim()[0]||"?")}</span></button></div>`;
 }
 function tabsBar(){
-  const t=S.me.role==="admin"?[]:[["my","clock","השעות שלי"]];
-  if(isStaff()) t.push(["team","users","עובדים"]);
-  if(canDo("users")) t.push(["users","user","משתמשים"]);
-  if(canDo("settings")) t.push(["settings","cog","הגדרות"]);
-  if(t.length<2) return "";
-  return `<div class="tabs">${t.map(([id,ic,n])=>`<button class="tab ${S.tab===id?"on":""}" data-tab="${id}">${icon(ic,16)} ${n}</button>`).join("")}</div>`;
+  if(!isAdmin()) return "";
+  const t=[["team","users","עובדים"],["approve","inbox","אישורים"],["reports","chart","דוחות"],["users","user","משתמשים"],["settings","cog","הגדרות"]];
+  return `<div class="tabs">${t.map(([id,ic,n])=>`<button class="tab ${S.tab===id?"on":""}" data-tab="${id}">${icon(ic,16)} ${n}${id==="approve"?`<span class="cnt" id="pcnt" ${S.pending?"":"hidden"}>${S.pending}</span>`:""}</button>`).join("")}</div>`;
 }
+function paintBadge(){ const c=$("#pcnt"); if(c){ c.textContent=S.pending; c.hidden=!S.pending; } }
 function render(){
   if(!S.me) return renderLogin();
-  if(S.tab==="my"&&S.me.role==="admin") S.tab="team"; if(S.tab==="team"&&!isStaff()) S.tab="my"; if(S.tab==="users"&&!canDo("users")) S.tab="my"; if(S.tab==="settings"&&!canDo("settings")) S.tab="my";
+  if(isAdmin()){ if(S.tab==="my") S.tab="team"; } else S.tab="my";
   app.innerHTML=topBar()+tabsBar()+`<div id="view"><div class="empty"><span class="spin"></span></div></div>`;
   app.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{ S.tab=b.dataset.tab; S.view=null; render(); });
   $("#mebtn").onclick=e=>{ e.stopPropagation(); openMenu(e.currentTarget); };
+  if(isAdmin()) loadPendingCount().then(paintBadge);
   refresh();
 }
 async function refresh(){
@@ -318,9 +322,11 @@ async function refresh(){
   try{
     if(S.tab==="my") await viewMonth(S.me.id,false);
     else if(S.tab==="team") S.view?await viewMonth(S.view,true):await viewTeam();
+    else if(S.tab==="approve") await viewApprovals();
+    else if(S.tab==="reports") await viewReports();
     else if(S.tab==="users") await viewUsers();
     else if(S.tab==="settings") viewSettings();
-  }catch(e){ v.innerHTML=`<div class="card err">לא הצלחתי לטעון את הנתונים. בדקו את החיבור לאינטרנט ונסו שוב.</div>`; }
+  }catch(e){ console.error(e); v.innerHTML=`<div class="card err">לא הצלחתי לטעון את הנתונים. בדקו את החיבור לאינטרנט ונסו שוב.</div>`; }
 }
 function openMenu(anchor){
   const old=$(".menu"); if(old){ old.remove(); return; }
@@ -349,88 +355,110 @@ function pwModal(){
   };
 }
 
-/* ========================== month view (mine or an employee's) ========================== */
-function monthSummary(list){
+/* ========================== month view (employee: own; admin: any employee) ========================== */
+function summarize(list){
   const s={days:0,min:0,reg:0,o1:0,o2:0,vac:0,sick:0};
   list.forEach(e=>{ if(e.kind==="work"){ const m=entryMin(e); s.days++; s.min+=m; const o=splitOT(m); s.reg+=o.reg; s.o1+=o.o1; s.o2+=o.o2; } else if(e.kind==="vacation") s.vac++; else if(e.kind==="sick") s.sick++; });
   return s;
 }
-async function viewMonth(uid,staffView){
-  const v=$("#view"), list=await loadEntries(S.ym,uid); if(!$("#view")) return;
+// what an employee may do with a day: "direct" (today), "request" (correction), "lock"
+function dayMode(uid,day){ if(isAdmin()) return "direct"; if(uid!==S.me.id) return "lock"; const td=todayStr(); if(day===td) return "direct"; if(day<td&&day>=CORR_FROM()) return "request"; return "lock"; }
+async function viewMonth(uid,adminView){
+  const v=$("#view"), from=S.ym+"-01", to=ymAdd(S.ym,1)+"-01";
+  const [list,corr]=await Promise.all([loadEntries(from,to,uid),loadCorr(from,to,uid)]); if(!$("#view")) return;
   const user=uid===S.me.id?S.me:(S.users.find(u=>u.id===uid)||(await loadUsers()).find(u=>u.id===uid));
   if(!user){ S.view=null; return viewTeam(); }
   const map={}; list.forEach(e=>map[e.day]=e); S.ent=map;
-  const sm=monthSummary(list), ot=S.cfg.overtime!==false, td=todayStr(), n=daysIn(S.ym);
-  const own=uid===S.me.id, w=editWindow();
-  const canPrev=canDo("editHours")||staffView||ymAdd(S.ym,-1)>=w.from.slice(0,7)||list.length>0||true;
+  const cmap={}; corr.forEach(c=>cmap[c.day]=c); S.corr=cmap; // latest per day (ordered by created_at)
+  const sm=summarize(list), ot=S.cfg.overtime!==false, td=todayStr(), n=daysIn(S.ym);
+  const minYM=adminView?"2000-01":VIEW_FROM(), maxYM=adminView?ymAdd(curYM(),1):curYM();
   const rows=[];
   for(let d=1;d<=n;d++){
-    const day=`${S.ym}-${pad(d)}`, e=map[day], dw=dowOf(day), ed=canEditDay(uid,day);
+    const day=`${S.ym}-${pad(d)}`, e=map[day], c=cmap[day], dw=dowOf(day), mode=dayMode(uid,day);
     let main;
     if(!e) main=`<span class="pill empty">${day>td?"":dw===5||dw===6?"סוף שבוע":"לא הוזן"}</span>`;
     else if(e.kind==="vacation") main=`<span class="pill vac">יום חופש</span>`;
     else if(e.kind==="sick") main=`<span class="pill sick">יום מחלה</span>`;
     else main=`<span class="tm">${hhmm(e.start_time)}–${hhmm(e.end_time)}</span>${e.break_min?` <span class="hint" style="display:inline">· הפסקה ${e.break_min} דק׳</span>`:""}`;
-    rows.push(`<button class="day${dw===5||dw===6?" we":""}${day===td?" td":""}${ed?"":" ro"}" data-day="${day}" ${ed?"":'aria-disabled="true"'}>
+    let cst="";
+    if(c&&c.status==="pending") cst=`<span class="nt pend">${icon("send",12)} ממתין לאישור: ${esc(entryText(c))}</span>`;
+    else if(c&&c.status==="rejected"&&(!e||!e.updated_at||e.updated_at<c.decided_at)) cst=`<span class="nt rej">התיקון נדחה${c.admin_note?": "+esc(c.admin_note):""}</span>`;
+    rows.push(`<button class="day${dw===5||dw===6?" we":""}${day===td?" td":""}${mode==="lock"?" ro":""}" data-day="${day}" data-mode="${mode}">
       <div class="dnum"><b>${d}</b><span>${HEB_D1[dw]}</span></div>
-      <div class="dmain">${main}${e&&e.note?`<span class="nt">${icon("note",12)} ${esc(e.note)}</span>`:""}</div>
-      <div class="dtot">${e&&e.kind==="work"?fmtH(entryMin(e)):""}</div>${ed?"":`<span class="lockic" title="נעול לעריכה">${icon("lock",15)}</span>`}</button>`);
+      <div class="dmain">${main}${e&&e.note?`<span class="nt">${icon("note",12)} ${esc(e.note)}</span>`:""}${cst}</div>
+      <div class="dtot">${e&&e.kind==="work"?fmtH(entryMin(e)):""}</div>${mode==="lock"&&day<=td?`<span class="lockic" title="נעול">${icon("lock",15)}</span>`:""}</button>`);
   }
-  const tE=map[td];
-  v.innerHTML=`${staffView?`<div class="row" style="margin:0 0 10px"><button class="btn ghost sm" id="bk">${icon("back",16)} כל העובדים</button><div><b>${esc(user.name)}</b>${user.emp_no?` <span class="hint" style="display:inline">· מס׳ ${esc(user.emp_no)}</span>`:""}</div></div>`:""}
-    <div class="month"><button class="ib" id="pm" aria-label="החודש הקודם">${icon("right",20)}</button><h2>${ymLabel(S.ym)}</h2><button class="ib" id="nm" aria-label="החודש הבא" ${S.ym>=ymAdd(curYM(),1)?"disabled":""}>${icon("left",20)}</button></div>
-    ${own&&S.ym===curYM()&&!staffView?`<div class="card today"><div style="flex:1"><div class="t1">היום – ${dLabel(td)}</div><div class="t2">${tE?tE.kind==="work"?`הוזן: <span dir="ltr">${hhmm(tE.start_time)}–${hhmm(tE.end_time)}</span> · ${fmtH(entryMin(tE))} שעות`:tE.kind==="vacation"?"יום חופש":"יום מחלה":"עוד לא הוזנו שעות להיום"}</div></div><button class="btn" id="tdgo">${icon(tE?"note":"plus",16)} ${tE?"עריכה":"הזנת שעות להיום"}</button></div>`:""}
+  const tE=map[td], own=uid===S.me.id&&!adminView;
+  v.innerHTML=`${adminView?`<div class="row" style="margin:0 0 10px"><button class="btn ghost sm" id="bk">${icon("back",16)} כל העובדים</button><div><b>${esc(user.name)}</b>${user.emp_no?` <span class="hint" style="display:inline">· מס׳ ${esc(user.emp_no)}</span>`:""}</div></div>`:""}
+    <div class="month"><button class="ib" id="pm" aria-label="החודש הקודם" ${S.ym<=minYM?"disabled":""}>${icon("right",20)}</button><h2>${ymLabel(S.ym)}</h2><button class="ib" id="nm" aria-label="החודש הבא" ${S.ym>=maxYM?"disabled":""}>${icon("left",20)}</button></div>
+    ${own&&S.ym===curYM()?`<div class="card today"><div style="flex:1"><div class="t1">היום – ${dLabel(td)}</div><div class="t2">${tE?`הוזן: ${esc(entryText(tE))}`:"עוד לא הוזנו שעות להיום"}</div></div><button class="btn" id="tdgo">${icon(tE?"note":"plus",16)} ${tE?"עריכה":"הזנת שעות להיום"}</button></div>`:""}
     <div class="stats"><div class="stat"><div class="v">${sm.days}</div><div class="l">ימי עבודה</div></div><div class="stat"><div class="v" dir="ltr">${fmtH(sm.min)}</div><div class="l">סה״כ שעות</div></div>
       ${ot?`<div class="stat ot"><div class="v" dir="ltr">${fmtH(sm.o1+sm.o2)}</div><div class="l">שעות נוספות</div></div>`:""}
       <div class="stat vac"><div class="v">${sm.vac}</div><div class="l">ימי חופש</div></div><div class="stat sick"><div class="v">${sm.sick}</div><div class="l">ימי מחלה</div></div></div>
+    ${own?`<div class="hint" style="margin:-4px 0 10px">את היום מזינים ישירות. לתיקון יום קודם (מ-${dShort(CORR_FROM())} ואילך) לוחצים עליו ושולחים בקשה – השינוי ייכנס אחרי אישור המנהל.</div>`:""}
     <div class="days">${rows.join("")}</div>
-    <div class="card"><div class="row" style="margin:0"><div><h3>דוח חודשי – ${ymLabel(S.ym)}</h3><div class="hint">ריכוז שעות לחודש, להדפסה ולשליחה</div></div>
-      <div class="actions"><button class="btn ghost" id="xpdf">${icon("file",16)} PDF</button><button class="btn ghost" id="xxls">${icon("sheet",16)} Excel</button></div></div>
-      ${own&&!canDo("editHours")?`<div class="hint">אפשר לערוך ימים מ-${w.from.split("-").reverse().join(".")} ואילך. ימים ישנים יותר נעולים – לשינוי פנו למנהל.</div>`:""}</div>`;
+    <div class="card"><div class="row" style="margin:0"><div><h3>דוח חודשי – ${ymLabel(S.ym)}</h3><div class="hint">${adminView?"דוח לעובד הזה":"ריכוז השעות שלך לחודש"}</div></div>
+      <div class="actions"><button class="btn ghost" id="xpdf">${icon("file",16)} PDF</button><button class="btn ghost" id="xxls">${icon("sheet",16)} Excel</button></div></div></div>`;
   $("#pm").onclick=()=>{ S.ym=ymAdd(S.ym,-1); refresh(); };
   $("#nm").onclick=()=>{ S.ym=ymAdd(S.ym,1); refresh(); };
   const bk=$("#bk"); if(bk) bk.onclick=()=>{ S.view=null; refresh(); };
-  const tg=$("#tdgo"); if(tg) tg.onclick=()=>dayModal(uid,td);
-  v.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{ if(canEditDay(uid,b.dataset.day)) dayModal(uid,b.dataset.day); else toast("היום הזה נעול לעריכה. לשינוי פנו למנהל."); });
-  $("#xpdf").onclick=()=>printReports([{user,list}],S.ym);
-  $("#xxls").onclick=()=>excelReports([{user,list}],S.ym);
+  const tg=$("#tdgo"); if(tg) tg.onclick=()=>dayModal(uid,td,"direct");
+  v.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{ const m=b.dataset.mode, day=b.dataset.day;
+    if(m==="lock") return toast(day>todayStr()?"אי אפשר להזין ימים עתידיים.":"את היום הזה כבר אי אפשר לתקן. לשינוי פנו למנהל."); dayModal(uid,day,m); });
+  const R=monthRange(S.ym);
+  $("#xpdf").onclick=()=>printReports([{user,list}],R);
+  $("#xxls").onclick=()=>excelReports([{user,list}],R,false);
 }
 function lastWorkDefaults(){ const ws=Object.values(S.ent).filter(e=>e.kind==="work").sort((a,b)=>b.day<a.day?-1:1); const l=ws[0];
   let p={}; try{ p=JSON.parse(localStorage.getItem("lirad.last")||"{}"); }catch(e){}
   return {start:hhmm(l&&l.start_time)||p.start||"08:00",end:hhmm(l&&l.end_time)||p.end||"17:00",brk:l?l.break_min:(p.brk!=null?p.brk:30)}; }
-function dayModal(uid,day){
-  const e=S.ent[day], def=lastWorkDefaults();
-  const st={kind:e?e.kind:"work",start:e&&e.kind==="work"?hhmm(e.start_time):def.start,end:e&&e.kind==="work"?hhmm(e.end_time):def.end,brk:e&&e.kind==="work"?e.break_min:def.brk,note:e?e.note:""};
-  const other=uid!==S.me.id?(S.users.find(u=>u.id===uid)||{}).name:"";
+function dayModal(uid,day,mode){
+  const e=S.ent[day], c=S.corr[day], pend=c&&c.status==="pending"?c:null, src=pend&&pend.action!=="delete"?pend:e, def=lastWorkDefaults();
+  const st={kind:src?src.kind:"work",start:src&&src.kind==="work"?hhmm(src.start_time):def.start,end:src&&src.kind==="work"?hhmm(src.end_time):def.end,brk:src&&src.kind==="work"?src.break_min:def.brk,note:src?src.note:"",reason:pend?pend.reason:""};
+  const req=mode==="request", other=uid!==S.me.id?(S.users.find(u=>u.id===uid)||{}).name:"";
   const draw=()=>{
     const m=entryMin({kind:"work",start_time:st.start,end_time:st.end,break_min:st.brk}), night=st.start&&st.end&&tmin(st.end)<=tmin(st.start);
     $("#modal-root").innerHTML=`<div class="modal"><div class="sheet">
       <div class="row" style="margin-top:0"><div><h2>${dLabel(day)}</h2>${other?`<div class="hint">${esc(other)}</div>`:""}</div><button class="ib" id="mx" aria-label="סגירה">${icon("x")}</button></div>
+      ${req?`<div class="note-box">${icon("send",15)} <span>בקשת תיקון – השינוי ייכנס רק אחרי אישור המנהל.<br>כרגע רשום: <b>${esc(entryText(e))}</b>${pend?`<br>ממתין לאישור: <b>${esc(entryText(pend))}</b>`:""}</span></div>`:""}
       <div class="seg" style="margin-top:12px"><button data-k="work" class="${st.kind==="work"?"on":""}">יום עבודה</button><button data-k="vacation" class="vac ${st.kind==="vacation"?"on":""}">יום חופש</button><button data-k="sick" class="sick ${st.kind==="sick"?"on":""}">יום מחלה</button></div>
-      ${st.kind==="work"?`<div class="times"><div><label class="lbl" for="ts">שעת כניסה</label><div class="tw"><input class="field" id="ts" type="time" value="${st.start}"><button class="btn ghost sm" data-now="ts" type="button">עכשיו</button></div></div>
-        <div><label class="lbl" for="te">שעת יציאה</label><div class="tw"><input class="field" id="te" type="time" value="${st.end}"><button class="btn ghost sm" data-now="te" type="button">עכשיו</button></div></div></div>
+      ${st.kind==="work"?`<div class="times"><div><label class="lbl" for="ts">שעת כניסה</label><div class="tw"><input class="field" id="ts" type="time" value="${st.start}">${req?"":`<button class="btn ghost sm" data-now="ts" type="button">עכשיו</button>`}</div></div>
+        <div><label class="lbl" for="te">שעת יציאה</label><div class="tw"><input class="field" id="te" type="time" value="${st.end}">${req?"":`<button class="btn ghost sm" data-now="te" type="button">עכשיו</button>`}</div></div></div>
         <label class="lbl" for="tb">הפסקה (דקות, לא נספרת בשעות)</label><select class="field" id="tb">${[0,15,20,30,45,60,90,120].map(x=>`<option value="${x}" ${+st.brk===x?"selected":""}>${x?x+" דקות":"ללא הפסקה"}</option>`).join("")}${[0,15,20,30,45,60,90,120].includes(+st.brk)?"":`<option value="${st.brk}" selected>${st.brk} דקות</option>`}</select>
         <div class="total"><span>סה״כ שעות עבודה${night?" (משמרת שמסתיימת למחרת)":""}</span><b>${fmtH(m)}</b></div>`
       :`<div class="hint" style="margin-top:12px">${st.kind==="vacation"?"היום יירשם כיום חופש.":"היום יירשם כיום מחלה. אם יש אישור מחלה – כדאי לציין בהערה."}</div>`}
       <label class="lbl" for="tn">הערה (לא חובה)</label><input class="field" id="tn" maxlength="300" value="${esc(st.note)}">
+      ${req?`<label class="lbl" for="tr">סיבת התיקון</label><input class="field" id="tr" maxlength="300" value="${esc(st.reason)}" placeholder="למשל: שכחתי להזין, טעות בשעת יציאה">`:""}
       <div class="err" id="derr"></div>
-      <div class="row"><div>${e?`<button class="btn ghost" id="ddel" type="button">${icon("trash",16)} מחיקה</button>`:""}</div><div class="actions"><button class="btn ghost" id="dcan" type="button">ביטול</button><button class="btn" id="dsave" type="button">${icon("check",16)} שמירה</button></div></div>
+      <div class="row"><div class="actions">${req?(pend?`<button class="btn ghost" id="dcancel" type="button">${icon("x",16)} ביטול הבקשה</button>`:"")+(e?`<button class="btn ghost" id="ddelreq" type="button">${icon("trash",16)} בקשה למחיקה</button>`:""):(e?`<button class="btn ghost" id="ddel" type="button">${icon("trash",16)} מחיקה</button>`:"")}</div>
+        <div class="actions"><button class="btn ghost" id="dcan" type="button">סגירה</button><button class="btn" id="dsave" type="button">${icon(req?"send":"check",16)} ${req?"שליחה לאישור":"שמירה"}</button></div></div>
     </div></div>`;
     $("#mx").onclick=$("#dcan").onclick=closeModal;
     $("#modal-root").querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{ keep(); st.kind=b.dataset.k; draw(); });
     $("#modal-root").querySelectorAll("[data-now]").forEach(b=>b.onclick=()=>{ keep(); const d=new Date(); st[b.dataset.now==="ts"?"start":"end"]=`${pad(d.getHours())}:${pad(d.getMinutes())}`; draw(); });
     ["ts","te","tb"].forEach(id=>{ const el=$("#"+id); if(el) el.onchange=()=>{ keep(); draw(); }; });
-    $("#dsave").onclick=save; const dl=$("#ddel"); if(dl) dl.onclick=del;
+    $("#dsave").onclick=()=>save("upsert");
+    const dl=$("#ddel"); if(dl) dl.onclick=del;
+    const dr=$("#ddelreq"); if(dr) dr.onclick=()=>save("delete");
+    const dc=$("#dcancel"); if(dc) dc.onclick=cancelReq;
   };
-  const keep=()=>{ const g=id=>$("#"+id); if(g("ts")){ st.start=g("ts").value; st.end=g("te").value; st.brk=parseInt(g("tb").value,10)||0; } st.note=g("tn").value; };
-  const save=async()=>{
+  const keep=()=>{ const g=id=>$("#"+id); if(g("ts")){ st.start=g("ts").value; st.end=g("te").value; st.brk=parseInt(g("tb").value,10)||0; } st.note=g("tn").value; if(g("tr")) st.reason=g("tr").value; };
+  const row=()=>({user_id:uid,day,kind:st.kind,start_time:st.kind==="work"?st.start:null,end_time:st.kind==="work"?st.end:null,break_min:st.kind==="work"?st.brk:0,note:st.note.trim()});
+  const save=async action=>{
     keep(); const err=$("#derr");
-    if(st.kind==="work"){ if(!st.start||!st.end) return err.textContent="נא למלא שעת כניסה ושעת יציאה"; if(st.start===st.end) return err.textContent="שעת היציאה זהה לשעת הכניסה";
+    if(action==="upsert"&&st.kind==="work"){ if(!st.start||!st.end) return err.textContent="נא למלא שעת כניסה ושעת יציאה"; if(st.start===st.end) return err.textContent="שעת היציאה זהה לשעת הכניסה";
       if(entryMin({kind:"work",start_time:st.start,end_time:st.end,break_min:st.brk})<=0) return err.textContent="ההפסקה ארוכה מזמן העבודה"; }
-    $("#dsave").disabled=true; err.innerHTML='<span class="spin"></span>';
-    const row={user_id:uid,day,kind:st.kind,start_time:st.kind==="work"?st.start:null,end_time:st.kind==="work"?st.end:null,break_min:st.kind==="work"?st.brk:0,note:st.note.trim()};
-    const {error}=await S.sb.from("entries").upsert(row,{onConflict:"user_id,day"});
-    if(error){ $("#dsave").disabled=false; return err.textContent=/row-level|policy|permission/i.test(error.message||"")?"אין הרשאה לשנות את היום הזה (מחוץ לטווח העריכה).":"השמירה נכשלה. נסו שוב."; }
+    if(action==="delete"&&!confirm("לשלוח למנהל בקשה למחוק את הרישום של היום הזה?")) return;
+    err.innerHTML='<span class="spin"></span>';
+    if(req){
+      if(pend){ const {error:de}=await S.sb.from("corrections").delete().eq("id",pend.id); if(de) return err.textContent="לא הצלחתי לעדכן את הבקשה הקודמת."; }
+      const r={...row(),action,reason:st.reason.trim()};
+      const {error}=await S.sb.from("corrections").insert(r);
+      if(error) return err.textContent=/row-level|policy|permission/i.test(error.message||"")?"אי אפשר לבקש תיקון ליום הזה.":"השליחה נכשלה. נסו שוב.";
+      closeModal(); toast("הבקשה נשלחה למנהל ✓",3200); return refresh();
+    }
+    const {error}=await S.sb.from("entries").upsert(row(),{onConflict:"user_id,day"});
+    if(error) return err.textContent=/row-level|policy|permission/i.test(error.message||"")?"אין הרשאה לשנות את היום הזה.":"השמירה נכשלה. נסו שוב.";
     if(st.kind==="work"&&uid===S.me.id) try{ localStorage.setItem("lirad.last",JSON.stringify({start:st.start,end:st.end,brk:st.brk})); }catch(x){}
     closeModal(); toast("נשמר ✓"); refresh();
   };
@@ -440,96 +468,142 @@ function dayModal(uid,day){
     if(error) return $("#derr").textContent="המחיקה נכשלה.";
     closeModal(); toast("הרישום נמחק"); refresh();
   };
+  const cancelReq=async()=>{ const {error}=await S.sb.from("corrections").delete().eq("id",pend.id); if(error) return $("#derr").textContent="הביטול נכשל."; closeModal(); toast("הבקשה בוטלה"); refresh(); };
   draw();
 }
 
-/* ========================== staff: employees overview ========================== */
+/* ========================== admin: employees ========================== */
 async function viewTeam(){
-  const v=$("#view"); const [users,list]=await Promise.all([loadUsers(),loadEntries(S.ym,null)]); if(!$("#view")) return;
+  const v=$("#view"), from=S.ym+"-01", to=ymAdd(S.ym,1)+"-01";
+  const [users,list]=await Promise.all([loadUsers(),loadEntries(from,to,null)]); if(!$("#view")) return;
   const by={}; list.forEach(e=>(by[e.user_id]=by[e.user_id]||[]).push(e));
-  const ot=S.cfg.overtime!==false, act=users.filter(u=>u.role!=="admin"&&(!u.locked||by[u.id]));
-  const tot=monthSummary(list.filter(e=>act.some(u=>u.id===e.user_id)));
+  const ot=S.cfg.overtime!==false, act=employees().filter(u=>!u.locked||by[u.id]);
+  const tot=summarize(list.filter(e=>act.some(u=>u.id===e.user_id)));
   v.innerHTML=`<div class="month"><button class="ib" id="pm" aria-label="החודש הקודם">${icon("right",20)}</button><h2>${ymLabel(S.ym)}</h2><button class="ib" id="nm" aria-label="החודש הבא" ${S.ym>=ymAdd(curYM(),1)?"disabled":""}>${icon("left",20)}</button></div>
     <div class="stats"><div class="stat"><div class="v">${act.length}</div><div class="l">עובדים</div></div><div class="stat"><div class="v" dir="ltr">${fmtH(tot.min)}</div><div class="l">סה״כ שעות</div></div>
       ${ot?`<div class="stat ot"><div class="v" dir="ltr">${fmtH(tot.o1+tot.o2)}</div><div class="l">שעות נוספות</div></div>`:""}<div class="stat vac"><div class="v">${tot.vac}</div><div class="l">ימי חופש</div></div><div class="stat sick"><div class="v">${tot.sick}</div><div class="l">ימי מחלה</div></div></div>
-    <div class="card"><div class="row" style="margin:0"><div><h3>דוחות לכל העובדים</h3><div class="hint">דוח נפרד לכל עובד, וב-Excel גם גיליון סיכום</div></div>
-      <div class="actions"><button class="btn ghost" id="apdf">${icon("file",16)} PDF</button><button class="btn ghost" id="axls">${icon("sheet",16)} Excel</button></div></div></div>
-    <div class="days list">${act.map(u=>{ const s=monthSummary(by[u.id]||[]); return `<button class="it" data-u="${u.id}">
-      <div class="nm"><b>${esc(u.name)} ${u.role==="admin"?'<span class="badge">ADMIN</span>':u.role==="manager"?'<span class="badge mgr">מנהל</span>':""}${u.locked?' <span class="badge lock">חסום</span>':""}</b>
+    ${S.pending?`<button class="card pendcard" id="gopend">${icon("inbox",18)} <b>${S.pending} בקשות תיקון ממתינות לאישור</b> ${icon("left",16)}</button>`:""}
+    <div class="days list">${act.map(u=>{ const s=summarize(by[u.id]||[]); return `<button class="it" data-u="${u.id}">
+      <div class="nm"><b>${esc(u.name)}${u.locked?' <span class="badge lock">חסום</span>':""}</b>
         <span>${u.emp_no?"מס׳ "+esc(u.emp_no)+" · ":""}${s.days} ימי עבודה${s.vac?` · ${s.vac} חופש`:""}${s.sick?` · ${s.sick} מחלה`:""}</span></div>
-      <div class="fig"><b>${fmtH(s.min)}</b>שעות${ot&&(s.o1+s.o2)?` · נוספות ${fmtH(s.o1+s.o2)}`:""}</div>${icon("left",16)}</button>`; }).join("")||`<div class="empty">אין עובדים עדיין.</div>`}</div>`;
+      <div class="fig"><b>${fmtH(s.min)}</b>שעות${ot&&(s.o1+s.o2)?` · נוספות ${fmtH(s.o1+s.o2)}`:""}</div>${icon("left",16)}</button>`; }).join("")||`<div class="empty">אין עובדים עדיין. פותחים עובד חדש בלשונית "משתמשים".</div>`}</div>`;
   $("#pm").onclick=()=>{ S.ym=ymAdd(S.ym,-1); refresh(); }; $("#nm").onclick=()=>{ S.ym=ymAdd(S.ym,1); refresh(); };
+  const gp=$("#gopend"); if(gp) gp.onclick=()=>{ S.tab="approve"; render(); };
   v.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.u; refresh(); scrollTo(0,0); });
-  const packs=()=>act.map(u=>({user:u,list:by[u.id]||[]}));
-  $("#apdf").onclick=()=>printReports(packs(),S.ym);
-  $("#axls").onclick=()=>excelReports(packs(),S.ym,true);
 }
 
-/* ========================== staff: users ========================== */
-const PERMS=[["editHours","עריכת שעות של כל העובדים (גם ימים נעולים)"],["users","ניהול משתמשים: יצירה, איפוס סיסמה, חסימה ומחיקה של עובדים"],["settings","שינוי הגדרות המערכת"]];
+/* ========================== admin: approvals ========================== */
+async function viewApprovals(){
+  const v=$("#view"); await loadUsers();
+  const {data:pend}=await S.sb.from("corrections").select("*").eq("status","pending").order("created_at",{ascending:true});
+  const {data:recent}=await S.sb.from("corrections").select("*").neq("status","pending").order("decided_at",{ascending:false}).limit(20);
+  const P=pend||[]; S.pending=P.length; paintBadge();
+  const days=[...new Set(P.map(c=>c.day))]; let cur=[];
+  if(P.length){ const mn=days.reduce((a,b)=>a<b?a:b), mx=days.reduce((a,b)=>a>b?a:b); cur=await loadEntries(mn,addDays(mx,1),null); }
+  const nowOf=c=>cur.find(e=>e.user_id===c.user_id&&e.day===c.day);
+  const nm=id=>{ const u=S.users.find(x=>x.id===id); return u?u.name:"עובד שנמחק"; };
+  if(!$("#view")) return;
+  v.innerHTML=`<h2 style="margin-bottom:4px">בקשות תיקון</h2><p class="sub">עובדים יכולים לבקש תיקון לימים מה-1 בחודש הקודם ועד אתמול. השינוי נכנס לשעות רק אחרי אישור כאן.</p>
+    ${P.length?P.map(c=>`<div class="card req" data-c="${c.id}"><div class="row" style="margin:0"><div><b>${esc(nm(c.user_id))}</b> · ${dLabel(c.day)}</div><span class="hint">נשלח ${new Date(c.created_at).toLocaleString("he-IL",{dateStyle:"short",timeStyle:"short"})}</span></div>
+      <div class="cmp"><div><span>רשום כרגע</span><b>${esc(entryText(nowOf(c)))}</b></div><div class="arrow">←</div><div class="new"><span>מבוקש</span><b>${esc(entryText(c))}</b>${c.note&&c.action!=="delete"?`<i>הערה: ${esc(c.note)}</i>`:""}</div></div>
+      ${c.reason?`<div class="hint" style="margin-top:6px">סיבה: ${esc(c.reason)}</div>`:""}
+      <div class="row"><input class="field" data-an="${c.id}" placeholder="הערה לעובד (לא חובה)" style="flex:1;min-width:160px"><div class="actions"><button class="btn ghost" data-rej="${c.id}">${icon("x",16)} דחייה</button><button class="btn" data-ok="${c.id}">${icon("check",16)} אישור</button></div></div></div>`).join("")
+      :`<div class="card empty">${icon("check",20)}<br>אין בקשות ממתינות.</div>`}
+    ${(recent||[]).length?`<h3 style="margin:18px 0 8px">טופלו לאחרונה</h3><div class="days list">${recent.map(c=>`<div class="it"><div class="nm"><b>${esc(nm(c.user_id))} · ${dShort(c.day)}</b><span>${esc(entryText(c))}${c.admin_note?" · "+esc(c.admin_note):""}</span></div><span class="badge ${c.status==="approved"?"":"lock"}">${c.status==="approved"?"אושר":"נדחה"}</span></div>`).join("")}</div>`:""}`;
+  const decide=async(id,ok)=>{ const note=(document.querySelector(`[data-an="${id}"]`)||{}).value||"";
+    const {error}=await S.sb.rpc("decide_correction",{cid:Number(id),approve:ok,note});
+    if(error) return toast("הפעולה נכשלה. רעננו ונסו שוב."); toast(ok?"אושר ✓ השעות עודכנו":"הבקשה נדחתה"); refresh(); };
+  v.querySelectorAll("[data-ok]").forEach(b=>b.onclick=()=>decide(b.dataset.ok,true));
+  v.querySelectorAll("[data-rej]").forEach(b=>b.onclick=()=>decide(b.dataset.rej,false));
+}
+
+/* ========================== admin: reports ========================== */
+const RP={period:"month",date:null,sel:null,layout:"combined"};
+function monthRange(ym){ return {kind:"month",from:ym+"-01",to:ymAdd(ym,1)+"-01",label:ymLabel(ym),tag:ym}; }
+function rangeOf(period,date){
+  if(period==="day") return {kind:"day",from:date,to:addDays(date,1),label:dLabel(date),tag:date};
+  if(period==="week"){ const s=addDays(date,-dowOf(date)), e=addDays(s,6); return {kind:"week",from:s,to:addDays(e,1),label:`שבוע ${dShort(s)} – ${dShort(e)}`,tag:`שבוע-${s}`}; }
+  return monthRange(date.slice(0,7));
+}
+const PERIOD_HE={day:"יומי",week:"שבועי",month:"חודשי"};
+async function viewReports(){
+  const v=$("#view"); await loadUsers(); if(!$("#view")) return;
+  const emps=employees(); if(!RP.date) RP.date=todayStr(); if(!RP.sel) RP.sel=new Set(emps.filter(u=>!u.locked).map(u=>u.id));
+  const R=rangeOf(RP.period,RP.date);
+  v.innerHTML=`<div class="card"><h2>הפקת דוח שעות</h2>
+    <label class="lbl">סוג הדוח</label><div class="seg">${["day","week","month"].map(p=>`<button data-p="${p}" class="${RP.period===p?"on":""}">${PERIOD_HE[p]}</button>`).join("")}</div>
+    <label class="lbl" for="rd">${RP.period==="day"?"תאריך":RP.period==="week"?"יום כלשהו בשבוע (שבוע מתחיל ביום ראשון)":"חודש"}</label>
+    ${RP.period==="month"?`<input class="field ltr" id="rd" type="month" dir="ltr" value="${RP.date.slice(0,7)}">`:`<input class="field ltr" id="rd" type="date" dir="ltr" value="${RP.date}">`}
+    <div class="hint" style="margin-top:6px">${esc(R.label)}</div>
+    <div class="row" style="margin-bottom:0"><label class="lbl" style="margin:0">עובדים (${RP.sel.size} נבחרו)</label><div class="actions"><button class="link" id="rall" type="button">כולם</button><button class="link" id="rnone" type="button">ניקוי</button></div></div>
+    <div class="emps">${emps.map(u=>`<label class="check"><input type="checkbox" data-e="${u.id}" ${RP.sel.has(u.id)?"checked":""}> ${esc(u.name)}${u.emp_no?` <span class="hint" style="display:inline">(${esc(u.emp_no)})</span>`:""}${u.locked?' <span class="badge lock">חסום</span>':""}</label>`).join("")||`<div class="hint">אין עובדים עדיין.</div>`}</div>
+    <label class="lbl">מבנה הדוח</label><div class="seg two-seg"><button data-l="combined" class="${RP.layout==="combined"?"on":""}">דוח אחד מרוכז</button><button data-l="separate" class="${RP.layout==="separate"?"on":""}">עמוד נפרד לכל עובד</button></div>
+    <div class="row"><button class="btn ghost" id="rprev">${icon("chart",16)} תצוגה מקדימה</button><div class="actions"><button class="btn" id="rpdf">${icon("file",16)} PDF</button><button class="btn" id="rxls">${icon("sheet",16)} Excel</button></div></div>
+    <div class="err" id="rerr"></div></div><div id="rout"></div>`;
+  v.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{ RP.period=b.dataset.p; viewReports(); });
+  v.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{ RP.layout=b.dataset.l; v.querySelectorAll("[data-l]").forEach(x=>x.classList.toggle("on",x===b)); });
+  $("#rd").onchange=()=>{ const x=$("#rd").value; if(!x) return; RP.date=RP.period==="month"?x+"-01":x; viewReports(); };
+  v.querySelectorAll("[data-e]").forEach(c=>c.onchange=()=>{ c.checked?RP.sel.add(c.dataset.e):RP.sel.delete(c.dataset.e); v.querySelector(".row .lbl").textContent=`עובדים (${RP.sel.size} נבחרו)`; });
+  $("#rall").onclick=()=>{ RP.sel=new Set(emps.map(u=>u.id)); viewReports(); };
+  $("#rnone").onclick=()=>{ RP.sel=new Set(); viewReports(); };
+  const build=async()=>{ const sel=emps.filter(u=>RP.sel.has(u.id)); if(!sel.length){ $("#rerr").textContent="בחרו לפחות עובד אחד"; return null; } $("#rerr").textContent="";
+    const all=await loadEntries(R.from,R.to,null); return sel.map(u=>({user:u,list:all.filter(e=>e.user_id===u.id)})); };
+  $("#rprev").onclick=async()=>{ const packs=await build(); if(!packs) return; $("#rout").innerHTML=`<div class="card prev">${RP.layout==="combined"?combinedHTML(packs,R):packs.map(p=>reportHTML(p.user,p.list,R)).join("")}</div>`; $("#rout").scrollIntoView({behavior:"smooth"}); };
+  $("#rpdf").onclick=async()=>{ const packs=await build(); if(packs) printReports(packs,R,RP.layout==="combined"); };
+  $("#rxls").onclick=async()=>{ const packs=await build(); if(packs) excelReports(packs,R,RP.layout==="combined"); };
+}
+
+/* ========================== admin: users ========================== */
 async function viewUsers(){
   const v=$("#view"), users=await loadUsers(); if(!$("#view")) return;
-  v.innerHTML=`<div class="row" style="margin:0 0 12px"><div><h2>משתמשים</h2><div class="hint">${users.length} חשבונות</div></div><button class="btn" id="nu">${icon("plus",16)} עובד חדש</button></div>
-    <div class="days list">${users.map(u=>`<button class="it" data-u="${u.id}"><div class="nm"><b>${esc(u.name)} ${u.role==="admin"?'<span class="badge">ADMIN</span>':u.role==="manager"?'<span class="badge mgr">מנהל</span>':'<span class="badge gray">עובד</span>'}${u.locked?' <span class="badge lock">חסום</span>':""}</b>
+  v.innerHTML=`<div class="row" style="margin:0 0 12px"><div><h2>משתמשים</h2><div class="hint">${employees().length} עובדים</div></div><button class="btn" id="nu">${icon("plus",16)} עובד חדש</button></div>
+    <div class="days list">${users.map(u=>`<button class="it" data-u="${u.id}"><div class="nm"><b>${esc(u.name)} ${u.role==="admin"?'<span class="badge">ADMIN</span>':""}${u.locked?' <span class="badge lock">חסום</span>':""}</b>
       <span><span dir="ltr">${esc(u.email||u.username||"")}</span>${u.emp_no?" · מס׳ "+esc(u.emp_no):""}${u.last_seen?" · כניסה אחרונה "+new Date(u.last_seen).toLocaleDateString("he-IL"):""}</span></div>${icon("left",16)}</button>`).join("")}</div>`;
   $("#nu").onclick=()=>userModal(null);
   v.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>userModal(users.find(u=>u.id===b.dataset.u)));
 }
-function permsBox(perms,dis){ return `<div id="permbox">${PERMS.map(([k,n])=>`<label class="check"><input type="checkbox" data-p="${k}" ${perms&&perms[k]?"checked":""} ${dis?"disabled":""}> ${n}</label>`).join("")}</div>`; }
-function readPerms(){ const p={}; document.querySelectorAll("[data-p]").forEach(c=>p[c.dataset.p]=c.checked); return p; }
 function userModal(u){
-  const admin=S.me.role==="admin", self=u&&u.id===S.me.id, isAdm=u&&u.role==="admin";
-  const canEdit=!u||admin&&(!isAdm||self)||(!admin&&u.role==="user");
+  const self=u&&u.id===S.me.id;
   $("#modal-root").innerHTML=`<div class="modal"><div class="sheet">
     <div class="row" style="margin-top:0"><h2>${u?esc(u.name):"עובד חדש"}</h2><button class="ib" id="mx">${icon("x")}</button></div>
     ${u?`<div class="hint">${u.username?`שם משתמש: <b dir="ltr">${esc(u.username)}</b> · `:""}${u.created_at?"נפתח "+new Date(u.created_at).toLocaleDateString("he-IL"):""}</div>`:""}
-    <div class="two"><div><label class="lbl">שם מלא</label><input class="field" id="un" maxlength="60" value="${esc(u?u.name:"")}" ${canEdit?"":"disabled"}></div>
-      <div><label class="lbl">מספר עובד</label><input class="field ltr" id="ue" maxlength="30" dir="ltr" value="${esc(u?u.emp_no:"")}" ${canEdit?"":"disabled"}></div></div>
-    <label class="lbl">אימייל ${u?"":`<span class="hint">(העובד ייכנס איתו)</span>`}</label><input class="field ltr" id="um" type="email" dir="ltr" maxlength="120" value="${esc(u&&u.email||"")}" ${canEdit?"":"disabled"} autocomplete="off">
+    <div class="two"><div><label class="lbl">שם מלא</label><input class="field" id="un" maxlength="60" value="${esc(u?u.name:"")}"></div>
+      <div><label class="lbl">מספר עובד</label><input class="field ltr" id="ue" maxlength="30" dir="ltr" value="${esc(u?u.emp_no:"")}"></div></div>
+    <label class="lbl">אימייל לכניסה</label><input class="field ltr" id="um" type="email" dir="ltr" maxlength="120" value="${esc(u&&u.email||"")}" autocomplete="off">
     ${u?"":`<label class="lbl">שם משתמש <span class="hint">(לא חובה אם הוזן אימייל)</span></label><input class="field ltr" id="uu" dir="ltr" autocapitalize="off" spellcheck="false" autocomplete="off">
-      <label class="lbl">סיסמה ראשונית <span class="hint">(לא חובה אם הוזן אימייל)</span></label><input class="field ltr" id="up" dir="ltr" autocomplete="off">
-      <label class="check"><input type="checkbox" id="uinv" checked> לשלוח לעובד מייל לבחירת סיסמה משלו</label>
-      <div class="hint">עם אימייל: העובד מקבל קישור, או נכנס ב"כניסה ראשונה" ובוחר סיסמה. בלי אימייל: מוסרים לו שם משתמש וסיסמה.</div>`}
-    ${admin&&!isAdm?`<label class="lbl">תפקיד</label><select class="field" id="ur"><option value="user" ${!u||u.role==="user"?"selected":""}>עובד</option><option value="manager" ${u&&u.role==="manager"?"selected":""}>מנהל (גם מזין שעות)</option></select>
-      <div id="pw" ${u&&u.role==="manager"?"":"hidden"}><div class="hint">הרשאות המנהל (מנהל תמיד רואה את השעות של כל העובדים):</div>${permsBox(u?u.perms:{editHours:true},false)}</div>`:""}
+      <label class="lbl">סיסמה</label><input class="field ltr" id="up" dir="ltr" autocomplete="off">
+      <div class="hint">לפחות 6 תווים. מוסרים לעובד את האימייל (או שם המשתמש) והסיסמה. אחרי הכניסה הוא יכול לשנות את הסיסמה בעצמו.</div>`}
     <div class="err" id="uerr"></div>
-    ${canEdit?`<button class="btn block" id="usave">${icon("check",16)} ${u?"שמירה":"יצירת העובד"}</button>`:""}
-    ${u&&canEdit&&!self?`<div class="card" style="margin:16px 0 0;background:#f8fafc">
+    <button class="btn block" id="usave">${icon("check",16)} ${u?"שמירה":"יצירת העובד"}</button>
+    ${u&&!self?`<div class="card" style="margin:16px 0 0;background:#f8fafc">
       <label class="lbl" style="margin-top:0">איפוס סיסמה</label>
-      ${u.email?`<button class="btn ghost block" id="usend" style="margin-bottom:8px">${icon("key",16)} שליחת מייל לעובד לבחירת סיסמה חדשה</button><div class="hint" style="margin-bottom:6px">או קביעת סיסמה ידנית:</div>`:""}
-      <div class="tw"><input class="field ltr" id="upw" dir="ltr" placeholder="סיסמה חדשה" autocomplete="off"><button class="btn ghost" id="upwgo">קביעה</button></div>
+      <div class="tw"><input class="field ltr" id="upw" dir="ltr" placeholder="סיסמה חדשה" autocomplete="off"><button class="btn ghost" id="upwgo">איפוס</button></div>
       <div class="row"><button class="btn ghost" id="ulock">${icon("lock",16)} ${u.locked?"ביטול חסימה":"חסימת החשבון"}</button><button class="btn danger" id="udel">${icon("trash",16)} מחיקה</button></div>
       <div class="hint">מחיקה מסירה את החשבון ואת כל השעות שלו. חסימה מונעת כניסה ושומרת את הנתונים.</div></div>`:""}
   </div></div>`;
   $("#mx").onclick=closeModal;
-  const ur=$("#ur"); if(ur) ur.onchange=()=>{ $("#pw").hidden=ur.value!=="manager"; };
   const err=$("#uerr"), say=(t,ok)=>{ err.className=ok?"ok":"err"; err.textContent=t; };
-  const sv=$("#usave"); if(sv) sv.onclick=async()=>{
-    const name=$("#un").value.trim(), emp_no=$("#ue").value.trim(), em=$("#um").value.trim().toLowerCase(); if(!name) return say("נא להזין שם");
+  $("#usave").onclick=async()=>{
+    const sv=$("#usave"), name=$("#un").value.trim(), emp_no=$("#ue").value.trim(), em=$("#um").value.trim().toLowerCase(); if(!name) return say("נא להזין שם");
     if(em&&!validEmail(em)) return say(API_ERR.bad_email);
     sv.disabled=true; err.className="err"; err.innerHTML='<span class="spin"></span>';
     try{
       if(!u){ const un=normUser($("#uu").value), pw=$("#up").value;
-        if(!em&&!un) throw {code:"need_login"}; if(un&&!validUser(un)) throw {code:"bad_username"}; if(!em&&pw.length<6) throw {code:"weak_password"}; if(pw&&pw.length<6) throw {code:"weak_password"};
-        const r=await api("create_user",{username:un,email:em,password:pw,invite:!!em&&$("#uinv").checked,name,emp_no,role:ur?ur.value:"user",perms:ur&&ur.value==="manager"?readPerms():undefined});
-        closeModal(); refresh();
-        if(em&&$("#uinv")&&r.sent===false) toast("העובד נוצר, אבל המייל לא נשלח – צריך להגדיר שליחת מיילים. אפשר לקבוע לו סיסמה ידנית.",6000);
-        else toast(r.sent?"העובד נוצר ✓ נשלח אליו מייל לבחירת סיסמה":"העובד נוצר ✓",4000); return; }
-      const patch={name,emp_no}; if(ur){ patch.role=ur.value; if(ur.value==="manager") patch.perms=readPerms(); }
-      const {error}=await S.sb.rpc("admin_update",{target:u.id,patch}); if(error) throw {code:"forbidden"};
+        if(!em&&!un) throw {code:"need_login"}; if(un&&!validUser(un)) throw {code:"bad_username"}; if(pw.length<6) throw {code:"weak_password"};
+        await api("create_user",{username:un,email:em,password:pw,name,emp_no}); closeModal(); toast("העובד נוצר ✓"); return refresh(); }
+      const {error}=await S.sb.rpc("admin_update",{target:u.id,patch:{name,emp_no}}); if(error) throw {code:"forbidden"};
       if(em!==(u.email||"")) await api("set_email",{user_id:u.id,email:em});
       toast("נשמר ✓"); if(self) await loadMe(); closeModal(); refresh();
     }catch(x){ sv.disabled=false; say(apiErr(x)); }
   };
-  const sd=$("#usend"); if(sd) sd.onclick=async()=>{ sd.disabled=true; try{ await api("send_reset",{user_id:u.id}); say(`נשלח מייל ל-${u.email} עם קישור לבחירת סיסמה.`,true); }catch(x){ say(apiErr(x)); } sd.disabled=false; };
   const pg=$("#upwgo"); if(pg) pg.onclick=async()=>{ const pw=$("#upw").value; if(pw.length<6) return say(API_ERR.weak_password);
-    try{ await api("reset_password",{user_id:u.id,password:pw}); say("הסיסמה נקבעה. מסרו אותה לעובד – הוא יוכל לשנות אותה אחר כך.",true); $("#upw").value=""; }catch(x){ say(apiErr(x)); } };
+    try{ await api("reset_password",{user_id:u.id,password:pw}); say("הסיסמה אופסה. מסרו לעובד את הסיסמה החדשה.",true); $("#upw").value=""; }catch(x){ say(apiErr(x)); } };
   const lk=$("#ulock"); if(lk) lk.onclick=async()=>{ const {error}=await S.sb.rpc("admin_update",{target:u.id,patch:{locked:!u.locked}}); if(error) return say(apiErr({code:"forbidden"})); closeModal(); toast(u.locked?"החסימה בוטלה":"החשבון נחסם"); refresh(); };
   const dl=$("#udel"); if(dl) dl.onclick=async()=>{ if(!confirm(`למחוק את ${u.name} ואת כל השעות שלו? אי אפשר לבטל את זה.`)) return;
     try{ await api("delete_user",{user_id:u.id}); closeModal(); toast("המשתמש נמחק"); refresh(); }catch(x){ say(apiErr(x)); } };
 }
 
-/* ========================== staff: settings ========================== */
+/* ========================== admin: settings ========================== */
 function viewSettings(){
   const c=S.cfg, v=$("#view");
   v.innerHTML=`<div class="card"><h2>הגדרות</h2>
@@ -537,12 +611,11 @@ function viewSettings(){
     <label class="lbl">יום עבודה רגיל (שעות) – ממנו מחושבות שעות נוספות</label><input class="field ltr" id="gh" type="number" step="0.1" min="1" max="24" dir="ltr" value="${c.stdHours||8.6}">
     <div class="hint">בשבוע של 5 ימים: 8.6 שעות. בשבוע של 6 ימים: 8 שעות. השעתיים הראשונות מעבר לזה נספרות כ-125%, ומעבר להן כ-150%.</div>
     <label class="check"><input type="checkbox" id="go" ${c.overtime!==false?"checked":""}> להציג שעות נוספות במסכים ובדוחות</label>
-    <label class="lbl">כמה חודשים אחורה עובד יכול לשנות שעות</label><select class="field" id="gm">${[0,1,2,3,4,6].map(n=>`<option value="${n}" ${(c.editMonths==null?2:+c.editMonths)===n?"selected":""}>${n===0?"רק החודש הנוכחי":n===1?"חודש אחד אחורה":n+" חודשים אחורה"}</option>`).join("")}</select>
-    <div class="hint">הספירה מתחילה מה-1 בחודש. למשל: "2 חודשים אחורה" בנובמבר = מ-1 בספטמבר. מנהלים עם הרשאת עריכה יכולים לשנות כל יום.</div>
     <label class="check"><input type="checkbox" id="gs" ${c.allowSignup===true?"checked":""}> לאפשר לעובדים להירשם בעצמם (בלי שהמנהל יפתח להם חשבון)</label>
+    <div class="hint" style="margin-top:12px">כללי ההזנה: עובד מזין את היום הנוכחי ישירות, רואה את החודש הנוכחי וחודשיים אחורה, ומבקש תיקונים לימים מה-1 בחודש הקודם – באישור המנהל בלשונית "אישורים".</div>
     <div class="ok" id="gok"></div><button class="btn" id="gsave">${icon("check",16)} שמירת ההגדרות</button></div>`;
   $("#gsave").onclick=async()=>{
-    const d={...S.cfg,company:$("#gc").value.trim(),stdHours:Math.min(24,Math.max(1,Number($("#gh").value)||8.6)),overtime:$("#go").checked,editMonths:parseInt($("#gm").value,10),allowSignup:$("#gs").checked};
+    const d={...S.cfg,company:$("#gc").value.trim(),stdHours:Math.min(24,Math.max(1,Number($("#gh").value)||8.6)),overtime:$("#go").checked,allowSignup:$("#gs").checked};
     const {error}=await S.sb.from("app_config").update({data:d,updated_at:new Date().toISOString()}).eq("id",1);
     const ok=$("#gok"); if(error){ ok.className="err"; ok.textContent="השמירה נכשלה"; return; } S.cfg=d; ok.className="ok"; ok.textContent="ההגדרות נשמרו ✓";
   };
@@ -550,28 +623,41 @@ function viewSettings(){
 
 /* ========================== reports ========================== */
 const KIND_HE={work:"עבודה",vacation:"חופש",sick:"מחלה"};
-function reportRows(list,ym){
-  const map={}; list.forEach(e=>map[e.day]=e); const out=[];
-  for(let d=1;d<=daysIn(ym);d++){ const day=`${ym}-${pad(d)}`, e=map[day], m=entryMin(e), o=splitOT(m);
-    out.push({day,d,dow:dowOf(day),e,m,o}); }
-  return out;
-}
-const fileBase=(u,ym)=>`דוח נוכחות - ${u.name} - ${ym}`.replace(/[\\/:*?"<>|]/g,"");
-function reportHTML(user,list,ym){
-  const ot=S.cfg.overtime!==false, rows=reportRows(list,ym), s=monthSummary(list);
-  return `<div class="rep"><div class="rh"><div><div class="co">${esc(S.cfg.company||"")}</div><h1>דוח נוכחות חודשי</h1></div><div style="text-align:left;font-size:11px">${esc(APP_NAME)}<br>הופק: ${new Date().toLocaleString("he-IL",{dateStyle:"short",timeStyle:"short"})}</div></div>
-    <div class="meta"><div>עובד/ת: <b>${esc(user.name)}</b></div><div>מס׳ עובד: <b>${esc(user.emp_no||"—")}</b></div><div>חודש: <b>${ymLabel(ym)}</b></div><div>שם משתמש: <b dir="ltr">${esc(user.username)}</b></div></div>
+function rangeDays(R){ const out=[]; for(let d=R.from; d<R.to; d=addDays(d,1)) out.push(d); return out; }
+function reportRows(list,R){ const map={}; list.forEach(e=>map[e.day]=e); return rangeDays(R).map(day=>{ const e=map[day], m=entryMin(e); return {day,dow:dowOf(day),e,m,o:splitOT(m)}; }); }
+const fileBase=(name,R)=>`דוח נוכחות ${PERIOD_HE[R.kind]} - ${name} - ${R.tag}`.replace(/[\\/:*?"<>|]/g,"");
+const nowStamp=()=>new Date().toLocaleString("he-IL",{dateStyle:"short",timeStyle:"short"});
+function repHead(title,sub){ return `<div class="rh"><div><div class="co">${esc(S.cfg.company||"")}</div><h1>${title}</h1>${sub?`<div style="font-size:12px">${sub}</div>`:""}</div><div style="text-align:left;font-size:11px">${esc(APP_NAME)}<br>הופק: ${nowStamp()}</div></div>`; }
+function reportHTML(user,list,R){
+  const ot=S.cfg.overtime!==false, rows=reportRows(list,R), s=summarize(list);
+  return `<div class="rep">${repHead(`דוח נוכחות ${PERIOD_HE[R.kind]}`,"")}
+    <div class="meta"><div>עובד/ת: <b>${esc(user.name)}</b></div><div>מס׳ עובד: <b>${esc(user.emp_no||"—")}</b></div><div>תקופה: <b>${esc(R.label)}</b></div><div></div></div>
     <table><thead><tr><th>תאריך</th><th>יום</th><th>סוג</th><th>כניסה</th><th>יציאה</th><th>הפסקה</th><th>סה״כ</th>${ot?"<th>רגילות</th><th>125%</th><th>150%</th>":""}<th>הערה</th></tr></thead><tbody>
-    ${rows.map(r=>{ const e=r.e, w=e&&e.kind==="work"; return `<tr class="${r.dow===5||r.dow===6?"we":""}"><td>${r.d}.${+ym.slice(5)}</td><td>${HEB_DAYS[r.dow]}</td><td>${e?KIND_HE[e.kind]:""}</td><td class="tm">${w?hhmm(e.start_time):""}</td><td class="tm">${w?hhmm(e.end_time):""}</td><td>${w&&e.break_min?e.break_min+"′":""}</td><td class="tm">${w?decH(r.m):""}</td>${ot?`<td class="tm">${w?decH(r.o.reg):""}</td><td class="tm">${w&&r.o.o1?decH(r.o.o1):""}</td><td class="tm">${w&&r.o.o2?decH(r.o.o2):""}</td>`:""}<td class="nt">${e?esc(e.note):""}</td></tr>`; }).join("")}
+    ${rows.map(r=>{ const e=r.e, w=e&&e.kind==="work"; return `<tr class="${r.dow===5||r.dow===6?"we":""}"><td>${dShort(r.day).slice(0,-5)}</td><td>${HEB_DAYS[r.dow]}</td><td>${e?KIND_HE[e.kind]:""}</td><td class="tm">${w?hhmm(e.start_time):""}</td><td class="tm">${w?hhmm(e.end_time):""}</td><td>${w&&e.break_min?e.break_min+"′":""}</td><td class="tm">${w?decH(r.m):""}</td>${ot?`<td class="tm">${w?decH(r.o.reg):""}</td><td class="tm">${w&&r.o.o1?decH(r.o.o1):""}</td><td class="tm">${w&&r.o.o2?decH(r.o.o2):""}</td>`:""}<td class="nt">${e?esc(e.note):""}</td></tr>`; }).join("")}
     </tbody></table>
     <div class="sum"><div>ימי עבודה<b>${s.days}</b></div><div>סה״כ שעות<b dir="ltr">${decH(s.min)} (${fmtH(s.min)})</b></div>${ot?`<div>שעות רגילות<b dir="ltr">${decH(s.reg)}</b></div><div>נוספות 125% / 150%<b dir="ltr">${decH(s.o1)} / ${decH(s.o2)}</b></div>`:""}<div>ימי חופש<b>${s.vac}</b></div><div>ימי מחלה<b>${s.sick}</b></div></div>
     <div class="sig"><div>חתימת העובד/ת</div><div>חתימת המנהל/ת</div></div>
     <div class="foot">השעות מוצגות בשעות עשרוניות (8.50 = 8 שעות ו-30 דקות). ההפסקות אינן נכללות בסה״כ.${ot?` שעות נוספות מחושבות מעבר ל-${S.cfg.stdHours||8.6} שעות ביום.`:""}</div></div>`;
 }
-function printReports(packs,ym){
+function combinedHTML(packs,R){
+  const ot=S.cfg.overtime!==false, T={days:0,min:0,reg:0,o1:0,o2:0,vac:0,sick:0};
+  const sums=packs.map(p=>{ const s=summarize(p.list); Object.keys(T).forEach(k=>T[k]+=s[k]); return {p,s}; });
+  const det=[]; packs.forEach(p=>{ const map={}; p.list.forEach(e=>map[e.day]=e);
+    rangeDays(R).forEach(day=>{ const e=map[day]; if(e||R.kind==="day") det.push({u:p.user,day,e,m:entryMin(e)}); }); });
+  return `<div class="rep">${repHead(`דוח נוכחות ${PERIOD_HE[R.kind]} מרוכז`,`תקופה: <b>${esc(R.label)}</b> · ${packs.length} עובדים`)}
+    <h3 style="font-size:13px;margin:6px 0">סיכום לפי עובד</h3>
+    <table><thead><tr><th>עובד/ת</th><th>מס׳</th><th>ימי עבודה</th><th>סה״כ שעות</th>${ot?"<th>רגילות</th><th>125%</th><th>150%</th>":""}<th>חופש</th><th>מחלה</th></tr></thead><tbody>
+    ${sums.map(({p,s})=>`<tr><td style="text-align:right">${esc(p.user.name)}</td><td>${esc(p.user.emp_no||"")}</td><td>${s.days}</td><td class="tm">${decH(s.min)}</td>${ot?`<td class="tm">${decH(s.reg)}</td><td class="tm">${decH(s.o1)}</td><td class="tm">${decH(s.o2)}</td>`:""}<td>${s.vac}</td><td>${s.sick}</td></tr>`).join("")}
+    <tr style="font-weight:700;background:#eef5fd"><td style="text-align:right">סה״כ</td><td></td><td>${T.days}</td><td class="tm">${decH(T.min)}</td>${ot?`<td class="tm">${decH(T.reg)}</td><td class="tm">${decH(T.o1)}</td><td class="tm">${decH(T.o2)}</td>`:""}<td>${T.vac}</td><td>${T.sick}</td></tr></tbody></table>
+    <h3 style="font-size:13px;margin:14px 0 6px">פירוט</h3>
+    ${det.length?`<table><thead><tr><th>עובד/ת</th><th>תאריך</th><th>יום</th><th>סוג</th><th>כניסה</th><th>יציאה</th><th>הפסקה</th><th>סה״כ</th><th>הערה</th></tr></thead><tbody>
+    ${det.map(r=>{ const e=r.e, w=e&&e.kind==="work"; return `<tr><td style="text-align:right">${esc(r.u.name)}</td><td>${dShort(r.day).slice(0,-5)}</td><td>${HEB_DAYS[dowOf(r.day)]}</td><td>${e?KIND_HE[e.kind]:"לא הוזן"}</td><td class="tm">${w?hhmm(e.start_time):""}</td><td class="tm">${w?hhmm(e.end_time):""}</td><td>${w&&e.break_min?e.break_min+"′":""}</td><td class="tm">${w?decH(r.m):""}</td><td class="nt">${e?esc(e.note):""}</td></tr>`; }).join("")}</tbody></table>`:`<p>אין רישומים בתקופה הזו.</p>`}
+    <div class="foot">השעות מוצגות בשעות עשרוניות (8.50 = 8 שעות ו-30 דקות). ההפסקות אינן נכללות בסה״כ.</div></div>`;
+}
+function printReports(packs,R,combined){
   if(!packs.length) return toast("אין נתונים להדפסה");
-  const root=$("#print-root"); root.innerHTML=packs.map(p=>reportHTML(p.user,p.list,ym)).join("");
-  const t=document.title; document.title=packs.length===1?fileBase(packs[0].user,ym):`דוחות נוכחות - ${ym}`;
+  const root=$("#print-root"); root.innerHTML=combined?combinedHTML(packs,R):packs.map(p=>reportHTML(p.user,p.list,R)).join("");
+  const t=document.title; document.title=packs.length===1&&!combined?fileBase(packs[0].user.name,R):fileBase(combined?"מרוכז":"עובדים",R);
   document.body.classList.add("printing");
   const done=()=>{ document.body.classList.remove("printing"); document.title=t; root.innerHTML=""; window.removeEventListener("afterprint",done); };
   window.addEventListener("afterprint",done);
@@ -580,29 +666,36 @@ function printReports(packs,ym){
 }
 let XLSX_P=null;
 function loadXLSX(){ if(window.XLSX) return Promise.resolve(); if(!XLSX_P) XLSX_P=new Promise((res,rej)=>{ const s=document.createElement("script"); s.src="lib/xlsx.full.min.js"; s.onload=res; s.onerror=()=>{ XLSX_P=null; rej(); }; document.head.appendChild(s); }); return XLSX_P; }
-async function excelReports(packs,ym,withSummary){
+async function excelReports(packs,R,combined){
   if(!packs.length) return toast("אין נתונים לייצוא");
   try{ await loadXLSX(); }catch(e){ return toast("לא הצלחתי לטעון את רכיב ה-Excel. נסו שוב."); }
   const ot=S.cfg.overtime!==false, wb=XLSX.utils.book_new(), used=new Set();
   const sheetName=n=>{ let b=String(n).replace(/[\\\/\?\*\[\]:]/g,"").slice(0,28)||"עובד", s=b, i=2; while(used.has(s)) s=b.slice(0,25)+" "+(i++); used.add(s); return s; };
-  const h2=m=>Math.round(m/60*100)/100;
-  if(withSummary){
+  const h2=m=>Math.round(m/60*100)/100, dmy=s=>{ const [y,m,d]=s.split("-"); return `${d}/${m}/${y}`; };
+  const title=`${S.cfg.company||""} – דוח נוכחות ${PERIOD_HE[R.kind]} – ${R.label}`;
+  if(packs.length>1||combined){
     const head=["שם","מס׳ עובד","ימי עבודה","סה״כ שעות",...(ot?["רגילות","נוספות 125%","נוספות 150%"]:[]),"ימי חופש","ימי מחלה"];
-    const aoa=[[`${S.cfg.company||""} – סיכום נוכחות ${ymLabel(ym)}`],[],head];
-    packs.forEach(p=>{ const s=monthSummary(p.list); aoa.push([p.user.name,p.user.emp_no||"",s.days,h2(s.min),...(ot?[h2(s.reg),h2(s.o1),h2(s.o2)]:[]),s.vac,s.sick]); });
+    const aoa=[[title],[],head];
+    packs.forEach(p=>{ const s=summarize(p.list); aoa.push([p.user.name,p.user.emp_no||"",s.days,h2(s.min),...(ot?[h2(s.reg),h2(s.o1),h2(s.o2)]:[]),s.vac,s.sick]); });
     const ws=XLSX.utils.aoa_to_sheet(aoa); ws["!cols"]=head.map((_,i)=>({wch:i===0?24:13})); XLSX.utils.book_append_sheet(wb,ws,sheetName("סיכום"));
   }
-  packs.forEach(p=>{
-    const rows=reportRows(p.list,ym), s=monthSummary(p.list);
+  if(combined){
+    const head=["עובד/ת","מס׳ עובד","תאריך","יום","סוג","כניסה","יציאה","הפסקה (דק׳)","סה״כ שעות",...(ot?["רגילות","125%","150%"]:[]),"הערה"];
+    const aoa=[[title],[],head];
+    packs.forEach(p=>reportRows(p.list,R).forEach(r=>{ const e=r.e, w=e&&e.kind==="work"; if(!e&&R.kind!=="day") return;
+      aoa.push([p.user.name,p.user.emp_no||"",dmy(r.day),HEB_DAYS[r.dow],e?KIND_HE[e.kind]:"לא הוזן",w?hhmm(e.start_time):"",w?hhmm(e.end_time):"",w?e.break_min:"",w?h2(r.m):"",...(ot?[w?h2(r.o.reg):"",w?h2(r.o.o1):"",w?h2(r.o.o2):""]:[]),e?e.note:""]); }));
+    const ws=XLSX.utils.aoa_to_sheet(aoa); ws["!cols"]=head.map((h,i)=>({wch:i===0?22:i===head.length-1?30:11})); XLSX.utils.book_append_sheet(wb,ws,sheetName("פירוט"));
+  } else packs.forEach(p=>{
+    const rows=reportRows(p.list,R), s=summarize(p.list);
     const head=["תאריך","יום","סוג","כניסה","יציאה","הפסקה (דק׳)","סה״כ שעות",...(ot?["רגילות","125%","150%"]:[]),"הערה"];
-    const aoa=[[`${S.cfg.company||""} – דוח נוכחות חודשי`],[`עובד/ת: ${p.user.name}`,"",`מס׳ עובד: ${p.user.emp_no||"—"}`,"",`חודש: ${ymLabel(ym)}`],[],head];
-    rows.forEach(r=>{ const e=r.e, w=e&&e.kind==="work"; aoa.push([`${pad(r.d)}/${ym.slice(5)}/${ym.slice(0,4)}`,HEB_DAYS[r.dow],e?KIND_HE[e.kind]:"",w?hhmm(e.start_time):"",w?hhmm(e.end_time):"",w?e.break_min:"",w?h2(r.m):"",...(ot?[w?h2(r.o.reg):"",w?h2(r.o.o1):"",w?h2(r.o.o2):""]:[]),e?e.note:""]); });
+    const aoa=[[title],[`עובד/ת: ${p.user.name}`,"",`מס׳ עובד: ${p.user.emp_no||"—"}`],[],head];
+    rows.forEach(r=>{ const e=r.e, w=e&&e.kind==="work"; aoa.push([dmy(r.day),HEB_DAYS[r.dow],e?KIND_HE[e.kind]:"",w?hhmm(e.start_time):"",w?hhmm(e.end_time):"",w?e.break_min:"",w?h2(r.m):"",...(ot?[w?h2(r.o.reg):"",w?h2(r.o.o1):"",w?h2(r.o.o2):""]:[]),e?e.note:""]); });
     aoa.push([]); aoa.push(["סיכום","","ימי עבודה",s.days,"","סה״כ שעות",h2(s.min),...(ot?[h2(s.reg),h2(s.o1),h2(s.o2)]:[])]); aoa.push(["","","ימי חופש",s.vac,"","ימי מחלה",s.sick]);
     const ws=XLSX.utils.aoa_to_sheet(aoa); ws["!cols"]=head.map((h,i)=>({wch:i===head.length-1?30:i===0?12:10}));
     XLSX.utils.book_append_sheet(wb,ws,sheetName(p.user.name));
   });
   wb.Workbook={Views:[{RTL:true}]};
-  XLSX.writeFile(wb,(packs.length===1&&!withSummary?fileBase(packs[0].user,ym):`דוחות נוכחות - ${ym}`)+".xlsx");
+  XLSX.writeFile(wb,(packs.length===1&&!combined?fileBase(packs[0].user.name,R):fileBase(combined?"מרוכז":"עובדים",R))+".xlsx");
 }
 
 /* ========================== boot ========================== */
@@ -610,19 +703,15 @@ async function excelReports(packs,ym,withSummary){
   try{
     const cfg=await (await fetch("/api/config")).json();
     if(!cfg.supabaseUrl||!cfg.supabaseAnonKey||!window.supabase) return renderSetupNeeded();
-    S.sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey,{auth:{persistSession:true,storageKey:"lirad.sb",autoRefreshToken:true,detectSessionInUrl:true,flowType:"implicit"}});
-    S.sb.auth.onAuthStateChange(ev=>{ if(ev==="PASSWORD_RECOVERY") setTimeout(renderSetPassword,0); });
+    S.sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey,{auth:{persistSession:true,storageKey:"lirad.sb",autoRefreshToken:true,detectSessionInUrl:false}});
   }catch(e){ return renderSetupNeeded(); }
-  const hash=new URLSearchParams(location.hash.slice(1)), recovery=/^(recovery|invite|magiclink)$/.test(hash.get("type")||"");
-  if(hash.get("error_code")){ history.replaceState(null,"",location.pathname); await loadCfg(); return renderLogin(hash.get("error_code")==="otp_expired"?"הקישור פג תוקף או שכבר השתמשו בו. בקשו קישור חדש.":"הקישור לא תקין. בקשו קישור חדש."); }
   await loadCfg();
   const {data:{session}}=await S.sb.auth.getSession();
-  if(recovery&&session){ history.replaceState(null,"",location.pathname); return renderSetPassword(); }
   if(session) return enter(null);
   try{ const h=await (await fetch("/api/admin")).json(); if(h.needsSetup) return renderFirstRun(); }catch(e){}
-  renderLogin();
+  renderLanding();
 })();
-document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"&&S.me&&!$(".modal")) refresh(); });
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"&&S.me&&!$(".modal")&&S.tab!=="reports") refresh(); });
 </script>
 </body>
 </html>
