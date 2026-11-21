@@ -124,8 +124,13 @@ svg.i{width:18px;height:18px;flex:none}
 .urow{padding:0!important}.urow .ubody{flex:1;display:flex;align-items:center;gap:10px;padding:12px;background:none;border:0;text-align:right;min-width:0}.urow .ubody:hover{background:#f8fafc}
 .urow .del{margin-inline-end:10px;color:var(--bad);border-color:#fecaca}.urow .del:hover{background:var(--bad-soft)}
 .set h3{display:flex;align-items:center;gap:8px;margin-bottom:4px}
-.pdf-host{position:fixed;left:-10000px;top:0;width:794px;background:#fff;padding:0;z-index:-1}
-.pdf-doc{width:100%;background:#fff;direction:rtl;letter-spacing:.01px}.pdf-doc .rep{font-size:10.5px}.pdf-doc .rep table{table-layout:auto}
+.pdf-host{position:fixed;left:-10000px;top:0;width:718px;background:#fff;padding:0;z-index:-1}
+.pdf-doc{width:718px!important;max-width:718px;box-sizing:border-box;margin:0;padding:0;background:#fff;direction:rtl;letter-spacing:.01px;overflow:hidden}
+.pdf-doc .rep{min-width:0!important;width:100%;box-sizing:border-box;margin:0;padding:0;border:0}
+.pdf-doc .rep table{width:100%;max-width:100%}
+.pdf-doc .rep th,.pdf-doc .rep td{padding:2px 4px;line-height:1.3}.pdf-doc .rep .rh{padding-bottom:6px;margin-bottom:8px}.pdf-doc .rep .meta{margin-bottom:8px}.pdf-doc .rep .sum{margin-top:8px}.pdf-doc .rep .sig{margin-top:18px}.pdf-doc .rep .foot{margin-top:6px}
+.pdf-doc .rep td.nt{max-width:none;width:24%;word-break:break-word;overflow-wrap:anywhere}
+.pdf-doc .rep .rh,.pdf-doc .rep .sum,.pdf-doc .rep .sig,.pdf-doc .rep .foot{max-width:100%;box-sizing:border-box}.pdf-doc .rep{font-size:10.5px}.pdf-doc .rep table{table-layout:auto}
 
 .top .burger{position:relative;flex:none}.top .burger .cnt.dot{position:absolute;top:-4px;left:-4px;background:#ef4444;color:#fff;border-radius:999px;font-size:11px;min-width:18px;height:18px;padding:0 4px;display:grid;place-items:center}
 .brand span{font-size:16px;color:var(--ink)}
@@ -1055,6 +1060,7 @@ function combinedHTML(packs,R){
 }
 let PDF_P=null;
 function loadPDF(){ if(window.html2pdf) return Promise.resolve(); if(!PDF_P) PDF_P=new Promise((res,rej)=>{ const sc=document.createElement("script"); sc.src="lib/html2pdf.bundle.min.js"; sc.onload=res; sc.onerror=()=>{ PDF_P=null; rej(); }; document.head.appendChild(sc); }); return PDF_P; }
+const PDF_W=718;
 async function downloadPDF(packs,R,combined){
   if(!packs.length) return toast("אין נתונים לדוח");
   toast("מכין את קובץ ה-PDF…",8000);
@@ -1065,8 +1071,10 @@ async function downloadPDF(packs,R,combined){
   const name=(packs.length===1&&!combined?fileBase(packs[0].user.name,R):fileBase(combined?"מרוכז":"עובדים",R))+".pdf";
   try{
     await Promise.all([...host.querySelectorAll("img")].map(im=>im.complete?0:new Promise(r=>{ im.onload=im.onerror=r; })));
-    await html2pdf().set({margin:[8,8,10,8],filename:name,image:{type:"jpeg",quality:0.95},html2canvas:{scale:2,backgroundColor:"#ffffff",scrollX:0,scrollY:0},
-      jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},pagebreak:{mode:["css","legacy"],avoid:["tr",".sum",".sig",".rh",".meta"]}}).from(doc).save();
+    // A4 = 210mm; 10mm margins each side → 190mm print width = 718px. Render the report at exactly that width,
+    // independent of the phone's screen width, so nothing spills past the margins.
+    await html2pdf().set({margin:[10,10,12,10],filename:name,image:{type:"jpeg",quality:0.95},html2canvas:{scale:2,backgroundColor:"#ffffff",scrollX:0,scrollY:0},
+      jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},pagebreak:{mode:["css","legacy"],avoid:["tr",".sum",".sig",".rh",".meta",".foot"]}}).from(doc).save();
     toast("הקובץ ירד ✓");
   }catch(e){ console.error(e); toast("יצירת ה-PDF נכשלה. נסו שוב."); }
   host.remove();
