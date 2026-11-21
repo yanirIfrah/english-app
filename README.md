@@ -1,17 +1,13 @@
-# לומדים אנגלית – Learn English
+# לירד שעון נוכחות
 
-Web edition (Vercel + Supabase).
+אפליקציית ניהול שעות עבודה לעובדים (Vercel + Supabase).
 
-- `public/` – the app (static, built by `build.py` from the shared source)
-- `api/` – Vercel serverless functions: `config`, `admin` (user management, uses the service key), `claude` (optional AI features)
-- `supabase/schema.sql` – database schema, row-level security and admin functions
+- `public/` – האפליקציה (קובץ אחד, עברית, מותאם לנייד)
+- `api/` – פונקציות שרת: `config`, `admin` (ניהול משתמשים עם מפתח השרת)
+- `supabase/schema.sql` – מסד הנתונים, הרשאות (RLS) ופונקציות ניהול
 
-## Vercel environment variables
-| Name | Where from |
-|---|---|
-| `SUPABASE_URL` | Supabase → Project Settings → API |
-| `SUPABASE_ANON_KEY` | Supabase → API Keys (anon / publishable) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → API Keys (secret / service_role) – server only |
-| `ANTHROPIC_API_KEY` | optional – enables plan generation, scanning and auto-translation |
+## משתני סביבה ב-Vercel
+- `SUPABASE_URL`, `SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY` – סודי, צד שרת בלבד
 
-The first account that registers becomes ADMIN.
+המשתמש הראשון שנרשם הופך ל-ADMIN.

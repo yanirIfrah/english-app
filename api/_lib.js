@@ -1,7 +1,7 @@
 export const SB_URL = process.env.SUPABASE_URL;
 export const SRK = process.env.SUPABASE_SERVICE_ROLE_KEY;
 export const ANON = process.env.SUPABASE_ANON_KEY;
-export const EMAIL_DOMAIN = "users.lomdim-anglit.app";
+export const EMAIL_DOMAIN = "users.lirad-shaon.app";
 export const toEmail = u => "u" + Buffer.from(String(u).toLowerCase(), "utf8").toString("hex") + "@" + EMAIL_DOMAIN;
 export const validUser = u => /^[a-z0-9֐-׿._-]{3,20}$/.test(u);
 
@@ -26,6 +26,6 @@ export async function caller(req) {
   const r = await fetch(SB_URL + "/auth/v1/user", { headers: { apikey: ANON || SRK, Authorization: h } });
   if (!r.ok) return null;
   const u = await r.json();
-  const p = await admin(`/rest/v1/profiles?id=eq.${u.id}&select=id,role,mgr_perms,username,locked`);
+  const p = await admin(`/rest/v1/profiles?id=eq.${u.id}&select=id,role,perms,username,locked`);
   return (p.ok && Array.isArray(p.j) && p.j[0]) || null;
 }
