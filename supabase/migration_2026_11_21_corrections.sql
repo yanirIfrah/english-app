@@ -98,3 +98,7 @@ revoke execute on function public.admin_update(uuid, jsonb) from public, anon;
 grant execute on function public.admin_update(uuid, jsonb) to authenticated;
 
 alter publication supabase_realtime add table public.corrections;
+
+-- fix (21 Nov 2026): parameter "note" was ambiguous with corrections.note → qualified as decide_correction.note
+-- branches: profiles.branch, app_config.data.branches/corrMonths/viewMonths, corr_from() reads corrMonths, admin_update accepts branch
+alter table public.profiles add column if not exists branch text not null default '';

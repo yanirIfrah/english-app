@@ -19,6 +19,8 @@ async function createUser(b) {
     body: JSON.stringify({ email: email || toEmail(u), password: pw, email_confirm: true, user_metadata: { username: u || null, name, emp_no }, app_metadata: { via: "api" } })
   });
   if (!r.ok) return [r.status === 422 ? 409 : 400, { error: r.status === 422 ? (email ? "email_taken" : "taken") : "create_failed" }];
+  const branch = String(b.branch || "").trim().slice(0, 40);
+  if (branch) await admin(`/rest/v1/profiles?id=eq.${r.j.id}`, { method: "PATCH", body: JSON.stringify({ branch }) });
   return [200, { ok: true, id: r.j.id }];
 }
 const isAdmin = me => me && !me.locked && me.role === "admin";

@@ -118,6 +118,14 @@ svg.i{width:18px;height:18px;flex:none}
 .emps{max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:2px 12px 10px;margin-top:8px}
 .seg.two-seg{grid-template-columns:1fr 1fr}
 .prev{overflow:auto}.prev .rep{min-width:640px}.prev .rep+.rep{margin-top:24px;border-top:2px dashed var(--line);padding-top:16px}
+
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.chipf{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:600;color:var(--ink-2)}
+.chipf.on{background:var(--pri);border-color:var(--pri);color:#fff}
+.urow{padding:0!important}.urow .ubody{flex:1;display:flex;align-items:center;gap:10px;padding:12px;background:none;border:0;text-align:right;min-width:0}.urow .ubody:hover{background:#f8fafc}
+.urow .del{margin-inline-end:10px;color:var(--bad);border-color:#fecaca}.urow .del:hover{background:var(--bad-soft)}
+.set h3{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.pdf-host{position:fixed;left:-10000px;top:0;width:794px;background:#fff;padding:0;z-index:-1}
+.pdf-doc{width:100%;background:#fff;direction:rtl;letter-spacing:.01px}.pdf-doc .rep{font-size:10.5px}.pdf-doc .rep table{table-layout:auto}
 </style>
 </head>
 <body>
@@ -170,9 +178,11 @@ const hhmm=t=>t?String(t).slice(0,5):"";
 function entryMin(e){ if(!e||e.kind!=="work"||!e.start_time||!e.end_time) return 0; let m=tmin(e.end_time)-tmin(e.start_time); if(m<=0) m+=1440; return Math.max(0,m-(e.break_min||0)); }
 const fmtH=m=>`${Math.floor(m/60)}:${pad(Math.round(m%60))}`;
 const decH=m=>(Math.round(m/60*100)/100).toFixed(2);
-function splitOT(m){ const std=Math.round((Number(S.cfg.stdHours)||8.6)*60); const reg=Math.min(m,std), o1=Math.min(Math.max(m-std,0),120), o2=Math.max(m-std-120,0); return {reg,o1,o2}; }
-const VIEW_FROM=()=>ymAdd(curYM(),-2);                 // employee sees this month and two back
-const CORR_FROM=()=>ymAdd(curYM(),-1)+"-01";           // corrections: from the 1st of last month, until yesterday
+function splitOT(m){ const std=Math.round((Number(S.cfg.stdHours)||8.6)*60), t1=Math.round((S.cfg.ot125Hours==null?2:Number(S.cfg.ot125Hours))*60); const reg=Math.min(m,std), o1=Math.min(Math.max(m-std,0),t1), o2=Math.max(m-std-t1,0); return {reg,o1,o2}; }
+const cfgInt=(k,d,lo,hi)=>{ const v=parseInt(S.cfg[k],10); return isNaN(v)?d:Math.min(hi,Math.max(lo,v)); };
+const VIEW_FROM=()=>ymAdd(curYM(),-cfgInt("viewMonths",2,0,12));      // employee sees this month and N back
+const CORR_FROM=()=>ymAdd(curYM(),-cfgInt("corrMonths",1,0,3))+"-01"; // corrections: from the 1st of N months back, until yesterday
+const BRANCHES=()=>Array.isArray(S.cfg.branches)?S.cfg.branches.filter(Boolean):[];
 function entryText(e){ if(!e) return "לא הוזן"; if(e.action==="delete") return "מחיקת הרישום"; if(e.kind==="vacation") return "יום חופש"; if(e.kind==="sick") return "יום מחלה"; return `\u2066${hhmm(e.start_time)}–${hhmm(e.end_time)}\u2069${e.break_min?` (הפסקה ${e.break_min} דק׳)`:""} · ${fmtH(entryMin(e))}`; }
 
 /* ========================== state & server ========================== */
@@ -398,7 +408,7 @@ async function viewMonth(uid,adminView){
     ${own?`<div class="hint" style="margin:-4px 0 10px">את היום מזינים ישירות. לתיקון יום קודם (מ-${dShort(CORR_FROM())} ואילך) לוחצים עליו ושולחים בקשה – השינוי ייכנס אחרי אישור המנהל.</div>`:""}
     <div class="days">${rows.join("")}</div>
     <div class="card"><div class="row" style="margin:0"><div><h3>דוח חודשי – ${ymLabel(S.ym)}</h3><div class="hint">${adminView?"דוח לעובד הזה":"ריכוז השעות שלך לחודש"}</div></div>
-      <div class="actions"><button class="btn ghost" id="xpdf">${icon("file",16)} PDF</button><button class="btn ghost" id="xxls">${icon("sheet",16)} Excel</button></div></div></div>`;
+      <div class="actions"><button class="btn" id="xpdf">${icon("file",16)} הורדת PDF</button></div></div></div>`;
   $("#pm").onclick=()=>{ S.ym=ymAdd(S.ym,-1); refresh(); };
   $("#nm").onclick=()=>{ S.ym=ymAdd(S.ym,1); refresh(); };
   const bk=$("#bk"); if(bk) bk.onclick=()=>{ S.view=null; refresh(); };
@@ -406,12 +416,11 @@ async function viewMonth(uid,adminView){
   v.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{ const m=b.dataset.mode, day=b.dataset.day;
     if(m==="lock") return toast(day>todayStr()?"אי אפשר להזין ימים עתידיים.":"את היום הזה כבר אי אפשר לתקן. לשינוי פנו למנהל."); dayModal(uid,day,m); });
   const R=monthRange(S.ym);
-  $("#xpdf").onclick=()=>printReports([{user,list}],R);
-  $("#xxls").onclick=()=>excelReports([{user,list}],R,false);
+  $("#xpdf").onclick=()=>downloadPDF([{user,list}],R,false);
 }
 function lastWorkDefaults(){ const ws=Object.values(S.ent).filter(e=>e.kind==="work").sort((a,b)=>b.day<a.day?-1:1); const l=ws[0];
   let p={}; try{ p=JSON.parse(localStorage.getItem("lirad.last")||"{}"); }catch(e){}
-  return {start:hhmm(l&&l.start_time)||p.start||"08:00",end:hhmm(l&&l.end_time)||p.end||"17:00",brk:l?l.break_min:(p.brk!=null?p.brk:30)}; }
+  const db=S.cfg.defBreak!=null?Number(S.cfg.defBreak):30; return {start:hhmm(l&&l.start_time)||p.start||S.cfg.defStart||"08:00",end:hhmm(l&&l.end_time)||p.end||S.cfg.defEnd||"17:00",brk:l?l.break_min:(p.brk!=null?p.brk:db)}; }
 function dayModal(uid,day,mode){
   const e=S.ent[day], c=S.corr[day], pend=c&&c.status==="pending"?c:null, src=pend&&pend.action!=="delete"?pend:e, def=lastWorkDefaults();
   const st={kind:src?src.kind:"work",start:src&&src.kind==="work"?hhmm(src.start_time):def.start,end:src&&src.kind==="work"?hhmm(src.end_time):def.end,brk:src&&src.kind==="work"?src.break_min:def.brk,note:src?src.note:"",reason:pend?pend.reason:""};
@@ -448,6 +457,7 @@ function dayModal(uid,day,mode){
     keep(); const err=$("#derr");
     if(action==="upsert"&&st.kind==="work"){ if(!st.start||!st.end) return err.textContent="נא למלא שעת כניסה ושעת יציאה"; if(st.start===st.end) return err.textContent="שעת היציאה זהה לשעת הכניסה";
       if(entryMin({kind:"work",start_time:st.start,end_time:st.end,break_min:st.brk})<=0) return err.textContent="ההפסקה ארוכה מזמן העבודה"; }
+    if(req&&S.cfg.requireReason!==false&&!st.reason.trim()) return err.textContent="נא לכתוב את סיבת התיקון";
     if(action==="delete"&&!confirm("לשלוח למנהל בקשה למחוק את הרישום של היום הזה?")) return;
     err.innerHTML='<span class="spin"></span>';
     if(req){
@@ -477,18 +487,22 @@ async function viewTeam(){
   const v=$("#view"), from=S.ym+"-01", to=ymAdd(S.ym,1)+"-01";
   const [users,list]=await Promise.all([loadUsers(),loadEntries(from,to,null)]); if(!$("#view")) return;
   const by={}; list.forEach(e=>(by[e.user_id]=by[e.user_id]||[]).push(e));
-  const ot=S.cfg.overtime!==false, act=employees().filter(u=>!u.locked||by[u.id]);
+  const ot=S.cfg.overtime!==false, allAct=employees().filter(u=>!u.locked||by[u.id]), brs=BRANCHES();
+  if(S.teamBranch&&S.teamBranch!=="_none"&&!brs.includes(S.teamBranch)) S.teamBranch="";
+  const act=allAct.filter(u=>!S.teamBranch||(S.teamBranch==="_none"?!u.branch:u.branch===S.teamBranch));
   const tot=summarize(list.filter(e=>act.some(u=>u.id===e.user_id)));
   v.innerHTML=`<div class="month"><button class="ib" id="pm" aria-label="החודש הקודם">${icon("right",20)}</button><h2>${ymLabel(S.ym)}</h2><button class="ib" id="nm" aria-label="החודש הבא" ${S.ym>=ymAdd(curYM(),1)?"disabled":""}>${icon("left",20)}</button></div>
     <div class="stats"><div class="stat"><div class="v">${act.length}</div><div class="l">עובדים</div></div><div class="stat"><div class="v" dir="ltr">${fmtH(tot.min)}</div><div class="l">סה״כ שעות</div></div>
       ${ot?`<div class="stat ot"><div class="v" dir="ltr">${fmtH(tot.o1+tot.o2)}</div><div class="l">שעות נוספות</div></div>`:""}<div class="stat vac"><div class="v">${tot.vac}</div><div class="l">ימי חופש</div></div><div class="stat sick"><div class="v">${tot.sick}</div><div class="l">ימי מחלה</div></div></div>
+    ${brs.length?`<div class="chips"><button class="chipf ${!S.teamBranch?"on":""}" data-br="">כל הסניפים (${allAct.length})</button>${brs.map(b=>`<button class="chipf ${S.teamBranch===b?"on":""}" data-br="${esc(b)}">${esc(b)} (${allAct.filter(u=>u.branch===b).length})</button>`).join("")}${allAct.some(u=>!u.branch)?`<button class="chipf ${S.teamBranch==="_none"?"on":""}" data-br="_none">ללא סניף (${allAct.filter(u=>!u.branch).length})</button>`:""}</div>`:""}
     ${S.pending?`<button class="card pendcard" id="gopend">${icon("inbox",18)} <b>${S.pending} בקשות תיקון ממתינות לאישור</b> ${icon("left",16)}</button>`:""}
     <div class="days list">${act.map(u=>{ const s=summarize(by[u.id]||[]); return `<button class="it" data-u="${u.id}">
       <div class="nm"><b>${esc(u.name)}${u.locked?' <span class="badge lock">חסום</span>':""}</b>
-        <span>${u.emp_no?"מס׳ "+esc(u.emp_no)+" · ":""}${s.days} ימי עבודה${s.vac?` · ${s.vac} חופש`:""}${s.sick?` · ${s.sick} מחלה`:""}</span></div>
+        <span>${u.branch?esc(u.branch)+" · ":""}${u.emp_no?"מס׳ "+esc(u.emp_no)+" · ":""}${s.days} ימי עבודה${s.vac?` · ${s.vac} חופש`:""}${s.sick?` · ${s.sick} מחלה`:""}</span></div>
       <div class="fig"><b>${fmtH(s.min)}</b>שעות${ot&&(s.o1+s.o2)?` · נוספות ${fmtH(s.o1+s.o2)}`:""}</div>${icon("left",16)}</button>`; }).join("")||`<div class="empty">אין עובדים עדיין. פותחים עובד חדש בלשונית "משתמשים".</div>`}</div>`;
   $("#pm").onclick=()=>{ S.ym=ymAdd(S.ym,-1); refresh(); }; $("#nm").onclick=()=>{ S.ym=ymAdd(S.ym,1); refresh(); };
   const gp=$("#gopend"); if(gp) gp.onclick=()=>{ S.tab="approve"; render(); };
+  v.querySelectorAll("[data-br]").forEach(b=>b.onclick=()=>{ S.teamBranch=b.dataset.br; refresh(); });
   v.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.u; refresh(); scrollTo(0,0); });
 }
 
@@ -535,40 +549,52 @@ async function viewReports(){
     <label class="lbl" for="rd">${RP.period==="day"?"תאריך":RP.period==="week"?"יום כלשהו בשבוע (שבוע מתחיל ביום ראשון)":"חודש"}</label>
     ${RP.period==="month"?`<input class="field ltr" id="rd" type="month" dir="ltr" value="${RP.date.slice(0,7)}">`:`<input class="field ltr" id="rd" type="date" dir="ltr" value="${RP.date}">`}
     <div class="hint" style="margin-top:6px">${esc(R.label)}</div>
-    <div class="row" style="margin-bottom:0"><label class="lbl" style="margin:0">עובדים (${RP.sel.size} נבחרו)</label><div class="actions"><button class="link" id="rall" type="button">כולם</button><button class="link" id="rnone" type="button">ניקוי</button></div></div>
-    <div class="emps">${emps.map(u=>`<label class="check"><input type="checkbox" data-e="${u.id}" ${RP.sel.has(u.id)?"checked":""}> ${esc(u.name)}${u.emp_no?` <span class="hint" style="display:inline">(${esc(u.emp_no)})</span>`:""}${u.locked?' <span class="badge lock">חסום</span>':""}</label>`).join("")||`<div class="hint">אין עובדים עדיין.</div>`}</div>
+    <div class="row" style="margin-bottom:0"><label class="lbl" style="margin:0" id="rcount">עובדים (${RP.sel.size} נבחרו)</label><div class="actions"><button class="link" id="rall" type="button">כולם</button><button class="link" id="rnone" type="button">ניקוי</button></div></div>
+    ${BRANCHES().length?`<div class="chips" style="margin-top:8px">${BRANCHES().map(b=>`<button class="chipf" data-rb="${esc(b)}" type="button">${esc(b)}</button>`).join("")}</div>`:""}
+    <div class="emps">${emps.map(u=>`<label class="check"><input type="checkbox" data-e="${u.id}" ${RP.sel.has(u.id)?"checked":""}> ${esc(u.name)}${u.branch?` <span class="hint" style="display:inline">· ${esc(u.branch)}</span>`:""}${u.emp_no?` <span class="hint" style="display:inline">(${esc(u.emp_no)})</span>`:""}${u.locked?' <span class="badge lock">חסום</span>':""}</label>`).join("")||`<div class="hint">אין עובדים עדיין.</div>`}</div>
     <label class="lbl">מבנה הדוח</label><div class="seg two-seg"><button data-l="combined" class="${RP.layout==="combined"?"on":""}">דוח אחד מרוכז</button><button data-l="separate" class="${RP.layout==="separate"?"on":""}">עמוד נפרד לכל עובד</button></div>
-    <div class="row"><button class="btn ghost" id="rprev">${icon("chart",16)} תצוגה מקדימה</button><div class="actions"><button class="btn" id="rpdf">${icon("file",16)} PDF</button><button class="btn" id="rxls">${icon("sheet",16)} Excel</button></div></div>
+    <div class="row"><button class="btn ghost" id="rprev">${icon("chart",16)} תצוגה מקדימה</button><button class="btn" id="rpdf">${icon("file",16)} הורדת PDF</button></div>
     <div class="err" id="rerr"></div></div><div id="rout"></div>`;
   v.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{ RP.period=b.dataset.p; viewReports(); });
   v.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{ RP.layout=b.dataset.l; v.querySelectorAll("[data-l]").forEach(x=>x.classList.toggle("on",x===b)); });
   $("#rd").onchange=()=>{ const x=$("#rd").value; if(!x) return; RP.date=RP.period==="month"?x+"-01":x; viewReports(); };
-  v.querySelectorAll("[data-e]").forEach(c=>c.onchange=()=>{ c.checked?RP.sel.add(c.dataset.e):RP.sel.delete(c.dataset.e); v.querySelector(".row .lbl").textContent=`עובדים (${RP.sel.size} נבחרו)`; });
+  v.querySelectorAll("[data-e]").forEach(c=>c.onchange=()=>{ c.checked?RP.sel.add(c.dataset.e):RP.sel.delete(c.dataset.e); $("#rcount").textContent=`עובדים (${RP.sel.size} נבחרו)`; });
+  v.querySelectorAll("[data-rb]").forEach(b=>b.onclick=()=>{ RP.sel=new Set(emps.filter(u=>u.branch===b.dataset.rb).map(u=>u.id)); viewReports(); });
   $("#rall").onclick=()=>{ RP.sel=new Set(emps.map(u=>u.id)); viewReports(); };
   $("#rnone").onclick=()=>{ RP.sel=new Set(); viewReports(); };
   const build=async()=>{ const sel=emps.filter(u=>RP.sel.has(u.id)); if(!sel.length){ $("#rerr").textContent="בחרו לפחות עובד אחד"; return null; } $("#rerr").textContent="";
     const all=await loadEntries(R.from,R.to,null); return sel.map(u=>({user:u,list:all.filter(e=>e.user_id===u.id)})); };
   $("#rprev").onclick=async()=>{ const packs=await build(); if(!packs) return; $("#rout").innerHTML=`<div class="card prev">${RP.layout==="combined"?combinedHTML(packs,R):packs.map(p=>reportHTML(p.user,p.list,R)).join("")}</div>`; $("#rout").scrollIntoView({behavior:"smooth"}); };
-  $("#rpdf").onclick=async()=>{ const packs=await build(); if(packs) printReports(packs,R,RP.layout==="combined"); };
-  $("#rxls").onclick=async()=>{ const packs=await build(); if(packs) excelReports(packs,R,RP.layout==="combined"); };
+  $("#rpdf").onclick=async()=>{ const packs=await build(); if(packs) downloadPDF(packs,R,RP.layout==="combined"); };
 }
 
 /* ========================== admin: users ========================== */
 async function viewUsers(){
   const v=$("#view"), users=await loadUsers(); if(!$("#view")) return;
   v.innerHTML=`<div class="row" style="margin:0 0 12px"><div><h2>משתמשים</h2><div class="hint">${employees().length} עובדים</div></div><button class="btn" id="nu">${icon("plus",16)} עובד חדש</button></div>
-    <div class="days list">${users.map(u=>`<button class="it" data-u="${u.id}"><div class="nm"><b>${esc(u.name)} ${u.role==="admin"?'<span class="badge">ADMIN</span>':""}${u.locked?' <span class="badge lock">חסום</span>':""}</b>
-      <span><span dir="ltr">${esc(u.email||u.username||"")}</span>${u.emp_no?" · מס׳ "+esc(u.emp_no):""}${u.last_seen?" · כניסה אחרונה "+new Date(u.last_seen).toLocaleDateString("he-IL"):""}</span></div>${icon("left",16)}</button>`).join("")}</div>`;
+    <div class="days list">${users.map(u=>{ const del=u.role!=="admin"; return `<div class="it urow"><button class="ubody" data-u="${u.id}"><div class="nm"><b>${esc(u.name)} ${u.role==="admin"?'<span class="badge">ADMIN</span>':""}${u.locked?' <span class="badge lock">חסום</span>':""}</b>
+      <span>${u.branch?`<span class="badge gray">${esc(u.branch)}</span> `:""}<span dir="ltr">${esc(u.email||u.username||"")}</span>${u.emp_no?" · מס׳ "+esc(u.emp_no):""}${u.last_seen?" · כניסה אחרונה "+new Date(u.last_seen).toLocaleDateString("he-IL"):""}</span></div></button>
+      ${del?`<button class="ib del" data-del="${u.id}" title="מחיקת העובד" aria-label="מחיקת ${esc(u.name)}">${icon("trash",17)}</button>`:""}</div>`; }).join("")}</div>`;
   $("#nu").onclick=()=>userModal(null);
   v.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>userModal(users.find(u=>u.id===b.dataset.u)));
+  v.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>deleteUser(users.find(u=>u.id===b.dataset.del)));
 }
+async function deleteUser(u){
+  if(!u) return;
+  if(!confirm(`למחוק את ${u.name}?\n\nהחשבון וכל השעות והבקשות שלו יימחקו לצמיתות, ואי אפשר לשחזר אותם.\nאם רוצים רק למנוע כניסה ולשמור את הנתונים – עדיף "חסימת החשבון".`)) return;
+  try{ await api("delete_user",{user_id:u.id}); closeModal(); toast(`${u.name} נמחק/ה מהמערכת`); refresh(); }
+  catch(x){ toast(apiErr(x),4000); }
+}
+function branchSelect(id,val){ const brs=BRANCHES(); if(!brs.length) return ""; const extra=val&&!brs.includes(val)?[val]:[];
+  return `<label class="lbl">סניף</label><select class="field" id="${id}"><option value="">— ללא סניף —</option>${[...brs,...extra].map(b=>`<option ${b===val?"selected":""}>${esc(b)}</option>`).join("")}</select>`; }
 function userModal(u){
-  const self=u&&u.id===S.me.id;
+  const self=u&&u.id===S.me.id, isAdm=u&&u.role==="admin";
   $("#modal-root").innerHTML=`<div class="modal"><div class="sheet">
     <div class="row" style="margin-top:0"><h2>${u?esc(u.name):"עובד חדש"}</h2><button class="ib" id="mx">${icon("x")}</button></div>
     ${u?`<div class="hint">${u.username?`שם משתמש: <b dir="ltr">${esc(u.username)}</b> · `:""}${u.created_at?"נפתח "+new Date(u.created_at).toLocaleDateString("he-IL"):""}</div>`:""}
     <div class="two"><div><label class="lbl">שם מלא</label><input class="field" id="un" maxlength="60" value="${esc(u?u.name:"")}"></div>
       <div><label class="lbl">מספר עובד</label><input class="field ltr" id="ue" maxlength="30" dir="ltr" value="${esc(u?u.emp_no:"")}"></div></div>
+    ${isAdm?"":branchSelect("ub",u?u.branch:"")}
     <label class="lbl">אימייל לכניסה</label><input class="field ltr" id="um" type="email" dir="ltr" maxlength="120" value="${esc(u&&u.email||"")}" autocomplete="off">
     ${u?"":`<label class="lbl">שם משתמש <span class="hint">(לא חובה אם הוזן אימייל)</span></label><input class="field ltr" id="uu" dir="ltr" autocapitalize="off" spellcheck="false" autocomplete="off">
       <label class="lbl">סיסמה</label><input class="field ltr" id="up" dir="ltr" autocomplete="off">
@@ -578,20 +604,21 @@ function userModal(u){
     ${u&&!self?`<div class="card" style="margin:16px 0 0;background:#f8fafc">
       <label class="lbl" style="margin-top:0">איפוס סיסמה</label>
       <div class="tw"><input class="field ltr" id="upw" dir="ltr" placeholder="סיסמה חדשה" autocomplete="off"><button class="btn ghost" id="upwgo">איפוס</button></div>
-      <div class="row"><button class="btn ghost" id="ulock">${icon("lock",16)} ${u.locked?"ביטול חסימה":"חסימת החשבון"}</button><button class="btn danger" id="udel">${icon("trash",16)} מחיקה</button></div>
-      <div class="hint">מחיקה מסירה את החשבון ואת כל השעות שלו. חסימה מונעת כניסה ושומרת את הנתונים.</div></div>`:""}
+      <label class="lbl">הסרת העובד</label>
+      <div class="actions"><button class="btn ghost" id="ulock">${icon("lock",16)} ${u.locked?"ביטול חסימה":"חסימה (שומרת נתונים)"}</button>${isAdm?"":`<button class="btn danger" id="udel">${icon("trash",16)} מחיקה לצמיתות</button>`}</div>
+      <div class="hint">חסימה מונעת כניסה ושומרת את השעות לדוחות. מחיקה מסירה את החשבון ואת כל השעות שלו.</div></div>`:""}
   </div></div>`;
   $("#mx").onclick=closeModal;
   const err=$("#uerr"), say=(t,ok)=>{ err.className=ok?"ok":"err"; err.textContent=t; };
   $("#usave").onclick=async()=>{
-    const sv=$("#usave"), name=$("#un").value.trim(), emp_no=$("#ue").value.trim(), em=$("#um").value.trim().toLowerCase(); if(!name) return say("נא להזין שם");
+    const sv=$("#usave"), name=$("#un").value.trim(), emp_no=$("#ue").value.trim(), em=$("#um").value.trim().toLowerCase(), branch=$("#ub")?$("#ub").value:(u?u.branch:""); if(!name) return say("נא להזין שם");
     if(em&&!validEmail(em)) return say(API_ERR.bad_email);
     sv.disabled=true; err.className="err"; err.innerHTML='<span class="spin"></span>';
     try{
       if(!u){ const un=normUser($("#uu").value), pw=$("#up").value;
         if(!em&&!un) throw {code:"need_login"}; if(un&&!validUser(un)) throw {code:"bad_username"}; if(pw.length<6) throw {code:"weak_password"};
-        await api("create_user",{username:un,email:em,password:pw,name,emp_no}); closeModal(); toast("העובד נוצר ✓"); return refresh(); }
-      const {error}=await S.sb.rpc("admin_update",{target:u.id,patch:{name,emp_no}}); if(error) throw {code:"forbidden"};
+        await api("create_user",{username:un,email:em,password:pw,name,emp_no,branch}); closeModal(); toast("העובד נוצר ✓"); return refresh(); }
+      const {error}=await S.sb.rpc("admin_update",{target:u.id,patch:{name,emp_no,branch}}); if(error) throw {code:"forbidden"};
       if(em!==(u.email||"")) await api("set_email",{user_id:u.id,email:em});
       toast("נשמר ✓"); if(self) await loadMe(); closeModal(); refresh();
     }catch(x){ sv.disabled=false; say(apiErr(x)); }
@@ -599,26 +626,55 @@ function userModal(u){
   const pg=$("#upwgo"); if(pg) pg.onclick=async()=>{ const pw=$("#upw").value; if(pw.length<6) return say(API_ERR.weak_password);
     try{ await api("reset_password",{user_id:u.id,password:pw}); say("הסיסמה אופסה. מסרו לעובד את הסיסמה החדשה.",true); $("#upw").value=""; }catch(x){ say(apiErr(x)); } };
   const lk=$("#ulock"); if(lk) lk.onclick=async()=>{ const {error}=await S.sb.rpc("admin_update",{target:u.id,patch:{locked:!u.locked}}); if(error) return say(apiErr({code:"forbidden"})); closeModal(); toast(u.locked?"החסימה בוטלה":"החשבון נחסם"); refresh(); };
-  const dl=$("#udel"); if(dl) dl.onclick=async()=>{ if(!confirm(`למחוק את ${u.name} ואת כל השעות שלו? אי אפשר לבטל את זה.`)) return;
-    try{ await api("delete_user",{user_id:u.id}); closeModal(); toast("המשתמש נמחק"); refresh(); }catch(x){ say(apiErr(x)); } };
+  const dl=$("#udel"); if(dl) dl.onclick=()=>deleteUser(u);
 }
 
 /* ========================== admin: settings ========================== */
 function viewSettings(){
-  const c=S.cfg, v=$("#view");
-  v.innerHTML=`<div class="card"><h2>הגדרות</h2>
-    <label class="lbl">שם החברה (מופיע בראש הדוחות)</label><input class="field" id="gc" maxlength="60" value="${esc(c.company||"")}">
-    <label class="lbl">יום עבודה רגיל (שעות) – ממנו מחושבות שעות נוספות</label><input class="field ltr" id="gh" type="number" step="0.1" min="1" max="24" dir="ltr" value="${c.stdHours||8.6}">
-    <div class="hint">בשבוע של 5 ימים: 8.6 שעות. בשבוע של 6 ימים: 8 שעות. השעתיים הראשונות מעבר לזה נספרות כ-125%, ומעבר להן כ-150%.</div>
-    <label class="check"><input type="checkbox" id="go" ${c.overtime!==false?"checked":""}> להציג שעות נוספות במסכים ובדוחות</label>
-    <label class="check"><input type="checkbox" id="gs" ${c.allowSignup===true?"checked":""}> לאפשר לעובדים להירשם בעצמם (בלי שהמנהל יפתח להם חשבון)</label>
-    <div class="hint" style="margin-top:12px">כללי ההזנה: עובד מזין את היום הנוכחי ישירות, רואה את החודש הנוכחי וחודשיים אחורה, ומבקש תיקונים לימים מה-1 בחודש הקודם – באישור המנהל בלשונית "אישורים".</div>
-    <div class="ok" id="gok"></div><button class="btn" id="gsave">${icon("check",16)} שמירת ההגדרות</button></div>`;
-  $("#gsave").onclick=async()=>{
-    const d={...S.cfg,company:$("#gc").value.trim(),stdHours:Math.min(24,Math.max(1,Number($("#gh").value)||8.6)),overtime:$("#go").checked,allowSignup:$("#gs").checked};
-    const {error}=await S.sb.from("app_config").update({data:d,updated_at:new Date().toISOString()}).eq("id",1);
-    const ok=$("#gok"); if(error){ ok.className="err"; ok.textContent="השמירה נכשלה"; return; } S.cfg=d; ok.className="ok"; ok.textContent="ההגדרות נשמרו ✓";
+  const c=S.cfg, v=$("#view"); let brs=[...BRANCHES()];
+  const opt=(vals,cur,lab)=>vals.map(n=>`<option value="${n}" ${+cur===n?"selected":""}>${lab(n)}</option>`).join("");
+  const draw=()=>{
+  v.innerHTML=`<h2 style="margin-bottom:12px">הגדרות</h2>
+    <div class="card set"><h3>${icon("file",17)} פרטי החברה (מופיעים בראש הדוחות)</h3>
+      <div class="two"><div><label class="lbl">שם החברה</label><input class="field" id="gc" maxlength="60" value="${esc(c.company||"")}"></div>
+        <div><label class="lbl">ח.פ / מספר עוסק</label><input class="field ltr" id="gid" maxlength="20" dir="ltr" value="${esc(c.companyId||"")}"></div></div>
+      <div class="two"><div><label class="lbl">כתובת</label><input class="field" id="gad" maxlength="80" value="${esc(c.address||"")}"></div>
+        <div><label class="lbl">טלפון</label><input class="field ltr" id="gph" maxlength="20" dir="ltr" value="${esc(c.phone||"")}"></div></div></div>
+    <div class="card set"><h3>${icon("users",17)} סניפים</h3><div class="hint">לכל עובד אפשר לשייך סניף. הסניף מופיע ברשימות ובדוחות, ואפשר לסנן לפיו.</div>
+      <div id="brl">${brs.map((b,i)=>`<div class="tw" style="margin-top:8px"><input class="field" data-bi="${i}" maxlength="40" value="${esc(b)}"><button class="ib" data-bx="${i}" type="button" title="הסרת הסניף">${icon("trash",16)}</button></div>`).join("")}</div>
+      <button class="btn ghost sm" id="badd" type="button" style="margin-top:10px">${icon("plus",15)} הוספת סניף</button></div>
+    <div class="card set"><h3>${icon("clock",17)} שעות עבודה ושעות נוספות</h3>
+      <div class="two"><div><label class="lbl">יום עבודה רגיל (שעות)</label><input class="field ltr" id="gh" type="number" step="0.1" min="1" max="24" dir="ltr" value="${c.stdHours||8.6}"></div>
+        <div><label class="lbl">שעות ב-125% לפני 150%</label><input class="field ltr" id="g125" type="number" step="0.5" min="0" max="12" dir="ltr" value="${c.ot125Hours==null?2:c.ot125Hours}"></div></div>
+      <div class="hint">בשבוע של 5 ימים: 8.6 שעות ביום; בשבוע של 6 ימים: 8 שעות.</div>
+      <label class="check"><input type="checkbox" id="go" ${c.overtime!==false?"checked":""}> להציג שעות נוספות במסכים ובדוחות</label>
+      <div class="two"><div><label class="lbl">שעת כניסה מוצעת</label><input class="field ltr" id="gds" type="time" dir="ltr" value="${c.defStart||"08:00"}"></div>
+        <div><label class="lbl">שעת יציאה מוצעת</label><input class="field ltr" id="gde" type="time" dir="ltr" value="${c.defEnd||"17:00"}"></div></div>
+      <label class="lbl">הפסקה מוצעת</label><select class="field" id="gdb">${opt([0,15,20,30,45,60],c.defBreak==null?30:c.defBreak,n=>n?n+" דקות":"ללא הפסקה")}</select>
+      <div class="hint">אלה ערכי ברירת המחדל בהזנה הראשונה של עובד. אחר כך מוצעות השעות האחרונות שהזין.</div></div>
+    <div class="card set"><h3>${icon("lock",17)} כללי דיווח ותיקונים</h3>
+      <div class="two"><div><label class="lbl">עובד רואה אחורה</label><select class="field" id="gvm">${opt([0,1,2,3,6,12],cfgInt("viewMonths",2,0,12),n=>n===0?"רק החודש הנוכחי":n===1?"חודש אחד":n+" חודשים")}</select></div>
+        <div><label class="lbl">תיקונים מותרים אחורה</label><select class="field" id="gcm">${opt([0,1,2,3],cfgInt("corrMonths",1,0,3),n=>n===0?"רק החודש הנוכחי":n===1?"חודש אחד":n+" חודשים")}</select></div></div>
+      <div class="hint">את היום הנוכחי עובד מזין ישירות. כל שינוי ליום קודם בטווח התיקונים נשלח לאישורך בלשונית "אישורים".</div>
+      <label class="check"><input type="checkbox" id="grr" ${c.requireReason!==false?"checked":""}> חובה לכתוב סיבה בבקשת תיקון</label>
+      <label class="check"><input type="checkbox" id="gs" ${c.allowSignup===true?"checked":""}> לאפשר לעובדים להירשם בעצמם (בלי שאפתח להם חשבון)</label></div>
+    <div class="err" id="gok"></div><button class="btn block" id="gsave">${icon("check",16)} שמירת כל ההגדרות</button>`;
+    const keepBr=()=>{ brs=[...v.querySelectorAll("[data-bi]")].map(x=>x.value); };
+    $("#badd").onclick=()=>{ keepBr(); keepAll(); brs.push(""); draw(); const l=v.querySelectorAll("[data-bi]"); l[l.length-1].focus(); };
+    v.querySelectorAll("[data-bx]").forEach(b=>b.onclick=()=>{ keepBr(); keepAll(); const name=brs[+b.dataset.bx], n=S.users.filter(u=>u.branch===name).length;
+      if(n&&!confirm(`לסניף "${name}" משויכים ${n} עובדים. להסיר את הסניף? העובדים יישארו משויכים לשם הישן עד שתשנה להם.`)) return; brs.splice(+b.dataset.bx,1); draw(); });
+    $("#gsave").onclick=save;
   };
+  const keepAll=()=>{ const g=id=>$("#"+id); Object.assign(c,{company:g("gc").value.trim(),companyId:g("gid").value.trim(),address:g("gad").value.trim(),phone:g("gph").value.trim(),stdHours:Number(g("gh").value)||8.6,ot125Hours:Number(g("g125").value),
+    overtime:g("go").checked,defStart:g("gds").value||"08:00",defEnd:g("gde").value||"17:00",defBreak:parseInt(g("gdb").value,10),viewMonths:parseInt(g("gvm").value,10),corrMonths:parseInt(g("gcm").value,10),requireReason:g("grr").checked,allowSignup:g("gs").checked}); };
+  const save=async()=>{
+    const ok=$("#gok"); brs=[...v.querySelectorAll("[data-bi]")].map(x=>x.value.trim()).filter(Boolean);
+    if(new Set(brs).size!==brs.length){ ok.className="err"; ok.textContent="יש שני סניפים עם אותו שם"; return; }
+    keepAll(); const d={...S.cfg,...c,branches:brs,stdHours:Math.min(24,Math.max(1,c.stdHours)),ot125Hours:Math.min(12,Math.max(0,isNaN(c.ot125Hours)?2:c.ot125Hours))};
+    const {error}=await S.sb.from("app_config").update({data:d,updated_at:new Date().toISOString()}).eq("id",1);
+    if(error){ ok.className="err"; ok.textContent="השמירה נכשלה"; return; } S.cfg=d; toast("ההגדרות נשמרו ✓"); viewSettings();
+  };
+  loadUsers().then(()=>{}); draw();
 }
 
 /* ========================== reports ========================== */
@@ -627,11 +683,12 @@ function rangeDays(R){ const out=[]; for(let d=R.from; d<R.to; d=addDays(d,1)) o
 function reportRows(list,R){ const map={}; list.forEach(e=>map[e.day]=e); return rangeDays(R).map(day=>{ const e=map[day], m=entryMin(e); return {day,dow:dowOf(day),e,m,o:splitOT(m)}; }); }
 const fileBase=(name,R)=>`דוח נוכחות ${PERIOD_HE[R.kind]} - ${name} - ${R.tag}`.replace(/[\\/:*?"<>|]/g,"");
 const nowStamp=()=>new Date().toLocaleString("he-IL",{dateStyle:"short",timeStyle:"short"});
-function repHead(title,sub){ return `<div class="rh"><div><div class="co">${esc(S.cfg.company||"")}</div><h1>${title}</h1>${sub?`<div style="font-size:12px">${sub}</div>`:""}</div><div style="text-align:left;font-size:11px">${esc(APP_NAME)}<br>הופק: ${nowStamp()}</div></div>`; }
+function repHead(title,sub){ const c=S.cfg, det=[c.companyId?"ח.פ "+esc(c.companyId):"",esc(c.address||""),c.phone?`<span dir="ltr">${esc(c.phone)}</span>`:""].filter(Boolean).join(" · ");
+  return `<div class="rh"><div><div class="co">${esc(c.company||"")}</div>${det?`<div style="font-size:10.5px;color:#475569">${det}</div>`:""}<h1>${title}</h1>${sub?`<div style="font-size:12px">${sub}</div>`:""}</div><div style="text-align:left;font-size:11px"><img src="logo.png" alt="" style="height:30px;display:block;margin:0 0 4px auto">הופק: ${nowStamp()}</div></div>`; }
 function reportHTML(user,list,R){
   const ot=S.cfg.overtime!==false, rows=reportRows(list,R), s=summarize(list);
   return `<div class="rep">${repHead(`דוח נוכחות ${PERIOD_HE[R.kind]}`,"")}
-    <div class="meta"><div>עובד/ת: <b>${esc(user.name)}</b></div><div>מס׳ עובד: <b>${esc(user.emp_no||"—")}</b></div><div>תקופה: <b>${esc(R.label)}</b></div><div></div></div>
+    <div class="meta"><div>עובד/ת: <b>${esc(user.name)}</b></div><div>מס׳ עובד: <b>${esc(user.emp_no||"—")}</b></div><div>סניף: <b>${esc(user.branch||"—")}</b></div><div>תקופה: <b>${esc(R.label)}</b></div></div>
     <table><thead><tr><th>תאריך</th><th>יום</th><th>סוג</th><th>כניסה</th><th>יציאה</th><th>הפסקה</th><th>סה״כ</th>${ot?"<th>רגילות</th><th>125%</th><th>150%</th>":""}<th>הערה</th></tr></thead><tbody>
     ${rows.map(r=>{ const e=r.e, w=e&&e.kind==="work"; return `<tr class="${r.dow===5||r.dow===6?"we":""}"><td>${dShort(r.day).slice(0,-5)}</td><td>${HEB_DAYS[r.dow]}</td><td>${e?KIND_HE[e.kind]:""}</td><td class="tm">${w?hhmm(e.start_time):""}</td><td class="tm">${w?hhmm(e.end_time):""}</td><td>${w&&e.break_min?e.break_min+"′":""}</td><td class="tm">${w?decH(r.m):""}</td>${ot?`<td class="tm">${w?decH(r.o.reg):""}</td><td class="tm">${w&&r.o.o1?decH(r.o.o1):""}</td><td class="tm">${w&&r.o.o2?decH(r.o.o2):""}</td>`:""}<td class="nt">${e?esc(e.note):""}</td></tr>`; }).join("")}
     </tbody></table>
@@ -646,56 +703,31 @@ function combinedHTML(packs,R){
     rangeDays(R).forEach(day=>{ const e=map[day]; if(e||R.kind==="day") det.push({u:p.user,day,e,m:entryMin(e)}); }); });
   return `<div class="rep">${repHead(`דוח נוכחות ${PERIOD_HE[R.kind]} מרוכז`,`תקופה: <b>${esc(R.label)}</b> · ${packs.length} עובדים`)}
     <h3 style="font-size:13px;margin:6px 0">סיכום לפי עובד</h3>
-    <table><thead><tr><th>עובד/ת</th><th>מס׳</th><th>ימי עבודה</th><th>סה״כ שעות</th>${ot?"<th>רגילות</th><th>125%</th><th>150%</th>":""}<th>חופש</th><th>מחלה</th></tr></thead><tbody>
-    ${sums.map(({p,s})=>`<tr><td style="text-align:right">${esc(p.user.name)}</td><td>${esc(p.user.emp_no||"")}</td><td>${s.days}</td><td class="tm">${decH(s.min)}</td>${ot?`<td class="tm">${decH(s.reg)}</td><td class="tm">${decH(s.o1)}</td><td class="tm">${decH(s.o2)}</td>`:""}<td>${s.vac}</td><td>${s.sick}</td></tr>`).join("")}
-    <tr style="font-weight:700;background:#eef5fd"><td style="text-align:right">סה״כ</td><td></td><td>${T.days}</td><td class="tm">${decH(T.min)}</td>${ot?`<td class="tm">${decH(T.reg)}</td><td class="tm">${decH(T.o1)}</td><td class="tm">${decH(T.o2)}</td>`:""}<td>${T.vac}</td><td>${T.sick}</td></tr></tbody></table>
+    <table><thead><tr><th>עובד/ת</th><th>מס׳</th><th>סניף</th><th>ימי עבודה</th><th>סה״כ שעות</th>${ot?"<th>רגילות</th><th>125%</th><th>150%</th>":""}<th>חופש</th><th>מחלה</th></tr></thead><tbody>
+    ${sums.map(({p,s})=>`<tr><td style="text-align:right">${esc(p.user.name)}</td><td>${esc(p.user.emp_no||"")}</td><td>${esc(p.user.branch||"")}</td><td>${s.days}</td><td class="tm">${decH(s.min)}</td>${ot?`<td class="tm">${decH(s.reg)}</td><td class="tm">${decH(s.o1)}</td><td class="tm">${decH(s.o2)}</td>`:""}<td>${s.vac}</td><td>${s.sick}</td></tr>`).join("")}
+    <tr style="font-weight:700;background:#eef5fd"><td style="text-align:right">סה״כ</td><td></td><td></td><td>${T.days}</td><td class="tm">${decH(T.min)}</td>${ot?`<td class="tm">${decH(T.reg)}</td><td class="tm">${decH(T.o1)}</td><td class="tm">${decH(T.o2)}</td>`:""}<td>${T.vac}</td><td>${T.sick}</td></tr></tbody></table>
     <h3 style="font-size:13px;margin:14px 0 6px">פירוט</h3>
     ${det.length?`<table><thead><tr><th>עובד/ת</th><th>תאריך</th><th>יום</th><th>סוג</th><th>כניסה</th><th>יציאה</th><th>הפסקה</th><th>סה״כ</th><th>הערה</th></tr></thead><tbody>
     ${det.map(r=>{ const e=r.e, w=e&&e.kind==="work"; return `<tr><td style="text-align:right">${esc(r.u.name)}</td><td>${dShort(r.day).slice(0,-5)}</td><td>${HEB_DAYS[dowOf(r.day)]}</td><td>${e?KIND_HE[e.kind]:"לא הוזן"}</td><td class="tm">${w?hhmm(e.start_time):""}</td><td class="tm">${w?hhmm(e.end_time):""}</td><td>${w&&e.break_min?e.break_min+"′":""}</td><td class="tm">${w?decH(r.m):""}</td><td class="nt">${e?esc(e.note):""}</td></tr>`; }).join("")}</tbody></table>`:`<p>אין רישומים בתקופה הזו.</p>`}
     <div class="foot">השעות מוצגות בשעות עשרוניות (8.50 = 8 שעות ו-30 דקות). ההפסקות אינן נכללות בסה״כ.</div></div>`;
 }
-function printReports(packs,R,combined){
-  if(!packs.length) return toast("אין נתונים להדפסה");
-  const root=$("#print-root"); root.innerHTML=combined?combinedHTML(packs,R):packs.map(p=>reportHTML(p.user,p.list,R)).join("");
-  const t=document.title; document.title=packs.length===1&&!combined?fileBase(packs[0].user.name,R):fileBase(combined?"מרוכז":"עובדים",R);
-  document.body.classList.add("printing");
-  const done=()=>{ document.body.classList.remove("printing"); document.title=t; root.innerHTML=""; window.removeEventListener("afterprint",done); };
-  window.addEventListener("afterprint",done);
-  toast("בחלון ההדפסה בחרו \"שמירה כ-PDF\"",3500);
-  setTimeout(()=>{ window.print(); setTimeout(()=>{ if(!matchMedia("print").matches) done(); },1500); },150);
-}
-let XLSX_P=null;
-function loadXLSX(){ if(window.XLSX) return Promise.resolve(); if(!XLSX_P) XLSX_P=new Promise((res,rej)=>{ const s=document.createElement("script"); s.src="lib/xlsx.full.min.js"; s.onload=res; s.onerror=()=>{ XLSX_P=null; rej(); }; document.head.appendChild(s); }); return XLSX_P; }
-async function excelReports(packs,R,combined){
-  if(!packs.length) return toast("אין נתונים לייצוא");
-  try{ await loadXLSX(); }catch(e){ return toast("לא הצלחתי לטעון את רכיב ה-Excel. נסו שוב."); }
-  const ot=S.cfg.overtime!==false, wb=XLSX.utils.book_new(), used=new Set();
-  const sheetName=n=>{ let b=String(n).replace(/[\\\/\?\*\[\]:]/g,"").slice(0,28)||"עובד", s=b, i=2; while(used.has(s)) s=b.slice(0,25)+" "+(i++); used.add(s); return s; };
-  const h2=m=>Math.round(m/60*100)/100, dmy=s=>{ const [y,m,d]=s.split("-"); return `${d}/${m}/${y}`; };
-  const title=`${S.cfg.company||""} – דוח נוכחות ${PERIOD_HE[R.kind]} – ${R.label}`;
-  if(packs.length>1||combined){
-    const head=["שם","מס׳ עובד","ימי עבודה","סה״כ שעות",...(ot?["רגילות","נוספות 125%","נוספות 150%"]:[]),"ימי חופש","ימי מחלה"];
-    const aoa=[[title],[],head];
-    packs.forEach(p=>{ const s=summarize(p.list); aoa.push([p.user.name,p.user.emp_no||"",s.days,h2(s.min),...(ot?[h2(s.reg),h2(s.o1),h2(s.o2)]:[]),s.vac,s.sick]); });
-    const ws=XLSX.utils.aoa_to_sheet(aoa); ws["!cols"]=head.map((_,i)=>({wch:i===0?24:13})); XLSX.utils.book_append_sheet(wb,ws,sheetName("סיכום"));
-  }
-  if(combined){
-    const head=["עובד/ת","מס׳ עובד","תאריך","יום","סוג","כניסה","יציאה","הפסקה (דק׳)","סה״כ שעות",...(ot?["רגילות","125%","150%"]:[]),"הערה"];
-    const aoa=[[title],[],head];
-    packs.forEach(p=>reportRows(p.list,R).forEach(r=>{ const e=r.e, w=e&&e.kind==="work"; if(!e&&R.kind!=="day") return;
-      aoa.push([p.user.name,p.user.emp_no||"",dmy(r.day),HEB_DAYS[r.dow],e?KIND_HE[e.kind]:"לא הוזן",w?hhmm(e.start_time):"",w?hhmm(e.end_time):"",w?e.break_min:"",w?h2(r.m):"",...(ot?[w?h2(r.o.reg):"",w?h2(r.o.o1):"",w?h2(r.o.o2):""]:[]),e?e.note:""]); }));
-    const ws=XLSX.utils.aoa_to_sheet(aoa); ws["!cols"]=head.map((h,i)=>({wch:i===0?22:i===head.length-1?30:11})); XLSX.utils.book_append_sheet(wb,ws,sheetName("פירוט"));
-  } else packs.forEach(p=>{
-    const rows=reportRows(p.list,R), s=summarize(p.list);
-    const head=["תאריך","יום","סוג","כניסה","יציאה","הפסקה (דק׳)","סה״כ שעות",...(ot?["רגילות","125%","150%"]:[]),"הערה"];
-    const aoa=[[title],[`עובד/ת: ${p.user.name}`,"",`מס׳ עובד: ${p.user.emp_no||"—"}`],[],head];
-    rows.forEach(r=>{ const e=r.e, w=e&&e.kind==="work"; aoa.push([dmy(r.day),HEB_DAYS[r.dow],e?KIND_HE[e.kind]:"",w?hhmm(e.start_time):"",w?hhmm(e.end_time):"",w?e.break_min:"",w?h2(r.m):"",...(ot?[w?h2(r.o.reg):"",w?h2(r.o.o1):"",w?h2(r.o.o2):""]:[]),e?e.note:""]); });
-    aoa.push([]); aoa.push(["סיכום","","ימי עבודה",s.days,"","סה״כ שעות",h2(s.min),...(ot?[h2(s.reg),h2(s.o1),h2(s.o2)]:[])]); aoa.push(["","","ימי חופש",s.vac,"","ימי מחלה",s.sick]);
-    const ws=XLSX.utils.aoa_to_sheet(aoa); ws["!cols"]=head.map((h,i)=>({wch:i===head.length-1?30:i===0?12:10}));
-    XLSX.utils.book_append_sheet(wb,ws,sheetName(p.user.name));
-  });
-  wb.Workbook={Views:[{RTL:true}]};
-  XLSX.writeFile(wb,(packs.length===1&&!combined?fileBase(packs[0].user.name,R):fileBase(combined?"מרוכז":"עובדים",R))+".xlsx");
+let PDF_P=null;
+function loadPDF(){ if(window.html2pdf) return Promise.resolve(); if(!PDF_P) PDF_P=new Promise((res,rej)=>{ const sc=document.createElement("script"); sc.src="lib/html2pdf.bundle.min.js"; sc.onload=res; sc.onerror=()=>{ PDF_P=null; rej(); }; document.head.appendChild(sc); }); return PDF_P; }
+async function downloadPDF(packs,R,combined){
+  if(!packs.length) return toast("אין נתונים לדוח");
+  toast("מכין את קובץ ה-PDF…",8000);
+  try{ await loadPDF(); }catch(e){ return toast("לא הצלחתי לטעון את רכיב ה-PDF. בדקו את החיבור ונסו שוב."); }
+  const host=document.createElement("div"); host.className="pdf-host";
+  host.innerHTML=`<div class="pdf-doc">${combined?combinedHTML(packs,R):packs.map(p=>reportHTML(p.user,p.list,R)).join("")}</div>`;
+  document.body.appendChild(host); const doc=host.firstElementChild;
+  const name=(packs.length===1&&!combined?fileBase(packs[0].user.name,R):fileBase(combined?"מרוכז":"עובדים",R))+".pdf";
+  try{
+    await Promise.all([...host.querySelectorAll("img")].map(im=>im.complete?0:new Promise(r=>{ im.onload=im.onerror=r; })));
+    await html2pdf().set({margin:[8,8,10,8],filename:name,image:{type:"jpeg",quality:0.95},html2canvas:{scale:2,backgroundColor:"#ffffff",scrollX:0,scrollY:0},
+      jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},pagebreak:{mode:["css","legacy"],avoid:["tr",".sum",".sig",".rh",".meta"]}}).from(doc).save();
+    toast("הקובץ ירד ✓");
+  }catch(e){ console.error(e); toast("יצירת ה-PDF נכשלה. נסו שוב."); }
+  host.remove();
 }
 
 /* ========================== boot ========================== */
