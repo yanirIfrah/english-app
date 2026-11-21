@@ -11,7 +11,7 @@
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <style>
-:root{--bg:#f4f6f8;--card:#fff;--ink:#0f172a;--ink-2:#334155;--muted:#64748b;--line:#e2e8f0;--pri:#5D9AE2;--pri-2:#3d7fcf;--pri-soft:#e3eefb;--ok:#059669;--ok-soft:#d1fae5;--warn:#b45309;--warn-soft:#fef3c7;--bad:#dc2626;--bad-soft:#fee2e2;--vac:#2563eb;--vac-soft:#dbeafe;--sick:#c2410c;--sick-soft:#ffedd5;--r:14px}
+:root{--bg:#f4f6f8;--card:#fff;--ink:#0f172a;--ink-2:#334155;--muted:#64748b;--line:#e2e8f0;--pri:#5D9AE2;--pri-2:#3d7fcf;--pri-soft:#e3eefb;--ok:#059669;--ok-soft:#d1fae5;--warn:#b45309;--warn-soft:#fef3c7;--bad:#dc2626;--bad-soft:#fee2e2;--vac:#5D9AE2;--vac-soft:#e3eefb;--sick:#dc2626;--sick-soft:#fee2e2;--r:14px}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Rubik,Arial,sans-serif;font-size:15.5px;line-height:1.5}
 button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
@@ -151,6 +151,33 @@ body.noscroll{overflow:hidden}
 .remind{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#f3f8fe;border-color:#bcd6f4}.remind>svg{color:var(--pri-2)}
 .rep tr.k-sick td,.rep .k-sick{color:#dc2626!important;font-weight:700}.rep tr.k-sick td{background:#fef2f2}
 .rep tr.k-vacation td,.rep .k-vacation{color:#5D9AE2!important;font-weight:700}.rep tr.k-vacation td{background:#eef5fd}
+
+.k-vac{color:var(--vac)!important;font-weight:700}.k-sick{color:var(--sick)!important;font-weight:700}
+.stat.vac .v,.stat.sick .v{font-weight:800}.pill.vac,.pill.sick{font-weight:700}
+.drow.vac b,.drow.vac span{color:var(--vac);font-weight:700}.drow.sick b,.drow.sick span{color:var(--sick);font-weight:700}
+.drow.lnk{width:calc(100% + 12px);margin:0 -6px;padding:5px 6px;background:none;border:0;border-radius:8px;cursor:pointer;font:inherit;text-align:inherit;align-items:center}
+.drow.lnk:hover,.drow.lnk:active{background:#f1f5f9}.drow.lnk b{display:inline-flex;align-items:center;gap:4px}.drow.lnk b svg{opacity:.6}
+.dlink{display:flex;align-items:center;gap:6px;width:100%;margin-top:6px;padding:8px 10px;border:1px dashed #bcd6f4;border-radius:10px;background:#f6faff;color:var(--pri-2);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.dmonth{margin-top:14px;padding:10px 12px 8px;border:1.5px solid #bcd6f4;border-radius:14px;background:linear-gradient(180deg,#eef5fd,#fff);box-shadow:0 2px 8px rgba(93,154,226,.12)}
+.dmt{display:flex;align-items:center;gap:6px;font-size:17px;font-weight:800;color:var(--pri-2);margin-bottom:4px}.dmtag{margin-inline-start:auto;font-size:11px;font-weight:700;background:var(--pri);color:#fff;border-radius:999px;padding:2px 8px}
+.lvh{display:flex;align-items:center;gap:6px;margin:16px 0 8px;font-size:16px}
+.lvcnt{font-size:13.5px}.lvdays{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}.lvdays i{font-style:normal;font-size:12px;font-weight:700;border-radius:6px;padding:1px 6px}
+.lvdays.big i{font-size:13.5px;padding:4px 9px}.ldv{background:var(--vac-soft);color:var(--vac)}.lds{background:var(--sick-soft);color:var(--sick)}.lvdays i.now{outline:2px solid currentColor}
+.seg button.vac.on{background:var(--vac);color:#fff}.seg button.sick.on{background:var(--sick);color:#fff}
+.sheet.pg{position:relative;max-width:440px}.pg-x{position:absolute;top:10px;left:10px}
+.pg-head{text-align:center;padding:6px 6px 0}.pg-head h2{margin:10px 0 6px;font-size:20px}.pg-head p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.6}
+.pg-bell{display:inline-flex;width:62px;height:62px;border-radius:50%;align-items:center;justify-content:center;background:var(--pri-soft);color:var(--pri-2);animation:ring 2.4s ease-in-out infinite}
+@keyframes ring{0%,70%,100%{transform:rotate(0)}75%{transform:rotate(14deg)}80%{transform:rotate(-12deg)}85%{transform:rotate(8deg)}90%{transform:rotate(-5deg)}}
+.pg-steps{list-style:none;margin:16px 0 4px;padding:0;display:grid;gap:10px}.pg-steps li{display:flex;align-items:center;gap:10px;background:#f8fafc;border:1px solid var(--line,#e2e8f0);border-radius:12px;padding:10px 12px}
+.pg-n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--pri);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}
+.pg-t{flex:1;display:flex;flex-direction:column;gap:2px;font-size:14.5px}.pg-t span{font-size:12.5px;color:var(--muted)}.pg-ic{flex:none;color:var(--pri-2);display:flex}.pg-app{width:34px;height:34px;border-radius:9px;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.pg-mock{margin:16px auto 0;max-width:300px;border-radius:14px;background:#fff;box-shadow:0 6px 24px rgba(15,23,42,.18);border:1px solid #e2e8f0;overflow:hidden;direction:rtl}
+.pg-mt{padding:14px 14px 10px;font-size:14px;font-weight:600;text-align:center}.pg-mb{display:flex;border-top:1px solid #e2e8f0}.pg-mb span{flex:1;text-align:center;padding:10px;font-size:14px;color:#64748b}
+.pg-mb span.hl{color:#fff;background:var(--pri);font-weight:800;animation:pulse 1.6s ease-in-out infinite}@keyframes pulse{0%,100%{box-shadow:inset 0 0 0 0 rgba(255,255,255,.0)}50%{box-shadow:inset 0 0 0 3px rgba(255,255,255,.7)}}
+.pg-tip{text-align:center;font-size:14px;color:var(--ink-2);margin:10px 0 0}.pg-act{justify-content:space-between;align-items:center;margin-top:16px}.pg-act .btn{flex:1}.pg-later{font-size:14px;padding:0 8px}
+.pg-arrow{position:fixed;left:50%;bottom:calc(10px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:80;display:flex;flex-direction:column;align-items:center;gap:2px;pointer-events:auto}
+.pg-arrow span{background:var(--pri-2);color:#fff;font-size:13.5px;font-weight:700;border-radius:12px;padding:8px 12px;display:inline-flex;align-items:center;gap:4px;box-shadow:0 4px 14px rgba(0,0,0,.25);white-space:nowrap}
+.pg-arrow b{font-size:30px;color:var(--pri-2);line-height:1;animation:bob 1s ease-in-out infinite}@keyframes bob{50%{transform:translateY(6px)}}
 </style>
 </head>
 <body>
@@ -172,6 +199,8 @@ const validEmail=e=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
 const APP_NAME="לירד שעון נוכחות";
 const LOGO=`<img src="logo.png" alt="lirad" class="lg">`;
 const ICONS={clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/>',
+ share:'<path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/>',plussq:'<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',phone:'<rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/>',
  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',cog:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
  left:'<path d="M15 18l-6-6 6-6"/>',right:'<path d="M9 18l6-6-6-6"/>',plus:'<path d="M12 5v14M5 12h14"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
  file:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',sheet:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
@@ -234,7 +263,7 @@ async function api(action,payload={}){
 }
 const API_ERR={taken:"שם המשתמש הזה כבר תפוס",email_taken:"כתובת האימייל הזו כבר רשומה אצל עובד אחר",signup_closed:"ההרשמה סגורה. חשבונות חדשים נפתחים על ידי המנהל.",weak_password:"הסיסמה צריכה להכיל לפחות 6 תווים",
  bad_username:"שם משתמש: 3–20 תווים – אותיות, מספרים, נקודה, קו תחתון או מקף, בלי רווחים",bad_email:"כתובת האימייל לא תקינה",bad_name:"נא להזין שם",need_login:"צריך להזין אימייל או שם משתמש",
- forbidden:"אין הרשאה לפעולה הזו",not_configured:"השרת עוד לא הוגדר",auth:"צריך להתחבר מחדש",rate_limited:"יותר מדי ניסיונות. נסו שוב בעוד כמה דקות."};
+ forbidden:"אין הרשאה לפעולה הזו",last_admin:"חייב להישאר לפחות ADMIN פעיל אחד במערכת",not_configured:"השרת עוד לא הוגדר",auth:"צריך להתחבר מחדש",rate_limited:"יותר מדי ניסיונות. נסו שוב בעוד כמה דקות."};
 const apiErr=e=>API_ERR[e&&e.code]||"משהו השתבש. נסו שוב.";
 async function loadCfg(){ try{ const {data}=await S.sb.from("app_config").select("data").eq("id",1).maybeSingle(); S.cfg=(data&&data.data)||{}; }catch(e){ S.cfg={}; } }
 async function loadMe(){
@@ -257,11 +286,13 @@ async function loadUsers(){ const {data}=await S.sb.from("profiles").select("*")
 const employees=()=>S.users.filter(u=>u.role!=="admin");
 function subscribe(){
   if(S.chan){ try{ S.sb.removeChannel(S.chan); }catch(e){} }
-  const again=()=>{ clearTimeout(S._rt); S._rt=setTimeout(async()=>{ if(isAdmin()){ await loadPendingCount(); paintBadge(); } if(!$(".modal")&&S.tab!=="reports") refresh(); },700); };
+  const again=()=>{ clearTimeout(S._rt); S._rt=setTimeout(async()=>{ if(isAdmin()){ await loadPendingCount(); paintBadge(); } if(!$(".modal")&&S.tab!=="reports"&&!(S.tab==="settings"&&document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#view"))) refresh(); if($("#dinfo")) fillDrawerInfo(); },700); };
   S.chan=S.sb.channel("live-"+S.me.id)
     .on("postgres_changes",{event:"*",schema:"public",table:"entries"},again)
     .on("postgres_changes",{event:"*",schema:"public",table:"corrections"},again)
-    .on("postgres_changes",{event:"UPDATE",schema:"public",table:"profiles",filter:"id=eq."+S.me.id},pl=>{ const r=pl.new; if(r.locked) return signOut("החשבון נחסם. יש לפנות למנהל."); S.me={...S.me,...r}; })
+    .on("postgres_changes",{event:"UPDATE",schema:"public",table:"profiles",filter:"id=eq."+S.me.id},pl=>{ const r=pl.new; if(r.locked) return signOut("החשבון נחסם. יש לפנות למנהל."); const roleChanged=r.role&&r.role!==S.me.role; S.me={...S.me,...r}; if(roleChanged){ toast(r.role==="admin"?"קיבלת הרשאות ADMIN":"הרשאות ה-ADMIN הוסרו",3500); closeModal(); closeDrawer(); render(); } })
+    .on("postgres_changes",{event:"*",schema:"public",table:"profiles"},pl=>{ if(!isAdmin()) return; const r=pl.new&&pl.new.id?pl.new:null; if(r&&r.id===S.me.id) return; loadUsers().then(()=>again()); })
+    .on("postgres_changes",{event:"UPDATE",schema:"public",table:"app_config"},pl=>{ if(pl.new&&pl.new.data){ S.cfg=pl.new.data; if(S.tab==="settings"&&!$(".modal")){ if(!S._mySave) toast("ההגדרות עודכנו על ידי מנהל אחר",3000); } S._mySave=false; again(); } })
     .on("postgres_changes",{event:"DELETE",schema:"public",table:"profiles",filter:"id=eq."+S.me.id},()=>signOut("החשבון נמחק."))
     .subscribe();
 }
@@ -293,18 +324,16 @@ async function enablePush(){
   await api("push_sub",{sub:sub.toJSON(),ua:navigator.userAgent});
 }
 async function disablePush(){ const reg=await swReady(); const sub=reg&&await reg.pushManager.getSubscription(); if(sub){ try{ await api("push_unsub",{endpoint:sub.endpoint}); }catch(e){} await sub.unsubscribe(); } }
-async function reminderCard(){ // shown on the employee's month screen
+async function reminderCard(){ // shown on the employee's month screen until the reminder is on
+  if(S.cfg.reminder===false) return "";
   const st=await pushStatus(); if(st==="on"||st==="unsupported") return "";
-  if(st!=="ios-home"&&localStorage.getItem("lirad.pushNo")==="1") return "";
-  const t=S.cfg.reminder===false?"":"";
-  if(S.cfg.reminder===false) return t;
-  if(st==="ios-home") return `<div class="card remind">${icon("bell",20)}<div style="flex:1"><b>רוצים תזכורת יומית ב-17:00?</b><div class="hint" style="margin:2px 0 0">באייפון: לחצו על כפתור השיתוף ⬆ ← "הוספה למסך הבית", פתחו את האפליקציה מהמסך הראשי והפעילו כאן את התזכורת.</div></div></div>`;
-  if(st==="denied") return `<div class="card remind">${icon("bell",20)}<div style="flex:1"><b>ההתראות חסומות בדפדפן</b><div class="hint" style="margin:2px 0 0">כדי לקבל תזכורת ב-17:00, אפשרו התראות לאתר הזה בהגדרות הדפדפן.</div></div></div>`;
-  return `<div class="card remind" id="rmc">${icon("bell",20)}<div style="flex:1"><b>תזכורת יומית ב-17:00</b><div class="hint" style="margin:2px 0 0">נשלח לך התראה אם עוד לא הזנת את שעות היום.</div></div><div class="actions"><button class="btn sm" id="rmon">הפעלה</button><button class="link" id="rmno" style="font-size:13px">לא עכשיו</button></div></div>`;
+  const sub=st==="ios-home"?"באייפון צריך קודם להוסיף את האפליקציה למסך הבית – נראה לך בדיוק איך."
+    :st==="denied"?"ההתראות חסומות כרגע במכשיר. נראה לך איך לפתוח אותן."
+    :"נשלח לך התראה אם עוד לא הזנת את שעות היום. לוקח 10 שניות.";
+  return `<div class="card remind" id="rmc">${icon("bell",20)}<div style="flex:1"><b>תזכורת יומית ב-17:00</b><div class="hint" style="margin:2px 0 0">${sub}</div></div><div class="actions"><button class="btn sm" id="rmon">${st==="off"?"הפעלה":"איך מפעילים?"}</button></div></div>`;
 }
 function wireReminderCard(){
-  const on=$("#rmon"); if(on) on.onclick=async()=>{ on.disabled=true; try{ await enablePush(); toast("התזכורת הופעלה ✓ תגיע כל יום ב-17:00",3500); const c=$("#rmc"); if(c) c.remove(); }catch(x){ on.disabled=false; toast(x&&x.code==="denied"?"לא אושרו התראות. אפשר לאשר בהגדרות הדפדפן.":"לא הצלחתי להפעיל התראות במכשיר הזה.",4000); } };
-  const no=$("#rmno"); if(no) no.onclick=()=>{ localStorage.setItem("lirad.pushNo","1"); const c=$("#rmc"); if(c) c.remove(); };
+  const on=$("#rmon"); if(on) on.onclick=()=>pushGuide();
 }
 
 /* ========================== landing & auth ========================== */
@@ -353,6 +382,7 @@ async function enter(errEl){
   if(me.locked){ await S.sb.auth.signOut(); S.me=null; const m="החשבון נחסם. יש לפנות למנהל."; if(errEl){ errEl.textContent=m; $("#lgo").disabled=false; } else renderLogin(m); return; }
   S.sb.from("profiles").update({last_seen:new Date().toISOString()}).eq("id",me.id).then(()=>{});
   subscribe(); S.tab=me.role==="admin"?"team":"my"; S.view=null; S.ym=curYM(); render();
+  if(me.role!=="admin") setTimeout(maybeAutoGuide,1200);
 }
 function signupForm(first){
   return `<form id="sf" autocomplete="off">
@@ -384,8 +414,8 @@ function renderSignup(){ authShell(`<h1 style="text-align:center">הרשמה</h1
 
 /* ========================== app shell ========================== */
 const NAV_EMP=[["my","clock","השעות שלי"]];
-const NAV_ADMIN=[["team","users","עובדים"],["approve","inbox","אישורים"],["reports","chart","דוחות"],["users","user","משתמשים"],["settings","cog","הגדרות"]];
-const TITLES={my:"השעות שלי",team:"עובדים",approve:"בקשות תיקון",reports:"דוחות",users:"משתמשים",settings:"הגדרות"};
+const NAV_ADMIN=[["team","users","עובדים"],["leave","sun","חופשות ומחלות"],["approve","inbox","אישורים"],["reports","chart","דוחות"],["users","user","משתמשים"],["settings","cog","הגדרות"]];
+const TITLES={my:"השעות שלי",team:"עובדים",leave:"חופשות ומחלות",approve:"בקשות תיקון",reports:"דוחות",users:"משתמשים",settings:"הגדרות"};
 function topBar(){
   const me=S.me;
   return `<div class="top"><button class="ib burger" id="burger" aria-label="תפריט">${icon("menu",20)}<span class="cnt dot" id="pcnt" ${isAdmin()&&S.pending?"":"hidden"}>${S.pending||""}</span></button>
@@ -421,28 +451,36 @@ async function openDrawer(){
   root.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
   root.querySelectorAll("[data-act]").forEach(b=>b.onclick=async()=>{ const a=b.dataset.act;
     if(a==="push"){ const st=await pushStatus();
-      if(st==="on"){ if(await askConfirm("לכבות את התזכורת היומית במכשיר הזה?",{ok:"כיבוי"})){ await disablePush(); toast("התזכורת כובתה"); } }
-      else if(st==="off"){ try{ await enablePush(); toast("התזכורת הופעלה ✓ תגיע כל יום ב-17:00",3500); }catch(x){ toast(x&&x.code==="denied"?"לא אושרו התראות. אפשר לאשר בהגדרות הדפדפן.":"לא הצלחתי להפעיל התראות במכשיר הזה.",4000); } }
-      else toast(st==="ios-home"?"באייפון: הוסיפו את האפליקציה למסך הבית (שיתוף ← הוספה למסך הבית), פתחו אותה משם והפעילו.":st==="denied"?"ההתראות חסומות. אפשרו אותן לאתר בהגדרות הדפדפן.":"המכשיר או הדפדפן הזה לא תומך בהתראות.",5000);
-      const ps=$("#dpst"); if(ps) ps.textContent=(await pushStatus())==="on"?"פעילה":"כבויה"; return; }
+      if(st==="on"){ if(await askConfirm("התזכורת היומית פעילה במכשיר הזה.\nלכבות אותה?",{ok:"כיבוי",cancel:"להשאיר פעילה"})){ await disablePush(); toast("התזכורת כובתה"); } const ps=$("#dpst"); if(ps) ps.textContent=(await pushStatus())==="on"?"פעילה":"כבויה"; return; }
+      closeDrawer(); return pushGuide(); }
     closeDrawer(); if(a==="pw") pwModal(); else if(a==="out") signOut(); else if(a==="leave") leaveModal(null); });
   if(!adm) pushStatus().then(st=>{ const ps=$("#dpst"); if(ps) ps.textContent=st==="on"?"פעילה":"כבויה"; });
-  // relevant info
-  const info=$("#dinfo"); const row=(l,v)=>`<div class="drow"><span>${l}</span><b>${v}</b></div>`;
+  fillDrawerInfo();
+}
+async function fillDrawerInfo(){
+  const info=$("#dinfo"); if(!info) return; const me=S.me, adm=isAdmin(), td=todayStr();
+  const row=(l,v,cls="")=>`<div class="drow ${cls}"><span>${l}</span><b>${v}</b></div>`;
+  const lrow=(l,v,cls,act)=>`<button class="drow lnk ${cls}" data-lv="${act}"><span>${l}</span><b>${v} ${icon("left",14)}</b></button>`;
   try{
     if(adm){
       await Promise.all([loadUsers(),loadPendingCount()]); const emps=employees(), list=await loadEntries(td,addDays(td,1),null);
       const vac=list.filter(e=>e.kind==="vacation").length, sick=list.filter(e=>e.kind==="sick").length, rep=new Set(list.map(e=>e.user_id)).size;
-      info.innerHTML=`<div class="dtitle">היום – ${dShort(td)}</div>${row("עובדים פעילים",emps.filter(u=>!u.locked).length)}${row("דיווחו היום",rep)}${row("בחופש היום",vac)}${row("במחלה היום",sick)}
+      const admins=S.users.filter(u=>u.role==="admin"&&!u.locked);
+      info.innerHTML=`<div class="dtitle">היום – ${dShort(td)}</div>${row("עובדים פעילים",emps.filter(u=>!u.locked).length)}${row("דיווחו היום",rep)}${lrow("בחופש היום",vac,"vac","vacation")}${lrow("במחלה היום",sick,"sick","sick")}
+        <button class="dlink" data-lv="all">${icon("sun",15)} ריכוז ימי החופש והמחלה של העובדים</button>
         <div class="dtitle">ממתין לטיפול</div>${row("בקשות תיקון",S.pending)}
+        <div class="dtitle">מנהלי מערכת (${admins.length})</div><div class="dnote">${admins.map(u=>esc(u.name)+(u.id===me.id?" (את/ה)":"")).join(" · ")}</div>
         <div class="dtitle">כללים</div><div class="dnote">עובדים מזינים את היום ישירות ומבקשים תיקון לימים מ-${dShort(CORR_FROM())}. ADMIN יכול לשנות שעות מ-${dShort(ADMIN_FROM())} ואילך (חצי שנה).</div>`;
+      info.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{ LV.kind=b.dataset.lv==="all"?"all":b.dataset.lv; LV.period=b.dataset.lv==="all"?"month":"day"; LV.date=todayStr(); go("leave"); });
     } else {
       const from=curYM()+"-01", [list,corr]=await Promise.all([loadEntries(from,ymAdd(curYM(),1)+"-01",me.id),loadCorr(CORR_FROM(),addDays(td,1),me.id)]);
       const s=summarize(list), t=list.find(e=>e.day===td), pend=corr.filter(c=>c.status==="pending").length, rej=corr.filter(c=>c.status==="rejected").length;
-      info.innerHTML=`<div class="dtitle">היום – ${dShort(td)}</div><div class="dnote">${t?esc(entryText(t)):"עוד לא הוזנו שעות להיום"}</div>
-        <div class="dtitle">${ymLabel(curYM())}</div>${row("ימי עבודה",s.days)}${row("סה״כ שעות",`<span dir="ltr">${fmtH(s.min)}</span>`)}${row("ימי חופש",s.vac)}${row("ימי מחלה",s.sick)}
+      info.innerHTML=`<div class="dtitle">היום – ${dShort(td)}</div><div class="dnote">${t?`<span class="${t.kind==="sick"?"k-sick":t.kind==="vacation"?"k-vac":""}">${esc(entryText(t))}</span>`:"עוד לא הוזנו שעות להיום"}</div>
+        <div class="dmonth"><div class="dmt">${icon("clock",17)} ${ymLabel(curYM())} <span class="dmtag">החודש הנוכחי</span></div>
+          ${row("ימי עבודה",s.days)}${row("סה״כ שעות",`<span dir="ltr">${fmtH(s.min)}</span>`)}${lrow("ימי חופש",s.vac,"vac","vacation")}${lrow("ימי מחלה",s.sick,"sick","sick")}</div>
         <div class="dtitle">בקשות תיקון</div>${row("ממתינות לאישור",pend)}${rej?row("נדחו",rej):""}
         <div class="dtitle">כללים</div><div class="dnote">את היום מזינים ישירות. אפשר לבקש תיקון לימים מ-${dShort(CORR_FROM())} ועד אתמול – השינוי ייכנס אחרי אישור המנהל.</div>`;
+      info.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{ closeDrawer(); myLeaveModal(b.dataset.lv); });
     }
   }catch(e){ info.innerHTML=""; }
 }
@@ -451,6 +489,7 @@ async function refresh(){
   try{
     if(S.tab==="my") await viewMonth(S.me.id,false);
     else if(S.tab==="team") S.view?await viewMonth(S.view,true):await viewTeam();
+    else if(S.tab==="leave") await viewLeave();
     else if(S.tab==="approve") await viewApprovals();
     else if(S.tab==="reports") await viewReports();
     else if(S.tab==="users") await viewUsers();
@@ -560,7 +599,7 @@ function dayModal(uid,day,mode){
         <div class="total"><span>סה״כ שעות עבודה${night?" (משמרת שמסתיימת למחרת)":""}</span><b>${fmtH(m)}</b></div>`
       :`<div class="hint" style="margin-top:12px">${st.kind==="vacation"?"היום יירשם כיום חופש.":"היום יירשם כיום מחלה. אם יש אישור מחלה – כדאי לציין בהערה."}</div>`}
       <label class="lbl" for="tn">הערה (לא חובה)</label><input class="field" id="tn" maxlength="300" value="${esc(st.note)}">
-      ${req?`<label class="lbl" for="tr">סיבת התיקון</label><input class="field" id="tr" maxlength="300" value="${esc(st.reason)}" placeholder="למשל: שכחתי להזין, טעות בשעת יציאה">`:""}
+      ${req?`<label class="lbl" for="tr">סיבת התיקון ${S.cfg.requireReason===true?"":'<span class="hint" style="display:inline">(לא חובה)</span>'}</label><input class="field" id="tr" maxlength="300" value="${esc(st.reason)}" placeholder="למשל: שכחתי להזין, טעות בשעת יציאה">`:""}
       <div class="err" id="derr"></div>
       <div class="row"><div class="actions">${req?(pend?`<button class="btn ghost" id="dcancel" type="button">${icon("x",16)} ביטול הבקשה</button>`:"")+(e?`<button class="btn ghost" id="ddelreq" type="button">${icon("trash",16)} בקשה למחיקה</button>`:""):(e?`<button class="btn ghost" id="ddel" type="button">${icon("trash",16)} מחיקה</button>`:"")}</div>
         <div class="actions"><button class="btn ghost" id="dcan" type="button">סגירה</button><button class="btn" id="dsave" type="button">${icon(req?"send":"check",16)} ${req?"שליחה לאישור":"שמירה"}</button></div></div>
@@ -580,7 +619,7 @@ function dayModal(uid,day,mode){
     keep(); const err=$("#derr");
     if(action==="upsert"&&st.kind==="work"){ if(!st.start||!st.end) return err.textContent="נא למלא שעת כניסה ושעת יציאה"; if(st.start===st.end) return err.textContent="שעת היציאה זהה לשעת הכניסה";
       if(entryMin({kind:"work",start_time:st.start,end_time:st.end,break_min:st.brk})<=0) return err.textContent="ההפסקה ארוכה מזמן העבודה"; }
-    if(req&&S.cfg.requireReason!==false&&!st.reason.trim()) return err.textContent="נא לכתוב את סיבת התיקון";
+    if(req&&S.cfg.requireReason===true&&!st.reason.trim()) return err.textContent="נא לכתוב את סיבת התיקון";
     if(action==="delete"&&!(await askConfirm("לשלוח למנהל בקשה למחוק את הרישום של היום הזה?",{ok:"שליחת הבקשה"}))) return;
     err.innerHTML='<span class="spin"></span>';
     if(req){
@@ -667,6 +706,130 @@ async function leaveModal(uid){
   draw();
 }
 
+
+/* ========================== leave overview (ADMIN) ========================== */
+const LV={period:"day",date:null,kind:"all",branch:""};
+const ddmm=d=>`${d.slice(8,10)}.${d.slice(5,7)}`;
+async function viewLeave(){
+  const v=$("#view"); await loadUsers(); if(!LV.date) LV.date=todayStr();
+  const R=LV.period==="day"?{from:LV.date,to:addDays(LV.date,1),label:dLabel(LV.date)}:rangeOf(LV.period,LV.date);
+  const all=(await loadEntries(R.from,R.to,null)).filter(e=>e.kind!=="work"); if(!$("#view")) return;
+  const brs=BRANCHES(), emps=employees().filter(u=>!LV.branch||u.branch===LV.branch), ids=new Set(emps.map(u=>u.id));
+  const list=all.filter(e=>ids.has(e.user_id)&&(LV.kind==="all"||e.kind===LV.kind));
+  const nm=id=>(S.users.find(u=>u.id===id)||{name:"עובד שנמחק"}), td=todayStr();
+  const nVac=list.filter(e=>e.kind==="vacation").length, nSick=list.filter(e=>e.kind==="sick").length;
+  let body="";
+  if(LV.period==="day"){
+    const sec=(kind,title)=>{ const L=list.filter(e=>e.kind===kind); if(LV.kind!=="all"&&LV.kind!==kind) return "";
+      return `<h3 class="lvh ${kind==="sick"?"k-sick":"k-vac"}">${icon(kind==="sick"?"note":"sun",17)} ${title} (${L.length})</h3><div class="days list">${L.map(e=>{ const u=nm(e.user_id); return `<button class="it" data-emp="${e.user_id}"><div class="nm"><b class="${kind==="sick"?"k-sick":"k-vac"}">${esc(u.name)}</b><span>${u.branch?esc(u.branch):""}${e.note?(u.branch?" · ":"")+esc(e.note):""}</span></div>${icon("left",16)}</button>`; }).join("")||`<div class="empty" style="padding:14px">אין</div>`}</div>`; };
+    body=sec("vacation","בחופש")+sec("sick","במחלה");
+  } else {
+    const by={}; list.forEach(e=>{ (by[e.user_id]=by[e.user_id]||[]).push(e); });
+    const rows=Object.entries(by).map(([id,L])=>({id,u:nm(id),L:L.sort((a,b)=>a.day<b.day?-1:1),v:L.filter(e=>e.kind==="vacation").length,k:L.filter(e=>e.kind==="sick").length})).sort((a,b)=>(b.v+b.k)-(a.v+a.k)||a.u.name.localeCompare(b.u.name,"he"));
+    body=rows.length?`<div class="days list">${rows.map(r=>`<button class="it lvrow" data-emp="${r.id}"><div class="nm"><b>${esc(r.u.name)}${r.u.branch?` <span class="badge gray">${esc(r.u.branch)}</span>`:""}</b>
+      <span class="lvcnt">${r.v?`<span class="k-vac">${r.v} ימי חופש</span>`:""}${r.v&&r.k?" · ":""}${r.k?`<span class="k-sick">${r.k} ימי מחלה</span>`:""}</span>
+      <span class="lvdays">${r.L.map(e=>`<i class="${e.kind==="sick"?"lds":"ldv"}${e.day===td?" now":""}">${ddmm(e.day)}</i>`).join("")}</span></div>${icon("left",16)}</button>`).join("")}</div>`
+      :`<div class="card empty">${icon("check",20)}<br>אין ימי ${LV.kind==="sick"?"מחלה":LV.kind==="vacation"?"חופש":"חופש או מחלה"} בתקופה הזו.</div>`;
+  }
+  v.innerHTML=`<div class="card filt">
+      <div class="seg">${[["day","יום"],["week","שבוע"],["month","חודש"]].map(([k,l])=>`<button data-lp="${k}" class="${LV.period===k?"on":""}">${l}</button>`).join("")}</div>
+      <div class="two" style="margin-top:10px"><div>${LV.period==="month"?`<input class="field ltr" id="lvd" type="month" dir="ltr" value="${LV.date.slice(0,7)}">`:`<input class="field ltr" id="lvd" type="date" dir="ltr" value="${LV.date}">`}</div>
+        <div>${brs.length?`<select class="field" id="lvb"><option value="">כל הסניפים</option>${brs.map(b=>`<option ${LV.branch===b?"selected":""}>${esc(b)}</option>`).join("")}</select>`:""}</div></div>
+      <div class="seg" style="margin-top:10px"><button data-lk="all" class="${LV.kind==="all"?"on":""}">הכול</button><button data-lk="vacation" class="vac ${LV.kind==="vacation"?"on":""}">חופש</button><button data-lk="sick" class="sick ${LV.kind==="sick"?"on":""}">מחלה</button></div>
+      <div class="hint" style="margin-top:8px">${esc(R.label)}</div></div>
+    <div class="stats"><div class="stat vac"><div class="v">${nVac}</div><div class="l">${LV.period==="day"?"בחופש":"ימי חופש"}</div></div><div class="stat sick"><div class="v">${nSick}</div><div class="l">${LV.period==="day"?"במחלה":"ימי מחלה"}</div></div>
+      <div class="stat"><div class="v">${new Set(list.map(e=>e.user_id)).size}</div><div class="l">עובדים</div></div></div>
+    ${body}
+    <div class="actions" style="margin-top:12px"><button class="btn ghost" id="lvadd">${icon("plus",16)} הזנת חופש / מחלה לעובד</button></div>`;
+  v.querySelectorAll("[data-lp]").forEach(b=>b.onclick=()=>{ LV.period=b.dataset.lp; viewLeave(); });
+  v.querySelectorAll("[data-lk]").forEach(b=>b.onclick=()=>{ LV.kind=b.dataset.lk; viewLeave(); });
+  $("#lvd").onchange=()=>{ const x=$("#lvd").value; if(!x) return; LV.date=LV.period==="month"?x+"-01":x; viewLeave(); };
+  const lb=$("#lvb"); if(lb) lb.onchange=()=>{ LV.branch=lb.value; viewLeave(); };
+  $("#lvadd").onclick=()=>leaveModal(null);
+  v.querySelectorAll("[data-emp]").forEach(b=>b.onclick=()=>{ const ym=LV.date.slice(0,7); S.tab="team"; S.view=b.dataset.emp; S.ym=ym<ADMIN_FROM().slice(0,7)?curYM():ym; render(); scrollTo(0,0); });
+}
+// employee: own vacation / sick days in the months they can view
+async function myLeaveModal(kind){
+  const from=VIEW_FROM()+"-01", to=ymAdd(curYM(),1)+"-01";
+  const all=(await loadEntries(from,to,S.me.id)).filter(e=>e.kind!=="work");
+  let k=kind==="sick"?"sick":"vacation";
+  const draw=()=>{
+    const L=all.filter(e=>e.kind===k), byM={}; L.forEach(e=>{ (byM[e.day.slice(0,7)]=byM[e.day.slice(0,7)]||[]).push(e); });
+    const nv=all.filter(e=>e.kind==="vacation").length, ns=all.filter(e=>e.kind==="sick").length;
+    $("#modal-root").innerHTML=`<div class="modal"><div class="sheet"><div class="row" style="margin-top:0"><h2>ימי החופש והמחלה שלי</h2><button class="ib" id="mx">${icon("x")}</button></div>
+      <div class="seg two-seg"><button data-mk="vacation" class="vac ${k==="vacation"?"on":""}">ימי חופש (${nv})</button><button data-mk="sick" class="sick ${k==="sick"?"on":""}">ימי מחלה (${ns})</button></div>
+      ${Object.keys(byM).sort().reverse().map(m=>`<div class="dtitle">${ymLabel(m)} · ${byM[m].length}</div><div class="lvdays big">${byM[m].map(e=>`<i class="${k==="sick"?"lds":"ldv"}" title="${esc(e.note||"")}">${HEB_D1[dowOf(e.day)]} ${ddmm(e.day)}</i>`).join("")}</div>`).join("")||`<div class="empty" style="padding:18px">אין ימי ${k==="sick"?"מחלה":"חופש"} מ-${ymLabel(VIEW_FROM())} ועד היום.</div>`}
+      <div class="hint" style="margin-top:12px">מוצגים החודשים שאפשר לצפות בהם (${ymLabel(VIEW_FROM())} – ${ymLabel(curYM())}).</div></div></div>`;
+    $("#mx").onclick=closeModal; $("#modal-root").querySelectorAll("[data-mk]").forEach(b=>b.onclick=()=>{ k=b.dataset.mk; draw(); });
+  };
+  draw();
+}
+
+/* ========================== push reminder: guided setup ========================== */
+window.addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); PUSH.install=e; });
+const isIPhone=()=>/iphone|ipod/i.test(navigator.userAgent);
+const isAndroid=()=>/android/i.test(navigator.userAgent);
+const iosOtherBrowser=()=>isIOS()&&/crios|fxios|edgios|opios/i.test(navigator.userAgent);
+async function maybeAutoGuide(){
+  if(!S.me||isAdmin()||S.cfg.reminder===false||$(".modal")) return;
+  const st=await pushStatus(); if(st==="on"||st==="unsupported") return;
+  const sn=localStorage.getItem("lirad.guideSnooze"); if(sn&&sn>todayStr()) return;
+  pushGuide({auto:true});
+}
+function snoozeGuide(days=3){ try{ localStorage.setItem("lirad.guideSnooze",addDays(todayStr(),days)); }catch(e){} }
+async function testNotify(){ const reg=await swReady(); if(reg) await reg.showNotification("לירד שעון נוכחות",{body:"מעולה! כך תיראה התזכורת היומית ב-17:00 ✓",icon:"/icon-192.png",badge:"/icon-192.png",dir:"rtl",lang:"he",tag:"lirad-test"}); }
+async function pushGuide(opt={}){
+  const st=await pushStatus(); hideArrow();
+  const steps=arr=>`<ol class="pg-steps">${arr.map(([ic,t,sub],i)=>`<li><span class="pg-n">${i+1}</span><div class="pg-t"><b>${t}</b>${sub?`<span>${sub}</span>`:""}</div>${ic?`<span class="pg-ic">${ic}</span>`:""}</li>`).join("")}</ol>`;
+  const head=(t,sub)=>`<div class="pg-head"><span class="pg-bell">${icon("bell",30)}</span><h2>${t}</h2>${sub?`<p>${sub}</p>`:""}</div>`;
+  const later=`<button class="link pg-later" id="pglater" type="button">אחר כך</button>`;
+  let html="", wire=()=>{};
+  if(st==="on"){
+    html=head("התזכורת פעילה ✓","בכל יום ב-17:00, אם עוד לא הזנת שעות, תקבל/י התראה במכשיר הזה.")+
+      `<div class="actions pg-act"><button class="btn" id="pgtest">${icon("bell",16)} שליחת התראת ניסיון</button><button class="btn ghost" id="pgoff">כיבוי</button></div>`;
+    wire=()=>{ $("#pgtest").onclick=()=>testNotify(); $("#pgoff").onclick=async()=>{ await disablePush(); closeModal(); toast("התזכורת כובתה"); }; };
+  } else if(st==="ios-home"){
+    html=head(opt.auto?"רגע לפני שמתחילים – תזכורת יומית":"הפעלת תזכורת באייפון","באייפון אפשר לקבל התראות רק מאפליקציה שנמצאת במסך הבית. זה לוקח חצי דקה:")+
+      (iosOtherBrowser()?`<div class="note-box">${icon("phone",15)} <span>אם בשלב 2 אין "הוספה למסך הבית" – פתחו את האתר ב-<b>Safari</b>. <button class="link" id="pgcopy" type="button">העתקת הכתובת</button></span></div>`:"")+
+      steps([[icon("share",22),`לוחצים על כפתור השיתוף`,isIPhone()?"בסרגל שבתחתית המסך (ריבוע עם חץ למעלה)":"בפינה העליונה של המסך"],
+        [icon("plussq",22),`גוללים ובוחרים "הוספה למסך הבית"`,"Add to Home Screen"],
+        ["",`לוחצים "הוסף" בפינה העליונה`,""],
+        [`<img src="icon-180.png" alt="" class="pg-app">`,`פותחים את "לירד" מהמסך הראשי ומתחברים`,"שם יופיע מיד כפתור להפעלת התזכורת"]])+
+      `<div class="actions pg-act">${later}<button class="btn" id="pgok">הבנתי</button></div>`;
+    wire=()=>{ $("#pgok").onclick=()=>{ closeModal(); if(isIPhone()&&!iosOtherBrowser()) showArrow(); };
+      const c=$("#pgcopy"); if(c) c.onclick=async()=>{ try{ await navigator.clipboard.writeText(location.origin); toast("הכתובת הועתקה – הדביקו אותה ב-Safari"); }catch(e){ toast(location.origin,5000); } }; };
+  } else if(st==="denied"){
+    const how=isIOS()?[[icon("cog",20),`פותחים את "הגדרות" באייפון`,""],["",`נכנסים ל"עדכונים" (התראות) ← "לירד"`,""],["",`מפעילים "אפשר עדכונים"`,"וחוזרים לכאן"]]
+      :isAndroid()?(isStandalone()?[["",`לחיצה ארוכה על האייקון של "לירד" במסך הבית`,""],["",`"פרטי האפליקציה" ← "התראות"`,""],["",`מפעילים את ההתראות`,"וחוזרים לכאן"]]
+        :[[icon("lock",20),`לוחצים על הסמל שמשמאל לכתובת האתר למעלה`,"מנעול או סמל הגדרות"],["",`"הרשאות" ← "התראות"`,""],["",`בוחרים "אפשר"`,"וחוזרים לכאן"]])
+      :[[icon("lock",20),`לוחצים על סמל המנעול משמאל לכתובת האתר`,""],["",`ליד "התראות" בוחרים "אפשר"`,""],["",`מרעננים את הדף`,""]];
+    html=head("ההתראות חסומות במכשיר","כנראה נלחץ פעם \"חסום\". כך פותחים אותן מחדש:")+steps(how)+`<div class="actions pg-act">${later}<button class="btn" id="pgre">בדיקה מחדש</button></div>`;
+    wire=()=>{ $("#pgre").onclick=async()=>{ const s2=await pushStatus(); if(s2==="denied") return toast("ההתראות עדיין חסומות. בצעו את השלבים ונסו שוב.",3500); pushGuide(); }; };
+  } else if(st==="unsupported"){
+    html=head("אי אפשר להפעיל כאן התראות", !PUSH.key?"שירות התזכורות עוד לא הוגדר. פנו למנהל.":isIOS()?"צריך לעדכן את האייפון ל-iOS 16.4 ומעלה (הגדרות ← כללי ← עדכון תוכנה).":"הדפדפן הזה לא תומך בהתראות. פתחו את האתר ב-Chrome (אנדרואיד או מחשב) או ב-Safari (אייפון).")+`<div class="actions pg-act"><button class="btn" id="pgok">סגירה</button></div>`;
+    wire=()=>{ $("#pgok").onclick=closeModal; };
+  } else { // off → one tap + the browser's permission window
+    html=head(opt.auto?"רוצה תזכורת יומית ב-17:00?":"הפעלת תזכורת יומית","אם עד 17:00 לא הזנת שעות – נשלח לך התראה קטנה. רק בימים ששכחת.")+
+      `<div class="pg-mock"><div class="pg-mt">${esc(location.host)} רוצה לשלוח התראות</div><div class="pg-mb"><span>חסימה</span><span class="hl">אפשר</span></div></div>
+      <p class="pg-tip">אחרי הלחיצה יופיע חלון כזה מהטלפון – לוחצים <b>"אפשר"</b> (Allow).</p>
+      <div class="err" id="pgerr"></div><div class="actions pg-act">${later}<button class="btn" id="pgon">${icon("bell",16)} הפעלת התזכורת</button></div>`;
+    wire=()=>{ $("#pgon").onclick=async()=>{ const b=$("#pgon"); b.disabled=true; b.innerHTML='<span class="spin"></span>';
+      try{ await enablePush(); await testNotify().catch(()=>{});
+        $("#modal-root").innerHTML=`<div class="modal"><div class="sheet pg">${head("התזכורת הופעלה ✓","שלחנו עכשיו התראת ניסיון. מעכשיו, בכל יום ב-17:00 – אם עוד לא הזנת שעות – תגיע תזכורת.")}
+          ${PUSH.install?`<div class="note-box" style="background:#eef5fd;color:#1e3a5f">${icon("phone",15)} <span>טיפ: אפשר להתקין את "לירד" כאפליקציה במסך הבית. <button class="link" id="pginst" type="button">התקנה</button></span></div>`:""}
+          <div class="actions pg-act"><button class="btn" id="pgdone">סיום</button></div></div></div>`;
+        $("#pgdone").onclick=closeModal; const pi=$("#pginst"); if(pi) pi.onclick=async()=>{ PUSH.install.prompt(); PUSH.install=null; closeModal(); };
+        const ps=$("#dpst"); if(ps) ps.textContent="פעילה"; const c=$("#rmc"); if(c) c.remove();
+      }catch(x){ if(x&&x.code==="denied") return pushGuide(); b.disabled=false; b.innerHTML=`${icon("bell",16)} הפעלת התזכורת`; $("#pgerr").textContent="לא הצלחתי להפעיל התראות במכשיר הזה. נסו שוב."; } }; };
+  }
+  $("#modal-root").innerHTML=`<div class="modal"><div class="sheet pg"><button class="ib pg-x" id="mx" aria-label="סגירה">${icon("x")}</button>${html}</div></div>`;
+  $("#mx").onclick=()=>{ if(st!=="on") snoozeGuide(1); closeModal(); };
+  const l=$("#pglater"); if(l) l.onclick=()=>{ snoozeGuide(3); closeModal(); toast("אפשר להפעיל בכל זמן מהתפריט ☰ ← תזכורת יומית",3500); };
+  wire();
+}
+function showArrow(){ hideArrow(); const d=document.createElement("div"); d.className="pg-arrow"; d.id="pgarrow"; d.innerHTML=`<span>לוחצים כאן על ${icon("share",16)} ← "הוספה למסך הבית"</span><b>↓</b>`; d.onclick=hideArrow; document.body.appendChild(d); setTimeout(hideArrow,20000); }
+function hideArrow(){ const a=$("#pgarrow"); if(a) a.remove(); }
+
 /* ========================== admin: approvals ========================== */
 async function viewApprovals(){
   const v=$("#view"); await loadUsers();
@@ -739,8 +902,8 @@ async function viewReports(){
 /* ========================== admin: users ========================== */
 async function viewUsers(){
   const v=$("#view"), users=await loadUsers(); if(!$("#view")) return;
-  v.innerHTML=`<div class="row" style="margin:0 0 12px"><div><h2>משתמשים</h2><div class="hint">${employees().length} עובדים</div></div><button class="btn" id="nu">${icon("plus",16)} עובד חדש</button></div>
-    <div class="days list">${users.map(u=>{ const del=u.role!=="admin"; return `<div class="it urow"><button class="ubody" data-u="${u.id}"><div class="nm"><b>${esc(u.name)} ${u.role==="admin"?'<span class="badge">ADMIN</span>':""}${u.locked?' <span class="badge lock">חסום</span>':""}</b>
+  v.innerHTML=`<div class="row" style="margin:0 0 12px"><div><h2>משתמשים</h2><div class="hint">${employees().length} עובדים · ${users.filter(u=>u.role==="admin").length} מנהלי מערכת</div></div><button class="btn" id="nu">${icon("plus",16)} משתמש חדש</button></div>
+    <div class="days list">${users.map(u=>{ const del=u.id!==S.me.id; return `<div class="it urow"><button class="ubody" data-u="${u.id}"><div class="nm"><b>${esc(u.name)} ${u.role==="admin"?'<span class="badge">ADMIN</span>':""}${u.locked?' <span class="badge lock">חסום</span>':""}</b>
       <span>${u.branch?`<span class="badge gray">${esc(u.branch)}</span> `:""}<span dir="ltr">${esc(u.email||u.username||"")}</span>${u.emp_no?" · מס׳ "+esc(u.emp_no):""}${u.last_seen?" · כניסה אחרונה "+new Date(u.last_seen).toLocaleDateString("he-IL"):""}</span></div></button>
       ${del?`<button class="ib del" data-del="${u.id}" title="מחיקת העובד" aria-label="מחיקת ${esc(u.name)}">${icon("trash",17)}</button>`:""}</div>`; }).join("")}</div>`;
   $("#nu").onclick=()=>userModal(null);
@@ -749,20 +912,22 @@ async function viewUsers(){
 }
 async function deleteUser(u){
   if(!u) return;
-  if(!(await askConfirm(`למחוק את ${u.name}?\n\nהחשבון וכל השעות והבקשות שלו יימחקו לצמיתות, ואי אפשר לשחזר אותם.\nאם רוצים רק למנוע כניסה ולשמור את הנתונים – עדיף "חסימה".`,{ok:"מחיקה לצמיתות",danger:true}))) return;
+  if(!(await askConfirm(u.role==="admin"?`למחוק את מנהל המערכת ${u.name}?\n\nהחשבון יימחק לצמיתות והוא לא יוכל להיכנס יותר.`:`למחוק את ${u.name}?\n\nהחשבון וכל השעות והבקשות שלו יימחקו לצמיתות, ואי אפשר לשחזר אותם.\nאם רוצים רק למנוע כניסה ולשמור את הנתונים – עדיף "חסימה".`,{ok:"מחיקה לצמיתות",danger:true}))) return;
   try{ await api("delete_user",{user_id:u.id}); closeModal(); toast(`${u.name} נמחק/ה מהמערכת`); refresh(); }
   catch(x){ toast(apiErr(x),4000); }
 }
 function branchSelect(id,val){ const brs=BRANCHES(); if(!brs.length) return ""; const extra=val&&!brs.includes(val)?[val]:[];
   return `<label class="lbl">סניף</label><select class="field" id="${id}"><option value="">— ללא סניף —</option>${[...brs,...extra].map(b=>`<option ${b===val?"selected":""}>${esc(b)}</option>`).join("")}</select>`; }
 function userModal(u){
-  const self=u&&u.id===S.me.id, isAdm=u&&u.role==="admin";
+  const self=u&&u.id===S.me.id, isAdm=u&&u.role==="admin", role=u?u.role:"user";
   $("#modal-root").innerHTML=`<div class="modal"><div class="sheet">
-    <div class="row" style="margin-top:0"><h2>${u?esc(u.name):"עובד חדש"}</h2><button class="ib" id="mx">${icon("x")}</button></div>
+    <div class="row" style="margin-top:0"><h2>${u?esc(u.name):"משתמש חדש"}</h2><button class="ib" id="mx">${icon("x")}</button></div>
     ${u?`<div class="hint">${u.username?`שם משתמש: <b dir="ltr">${esc(u.username)}</b> · `:""}${u.created_at?"נפתח "+new Date(u.created_at).toLocaleDateString("he-IL"):""}</div>`:""}
     <div class="two"><div><label class="lbl">שם מלא</label><input class="field" id="un" maxlength="60" value="${esc(u?u.name:"")}"></div>
       <div><label class="lbl">מספר עובד</label><input class="field ltr" id="ue" maxlength="30" dir="ltr" value="${esc(u?u.emp_no:"")}"></div></div>
-    ${isAdm?"":branchSelect("ub",u?u.branch:"")}
+    ${self?"":`<label class="lbl">תפקיד</label><div class="seg two-seg" id="urole"><button type="button" data-r="user" class="${role!=="admin"?"on":""}">עובד</button><button type="button" data-r="admin" class="${role==="admin"?"on":""}">מנהל מערכת (ADMIN)</button></div>
+      <div class="hint" id="urh">${role==="admin"?"ADMIN מנהל את האפליקציה במקביל אליך – רואה הכול, מאשר בקשות, מפיק דוחות ומנהל משתמשים. אינו מדווח שעות.":"עובד מדווח שעות ורואה רק את הנתונים של עצמו."}</div>`}
+    <div id="ubw" ${role==="admin"?"hidden":""}>${branchSelect("ub",u?u.branch:"")}</div>
     <label class="lbl">אימייל לכניסה</label><input class="field ltr" id="um" type="email" dir="ltr" maxlength="120" value="${esc(u&&u.email||"")}" autocomplete="off">
     ${u?"":`<label class="lbl">שם משתמש <span class="hint">(לא חובה אם הוזן אימייל)</span></label><input class="field ltr" id="uu" dir="ltr" autocapitalize="off" spellcheck="false" autocomplete="off">
       <label class="lbl">סיסמה</label><div class="pwf"><input class="field ltr" id="up" dir="ltr" autocomplete="off" autocapitalize="off" spellcheck="false"><button type="button" class="pw-eye" data-eye="up" aria-label="הסתרת הסיסמה">${icon("eyeoff",18)}</button></div>
@@ -773,10 +938,13 @@ function userModal(u){
       <label class="lbl" style="margin-top:0">איפוס סיסמה</label>
       <div class="tw"><div class="pwf" style="flex:1"><input class="field ltr" id="upw" dir="ltr" placeholder="סיסמה חדשה" autocomplete="off" autocapitalize="off" spellcheck="false"><button type="button" class="pw-eye" data-eye="upw" aria-label="הסתרת הסיסמה">${icon("eyeoff",18)}</button></div><button class="btn ghost" id="upwgo">איפוס</button></div>
       <label class="lbl">הסרת העובד</label>
-      <div class="actions"><button class="btn ghost" id="ulock">${icon("lock",16)} ${u.locked?"ביטול חסימה":"חסימה (שומרת נתונים)"}</button>${isAdm?"":`<button class="btn danger" id="udel">${icon("trash",16)} מחיקה לצמיתות</button>`}</div>
+      <div class="actions"><button class="btn ghost" id="ulock">${icon("lock",16)} ${u.locked?"ביטול חסימה":"חסימה (שומרת נתונים)"}</button><button class="btn danger" id="udel">${icon("trash",16)} מחיקה לצמיתות</button></div>
       <div class="hint">חסימה מונעת כניסה ושומרת את השעות לדוחות. מחיקה מסירה את החשבון ואת כל השעות שלו.</div></div>`:""}
   </div></div>`;
   $("#mx").onclick=closeModal;
+  let newRole=role;
+  $("#modal-root").querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{ newRole=b.dataset.r; $("#modal-root").querySelectorAll("[data-r]").forEach(x=>x.classList.toggle("on",x===b));
+    $("#ubw").hidden=newRole==="admin"; $("#urh").textContent=newRole==="admin"?"ADMIN מנהל את האפליקציה במקביל אליך – רואה הכול, מאשר בקשות, מפיק דוחות ומנהל משתמשים. אינו מדווח שעות.":"עובד מדווח שעות ורואה רק את הנתונים של עצמו."; });
   const err=$("#uerr"), say=(t,ok)=>{ err.className=ok?"ok":"err"; err.textContent=t; };
   $("#usave").onclick=async()=>{
     const sv=$("#usave"), name=$("#un").value.trim(), emp_no=$("#ue").value.trim(), em=$("#um").value.trim().toLowerCase(), branch=$("#ub")?$("#ub").value:(u?u.branch:""); if(!name) return say("נא להזין שם");
@@ -785,15 +953,17 @@ function userModal(u){
     try{
       if(!u){ const un=normUser($("#uu").value), pw=$("#up").value;
         if(!em&&!un) throw {code:"need_login"}; if(un&&!validUser(un)) throw {code:"bad_username"}; if(pw.length<6) throw {code:"weak_password"};
-        await api("create_user",{username:un,email:em,password:pw,name,emp_no,branch}); closeModal(); toast("העובד נוצר ✓"); return refresh(); }
-      const {error}=await S.sb.rpc("admin_update",{target:u.id,patch:{name,emp_no,branch}}); if(error) throw {code:"forbidden"};
+        await api("create_user",{username:un,email:em,password:pw,name,emp_no,branch:newRole==="admin"?"":branch,role:newRole}); closeModal(); toast(newRole==="admin"?"מנהל המערכת נוצר ✓":"העובד נוצר ✓"); await loadUsers(); return refresh(); }
+      if(newRole!==u.role&&!(await askConfirm(newRole==="admin"?`לתת ל${u.name} הרשאות ADMIN?\nהוא יוכל לראות את כל העובדים, לאשר בקשות, להפיק דוחות ולנהל משתמשים.`:`להסיר מ${u.name} את הרשאות ה-ADMIN?\nהוא יהפוך לעובד רגיל.`,{ok:newRole==="admin"?"מתן הרשאות":"הסרת הרשאות",danger:newRole!=="admin"}))){ sv.disabled=false; err.textContent=""; return; }
+      const patch={name,emp_no,branch:newRole==="admin"?(u.branch||""):branch}; if(newRole!==u.role) patch.role=newRole;
+      const {error}=await S.sb.rpc("admin_update",{target:u.id,patch}); if(error) throw {code:/last_admin/.test(error.message||"")?"last_admin":"forbidden"};
       if(em!==(u.email||"")) await api("set_email",{user_id:u.id,email:em});
       toast("נשמר ✓"); if(self) await loadMe(); closeModal(); refresh();
     }catch(x){ sv.disabled=false; say(apiErr(x)); }
   };
   const pg=$("#upwgo"); if(pg) pg.onclick=async()=>{ const pw=$("#upw").value; if(pw.length<6) return say(API_ERR.weak_password);
     try{ await api("reset_password",{user_id:u.id,password:pw}); say("הסיסמה אופסה. מסרו לעובד את הסיסמה החדשה.",true); $("#upw").value=""; }catch(x){ say(apiErr(x)); } };
-  const lk=$("#ulock"); if(lk) lk.onclick=async()=>{ const {error}=await S.sb.rpc("admin_update",{target:u.id,patch:{locked:!u.locked}}); if(error) return say(apiErr({code:"forbidden"})); closeModal(); toast(u.locked?"החסימה בוטלה":"החשבון נחסם"); refresh(); };
+  const lk=$("#ulock"); if(lk) lk.onclick=async()=>{ const {error}=await S.sb.rpc("admin_update",{target:u.id,patch:{locked:!u.locked}}); if(error) return say(apiErr({code:/last_admin/.test(error.message||"")?"last_admin":"forbidden"})); closeModal(); toast(u.locked?"החסימה בוטלה":"החשבון נחסם"); refresh(); };
   const dl=$("#udel"); if(dl) dl.onclick=()=>deleteUser(u);
 }
 
@@ -824,7 +994,7 @@ function viewSettings(){
       <div class="two"><div><label class="lbl">עובד רואה אחורה</label><select class="field" id="gvm">${opt([0,1,2,3,6,12],cfgInt("viewMonths",2,0,12),n=>n===0?"רק החודש הנוכחי":n===1?"חודש אחד":n+" חודשים")}</select></div>
         <div><label class="lbl">תיקונים מותרים אחורה</label><select class="field" id="gcm">${opt([0,1,2,3],cfgInt("corrMonths",1,0,3),n=>n===0?"רק החודש הנוכחי":n===1?"חודש אחד":n+" חודשים")}</select></div></div>
       <div class="hint">את היום הנוכחי עובד מזין ישירות. כל שינוי ליום קודם בטווח התיקונים נשלח לאישורך בלשונית "אישורים".</div>
-      <label class="check"><input type="checkbox" id="grr" ${c.requireReason!==false?"checked":""}> חובה לכתוב סיבה בבקשת תיקון</label>
+      <label class="check"><input type="checkbox" id="grr" ${c.requireReason===true?"checked":""}> חובה לכתוב סיבה בבקשת תיקון</label>
       <label class="check"><input type="checkbox" id="gs" ${c.allowSignup===true?"checked":""}> לאפשר לעובדים להירשם בעצמם (בלי שאפתח להם חשבון)</label></div>
     <div class="card set"><h3>${icon("bell",17)} תזכורת יומית</h3>
       <label class="check"><input type="checkbox" id="grm" ${c.reminder!==false?"checked":""}> לשלוח לעובדים התראה ב-17:00 אם עוד לא הזינו את שעות היום</label>
@@ -843,8 +1013,8 @@ function viewSettings(){
     const ok=$("#gok"); brs=[...v.querySelectorAll("[data-bi]")].map(x=>x.value.trim()).filter(Boolean);
     if(new Set(brs).size!==brs.length){ ok.className="err"; ok.textContent="יש שני סניפים עם אותו שם"; return; }
     keepAll(); const d={...S.cfg,...c,branches:brs,stdHours:Math.min(24,Math.max(1,c.stdHours)),ot125Hours:Math.min(12,Math.max(0,isNaN(c.ot125Hours)?2:c.ot125Hours))};
-    const {error}=await S.sb.from("app_config").update({data:d,updated_at:new Date().toISOString()}).eq("id",1);
-    if(error){ ok.className="err"; ok.textContent="השמירה נכשלה"; return; } S.cfg=d; toast("ההגדרות נשמרו ✓"); viewSettings();
+    S._mySave=true; const {error}=await S.sb.from("app_config").update({data:d,updated_at:new Date().toISOString()}).eq("id",1);
+    S._mySave=true; if(error){ S._mySave=false; ok.className="err"; ok.textContent="השמירה נכשלה"; return; } S.cfg=d; toast("ההגדרות נשמרו ✓"); viewSettings();
   };
   loadUsers().then(()=>{}); draw();
 }

@@ -20,7 +20,10 @@ async function createUser(b) {
   });
   if (!r.ok) return [r.status === 422 ? 409 : 400, { error: r.status === 422 ? (email ? "email_taken" : "taken") : "create_failed" }];
   const branch = String(b.branch || "").trim().slice(0, 40);
-  if (branch) await admin(`/rest/v1/profiles?id=eq.${r.j.id}`, { method: "PATCH", body: JSON.stringify({ branch }) });
+  const patch = {};
+  if (branch) patch.branch = branch;
+  if (b.role === "admin" && b._byAdmin === true) patch.role = "admin";
+  if (Object.keys(patch).length) await admin(`/rest/v1/profiles?id=eq.${r.j.id}`, { method: "PATCH", body: JSON.stringify(patch) });
   return [200, { ok: true, id: r.j.id }];
 }
 const isAdmin = me => me && !me.locked && me.role === "admin";
@@ -54,7 +57,7 @@ export default async function handler(req, res) {
       const first = any.ok && Array.isArray(any.j) && any.j.length === 0;
       const allow = !!(cfg.ok && cfg.j && cfg.j[0] && cfg.j[0].data && cfg.j[0].data.allowSignup === true);
       if (!first && !allow) return res.status(403).json({ error: "signup_closed" });
-      const [st, out] = await createUser(b); return res.status(st).json(out);
+      const [st, out] = await createUser({ ...b, role: null, _byAdmin: false }); return res.status(st).json(out);
     }
     const me = await caller(req);
     if (!me || me.locked) return res.status(401).json({ error: "auth" });
@@ -71,14 +74,14 @@ export default async function handler(req, res) {
     }
     if (b.action === "create_user") {
       if (!isAdmin(me)) return res.status(403).json({ error: "forbidden" });
-      const [st, out] = await createUser(b); return res.status(st).json(out);
+      const [st, out] = await createUser({ ...b, _byAdmin: true }); return res.status(st).json(out);
     }
     const tgt = await admin(`/rest/v1/profiles?id=eq.${encodeURIComponent(b.user_id || "")}&select=id,role,email`);
     const target = tgt.ok && tgt.j[0];
     if (!target) return res.status(404).json({ error: "not_found" });
     const self = target.id === me.id;
-    // only ADMIN manages users (an admin account can be changed only by itself)
-    const over = isAdmin(me) && (target.role !== "admin" || self);
+    // only ADMIN manages users; ADMINs manage each other too (they run the app together)
+    const over = isAdmin(me);
     if (b.action === "reset_password") {
       if (!over) return res.status(403).json({ error: "forbidden" });
       if (String(b.password || "").length < 6) return res.status(400).json({ error: "weak_password" });
