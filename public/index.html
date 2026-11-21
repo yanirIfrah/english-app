@@ -126,11 +126,31 @@ svg.i{width:18px;height:18px;flex:none}
 .set h3{display:flex;align-items:center;gap:8px;margin-bottom:4px}
 .pdf-host{position:fixed;left:-10000px;top:0;width:794px;background:#fff;padding:0;z-index:-1}
 .pdf-doc{width:100%;background:#fff;direction:rtl;letter-spacing:.01px}.pdf-doc .rep{font-size:10.5px}.pdf-doc .rep table{table-layout:auto}
+
+.top .burger{position:relative;flex:none}.top .burger .cnt.dot{position:absolute;top:-4px;left:-4px;background:#ef4444;color:#fff;border-radius:999px;font-size:11px;min-width:18px;height:18px;padding:0 4px;display:grid;place-items:center}
+.brand span{font-size:16px;color:var(--ink)}
+#drawer-root .dov{position:fixed;inset:0;background:rgba(15,23,42,.4);z-index:55;animation:fade .2s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.drawer{position:fixed;top:0;bottom:0;right:0;width:min(320px,86vw);background:#fff;z-index:56;box-shadow:-10px 0 30px rgba(15,23,42,.15);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .22s ease;padding-top:env(safe-area-inset-top);overflow:auto}
+.drawer.open{transform:none}
+.dhead{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}
+.duser{display:flex;align-items:center;gap:10px;padding:14px}.duser b{display:block}.duser span{font-size:13px;color:var(--muted)}
+.av.big{width:42px;height:42px;border-radius:50%;background:var(--pri);color:#fff;display:grid;place-items:center;font-size:18px;font-weight:700;flex:none}
+.dnavs{padding:4px 8px;border-bottom:1px solid var(--line)}.dnav{display:flex;align-items:center;gap:12px;width:100%;padding:11px 12px;border:0;background:none;border-radius:10px;font-weight:600;font-size:15px;text-align:right;color:var(--ink-2)}
+.dnav span{flex:1}.dnav:hover{background:#f1f5f9}.dnav.on{background:var(--pri-soft);color:var(--pri-2)}
+.dnav .cnt{flex:none;background:#ef4444;color:#fff;border-radius:999px;font-size:11.5px;min-width:20px;height:20px;padding:0 6px;display:grid;place-items:center}
+.dinfo{padding:6px 14px 10px;flex:1}.dtitle{font-size:12px;font-weight:700;color:var(--muted);margin:12px 0 4px;text-transform:uppercase}
+.drow{display:flex;justify-content:space-between;font-size:14.5px;padding:3px 0}.dnote{font-size:13.5px;color:var(--ink-2);line-height:1.55}
+.dfoot{border-top:1px solid var(--line);padding:6px 8px calc(12px + env(safe-area-inset-bottom))}
+body.noscroll{overflow:hidden}
+.cfm{z-index:90;align-items:center}.sheet.small{max-width:400px;border-radius:18px;margin:0 16px}.cfm-msg{font-size:15.5px;line-height:1.6;color:var(--ink)}
+.filt .actions{flex-wrap:wrap}
 </style>
 </head>
 <body>
 <div class="wrap" id="app"></div>
 <div id="modal-root"></div>
+<div id="drawer-root"></div>
 <div id="print-root"></div>
 <script src="lib/supabase.js"></script>
 <script>
@@ -152,10 +172,21 @@ const ICONS={clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',user
  out:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3L21 2M16 7l3 3"/>',
  x:'<path d="M18 6L6 18M6 6l12 12"/>',back:'<path d="M9 18l6-6-6-6"/>',trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15"/>',
  note:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',check:'<path d="M5 12l5 5L20 7"/>',inbox:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/>',
- chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',send:'<path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/>'};
+ chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',undo:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',send:'<path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/>'};
 const icon=(n,s=18)=>`<svg class="i" viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||""}</svg>`;
 function toast(t,ms=2600){ document.querySelectorAll(".toast").forEach(x=>x.remove()); const d=document.createElement("div"); d.className="toast"; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),ms); }
 const closeModal=()=>{ $("#modal-root").innerHTML=""; };
+// in-app confirmation (browser confirm() windows are blocked in some browsers)
+function askConfirm(msg,{ok="אישור",cancel="ביטול",danger=false}={}){
+  return new Promise(res=>{
+    const d=document.createElement("div"); d.className="modal cfm";
+    d.innerHTML=`<div class="sheet small" role="alertdialog"><div class="cfm-msg">${esc(msg).replace(/\n/g,"<br>")}</div>
+      <div class="row"><button class="btn ghost" data-a="0">${esc(cancel)}</button><button class="btn ${danger?"danger":""}" data-a="1">${esc(ok)}</button></div></div>`;
+    const done=v=>{ d.remove(); res(v); };
+    d.addEventListener("click",e=>{ const b=e.target.closest("[data-a]"); if(b) done(b.dataset.a==="1"); else if(e.target===d) done(false); });
+    document.body.appendChild(d); d.querySelector('[data-a="1"]').focus();
+  });
+}
 
 /* ========================== dates & hours ========================== */
 const HEB_MONTHS=["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
@@ -182,6 +213,7 @@ function splitOT(m){ const std=Math.round((Number(S.cfg.stdHours)||8.6)*60), t1=
 const cfgInt=(k,d,lo,hi)=>{ const v=parseInt(S.cfg[k],10); return isNaN(v)?d:Math.min(hi,Math.max(lo,v)); };
 const VIEW_FROM=()=>ymAdd(curYM(),-cfgInt("viewMonths",2,0,12));      // employee sees this month and N back
 const CORR_FROM=()=>ymAdd(curYM(),-cfgInt("corrMonths",1,0,3))+"-01"; // corrections: from the 1st of N months back, until yesterday
+const ADMIN_FROM=()=>{ const d=parseD(todayStr()); d.setMonth(d.getMonth()-6); return ymd(d); }; // ADMIN edits up to half a year back
 const BRANCHES=()=>Array.isArray(S.cfg.branches)?S.cfg.branches.filter(Boolean):[];
 function entryText(e){ if(!e) return "לא הוזן"; if(e.action==="delete") return "מחיקת הרישום"; if(e.kind==="vacation") return "יום חופש"; if(e.kind==="sick") return "יום מחלה"; return `\u2066${hhmm(e.start_time)}–${hhmm(e.end_time)}\u2069${e.break_min?` (הפסקה ${e.break_min} דק׳)`:""} · ${fmtH(entryMin(e))}`; }
 
@@ -307,25 +339,61 @@ function renderFirstRun(){ authShell(`<h1 style="text-align:center">ברוכים
 function renderSignup(){ authShell(`<h1 style="text-align:center">הרשמה</h1><p class="sub">יצירת חשבון עובד</p>${signupForm(false)}<div class="row"><button class="link" id="tol" type="button">כבר יש לי חשבון</button></div>`); wireSignup(false); $("#tol").onclick=()=>renderLogin(); }
 
 /* ========================== app shell ========================== */
+const NAV_EMP=[["my","clock","השעות שלי"]];
+const NAV_ADMIN=[["team","users","עובדים"],["approve","inbox","אישורים"],["reports","chart","דוחות"],["users","user","משתמשים"],["settings","cog","הגדרות"]];
+const TITLES={my:"השעות שלי",team:"עובדים",approve:"בקשות תיקון",reports:"דוחות",users:"משתמשים",settings:"הגדרות"};
 function topBar(){
-  const me=S.me, role=me.role==="admin"?`<span class="badge">ADMIN</span>`:"";
-  return `<div class="top"><div class="brand">${LOGO}<span>שעון נוכחות</span></div>
-    <button class="chip" id="mebtn" aria-label="החשבון שלי"><b>${esc(me.name)}</b>${role}<span class="av">${esc((me.name||"?").trim()[0]||"?")}</span></button></div>`;
+  const me=S.me;
+  return `<div class="top"><button class="ib burger" id="burger" aria-label="תפריט">${icon("menu",20)}<span class="cnt dot" id="pcnt" ${isAdmin()&&S.pending?"":"hidden"}>${S.pending||""}</span></button>
+    <div class="brand">${LOGO}<span>${esc(TITLES[S.tab]||"שעון נוכחות")}</span></div>
+    <button class="chip" id="mebtn" aria-label="החשבון שלי"><b>${esc(me.name)}</b>${me.role==="admin"?`<span class="badge">ADMIN</span>`:""}<span class="av">${esc((me.name||"?").trim()[0]||"?")}</span></button></div>`;
 }
-function tabsBar(){
-  if(!isAdmin()) return "";
-  const t=[["team","users","עובדים"],["approve","inbox","אישורים"],["reports","chart","דוחות"],["users","user","משתמשים"],["settings","cog","הגדרות"]];
-  return `<div class="tabs">${t.map(([id,ic,n])=>`<button class="tab ${S.tab===id?"on":""}" data-tab="${id}">${icon(ic,16)} ${n}${id==="approve"?`<span class="cnt" id="pcnt" ${S.pending?"":"hidden"}>${S.pending}</span>`:""}</button>`).join("")}</div>`;
-}
-function paintBadge(){ const c=$("#pcnt"); if(c){ c.textContent=S.pending; c.hidden=!S.pending; } }
+function paintBadge(){ const c=$("#pcnt"); if(c){ c.textContent=S.pending; c.hidden=!(isAdmin()&&S.pending); } const d=$("#dpcnt"); if(d){ d.textContent=S.pending; d.hidden=!S.pending; } }
 function render(){
   if(!S.me) return renderLogin();
   if(isAdmin()){ if(S.tab==="my") S.tab="team"; } else S.tab="my";
-  app.innerHTML=topBar()+tabsBar()+`<div id="view"><div class="empty"><span class="spin"></span></div></div>`;
-  app.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{ S.tab=b.dataset.tab; S.view=null; render(); });
+  app.innerHTML=topBar()+`<div id="view"><div class="empty"><span class="spin"></span></div></div>`;
+  $("#burger").onclick=openDrawer;
   $("#mebtn").onclick=e=>{ e.stopPropagation(); openMenu(e.currentTarget); };
   if(isAdmin()) loadPendingCount().then(paintBadge);
   refresh();
+}
+function go(tab){ closeDrawer(); S.tab=tab; S.view=null; render(); scrollTo(0,0); }
+function closeDrawer(){ const d=$("#drawer-root"); if(d) d.innerHTML=""; document.body.classList.remove("noscroll"); }
+async function openDrawer(){
+  const me=S.me, adm=isAdmin(), nav=adm?NAV_ADMIN:NAV_EMP, td=todayStr();
+  const root=$("#drawer-root");
+  const item=([id,ic,n])=>`<button class="dnav ${S.tab===id?"on":""}" data-go="${id}">${icon(ic,18)} <span>${n}</span>${id==="approve"?`<span class="cnt" id="dpcnt" ${S.pending?"":"hidden"}>${S.pending}</span>`:""}</button>`;
+  root.innerHTML=`<div class="dov" id="dov"></div><aside class="drawer" role="dialog" aria-label="תפריט">
+    <div class="dhead"><img src="logo.png" alt="lirad" style="height:34px"><button class="ib" id="dx" aria-label="סגירה">${icon("x")}</button></div>
+    <div class="duser"><span class="av big">${esc((me.name||"?").trim()[0]||"?")}</span><div><b>${esc(me.name)}</b><span>${adm?"מנהל מערכת (ADMIN)":esc([me.branch,me.emp_no?"מס׳ "+me.emp_no:""].filter(Boolean).join(" · ")||"עובד/ת")}</span></div></div>
+    <nav class="dnavs">${nav.map(item).join("")}${adm?`<button class="dnav" data-act="leave">${icon("plus",18)} <span>הזנת חופש / מחלה לעובד</span></button>`:""}</nav>
+    <div class="dinfo" id="dinfo"><span class="spin"></span></div>
+    <div class="dfoot"><button class="dnav" data-act="pw">${icon("key",18)} <span>שינוי סיסמה</span></button><button class="dnav" data-act="out">${icon("out",18)} <span>התנתקות</span></button>
+      <div class="hint" style="padding:8px 12px 0">${esc(S.cfg.company||"")} · ${APP_NAME}</div></div></aside>`;
+  document.body.classList.add("noscroll");
+  requestAnimationFrame(()=>root.querySelector(".drawer").classList.add("open"));
+  $("#dov").onclick=$("#dx").onclick=closeDrawer;
+  root.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
+  root.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{ const a=b.dataset.act; closeDrawer(); if(a==="pw") pwModal(); else if(a==="out") signOut(); else if(a==="leave") leaveModal(null); });
+  // relevant info
+  const info=$("#dinfo"); const row=(l,v)=>`<div class="drow"><span>${l}</span><b>${v}</b></div>`;
+  try{
+    if(adm){
+      await Promise.all([loadUsers(),loadPendingCount()]); const emps=employees(), list=await loadEntries(td,addDays(td,1),null);
+      const vac=list.filter(e=>e.kind==="vacation").length, sick=list.filter(e=>e.kind==="sick").length, rep=new Set(list.map(e=>e.user_id)).size;
+      info.innerHTML=`<div class="dtitle">היום – ${dShort(td)}</div>${row("עובדים פעילים",emps.filter(u=>!u.locked).length)}${row("דיווחו היום",rep)}${row("בחופש היום",vac)}${row("במחלה היום",sick)}
+        <div class="dtitle">ממתין לטיפול</div>${row("בקשות תיקון",S.pending)}
+        <div class="dtitle">כללים</div><div class="dnote">עובדים מזינים את היום ישירות ומבקשים תיקון לימים מ-${dShort(CORR_FROM())}. ADMIN יכול לשנות שעות מ-${dShort(ADMIN_FROM())} ואילך (חצי שנה).</div>`;
+    } else {
+      const from=curYM()+"-01", [list,corr]=await Promise.all([loadEntries(from,ymAdd(curYM(),1)+"-01",me.id),loadCorr(CORR_FROM(),addDays(td,1),me.id)]);
+      const s=summarize(list), t=list.find(e=>e.day===td), pend=corr.filter(c=>c.status==="pending").length, rej=corr.filter(c=>c.status==="rejected").length;
+      info.innerHTML=`<div class="dtitle">היום – ${dShort(td)}</div><div class="dnote">${t?esc(entryText(t)):"עוד לא הוזנו שעות להיום"}</div>
+        <div class="dtitle">${ymLabel(curYM())}</div>${row("ימי עבודה",s.days)}${row("סה״כ שעות",`<span dir="ltr">${fmtH(s.min)}</span>`)}${row("ימי חופש",s.vac)}${row("ימי מחלה",s.sick)}
+        <div class="dtitle">בקשות תיקון</div>${row("ממתינות לאישור",pend)}${rej?row("נדחו",rej):""}
+        <div class="dtitle">כללים</div><div class="dnote">את היום מזינים ישירות. אפשר לבקש תיקון לימים מ-${dShort(CORR_FROM())} ועד אתמול – השינוי ייכנס אחרי אישור המנהל.</div>`;
+    }
+  }catch(e){ info.innerHTML=""; }
 }
 async function refresh(){
   const v=$("#view"); if(!v) return;
@@ -372,7 +440,7 @@ function summarize(list){
   return s;
 }
 // what an employee may do with a day: "direct" (today), "request" (correction), "lock"
-function dayMode(uid,day){ if(isAdmin()) return "direct"; if(uid!==S.me.id) return "lock"; const td=todayStr(); if(day===td) return "direct"; if(day<td&&day>=CORR_FROM()) return "request"; return "lock"; }
+function dayMode(uid,day){ if(isAdmin()) return day>=ADMIN_FROM()?"direct":"lock"; if(uid!==S.me.id) return "lock"; const td=todayStr(); if(day===td) return "direct"; if(day<td&&day>=CORR_FROM()) return "request"; return "lock"; }
 async function viewMonth(uid,adminView){
   const v=$("#view"), from=S.ym+"-01", to=ymAdd(S.ym,1)+"-01";
   const [list,corr]=await Promise.all([loadEntries(from,to,uid),loadCorr(from,to,uid)]); if(!$("#view")) return;
@@ -381,7 +449,7 @@ async function viewMonth(uid,adminView){
   const map={}; list.forEach(e=>map[e.day]=e); S.ent=map;
   const cmap={}; corr.forEach(c=>cmap[c.day]=c); S.corr=cmap; // latest per day (ordered by created_at)
   const sm=summarize(list), ot=S.cfg.overtime!==false, td=todayStr(), n=daysIn(S.ym);
-  const minYM=adminView?"2000-01":VIEW_FROM(), maxYM=adminView?ymAdd(curYM(),1):curYM();
+  const minYM=adminView?ADMIN_FROM().slice(0,7):VIEW_FROM(), maxYM=adminView?ymAdd(curYM(),1):curYM();
   const rows=[];
   for(let d=1;d<=n;d++){
     const day=`${S.ym}-${pad(d)}`, e=map[day], c=cmap[day], dw=dowOf(day), mode=dayMode(uid,day);
@@ -396,10 +464,11 @@ async function viewMonth(uid,adminView){
     rows.push(`<button class="day${dw===5||dw===6?" we":""}${day===td?" td":""}${mode==="lock"?" ro":""}" data-day="${day}" data-mode="${mode}">
       <div class="dnum"><b>${d}</b><span>${HEB_D1[dw]}</span></div>
       <div class="dmain">${main}${e&&e.note?`<span class="nt">${icon("note",12)} ${esc(e.note)}</span>`:""}${cst}</div>
-      <div class="dtot">${e&&e.kind==="work"?fmtH(entryMin(e)):""}</div>${mode==="lock"&&day<=td?`<span class="lockic" title="נעול">${icon("lock",15)}</span>`:""}</button>`);
+      <div class="dtot">${e&&e.kind==="work"?fmtH(entryMin(e)):""}</div>${mode==="lock"&&(day<=td||isAdmin())?`<span class="lockic" title="נעול">${icon("lock",15)}</span>`:""}</button>`);
   }
   const tE=map[td], own=uid===S.me.id&&!adminView;
-  v.innerHTML=`${adminView?`<div class="row" style="margin:0 0 10px"><button class="btn ghost sm" id="bk">${icon("back",16)} כל העובדים</button><div><b>${esc(user.name)}</b>${user.emp_no?` <span class="hint" style="display:inline">· מס׳ ${esc(user.emp_no)}</span>`:""}</div></div>`:""}
+  v.innerHTML=`${adminView?`<div class="row" style="margin:0 0 10px"><button class="btn ghost sm" id="bk">${icon("back",16)} כל העובדים</button><div><b>${esc(user.name)}</b>${user.branch?` <span class="badge gray">${esc(user.branch)}</span>`:""}${user.emp_no?` <span class="hint" style="display:inline">· מס׳ ${esc(user.emp_no)}</span>`:""}</div></div>
+    <div class="actions" style="margin-bottom:10px"><button class="btn ghost sm" id="lvq">${icon("plus",15)} הזנת חופש / מחלה לעובד הזה</button></div>`:""}
     <div class="month"><button class="ib" id="pm" aria-label="החודש הקודם" ${S.ym<=minYM?"disabled":""}>${icon("right",20)}</button><h2>${ymLabel(S.ym)}</h2><button class="ib" id="nm" aria-label="החודש הבא" ${S.ym>=maxYM?"disabled":""}>${icon("left",20)}</button></div>
     ${own&&S.ym===curYM()?`<div class="card today"><div style="flex:1"><div class="t1">היום – ${dLabel(td)}</div><div class="t2">${tE?`הוזן: ${esc(entryText(tE))}`:"עוד לא הוזנו שעות להיום"}</div></div><button class="btn" id="tdgo">${icon(tE?"note":"plus",16)} ${tE?"עריכה":"הזנת שעות להיום"}</button></div>`:""}
     <div class="stats"><div class="stat"><div class="v">${sm.days}</div><div class="l">ימי עבודה</div></div><div class="stat"><div class="v" dir="ltr">${fmtH(sm.min)}</div><div class="l">סה״כ שעות</div></div>
@@ -412,9 +481,10 @@ async function viewMonth(uid,adminView){
   $("#pm").onclick=()=>{ S.ym=ymAdd(S.ym,-1); refresh(); };
   $("#nm").onclick=()=>{ S.ym=ymAdd(S.ym,1); refresh(); };
   const bk=$("#bk"); if(bk) bk.onclick=()=>{ S.view=null; refresh(); };
+  const lq=$("#lvq"); if(lq) lq.onclick=()=>leaveModal(uid);
   const tg=$("#tdgo"); if(tg) tg.onclick=()=>dayModal(uid,td,"direct");
   v.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{ const m=b.dataset.mode, day=b.dataset.day;
-    if(m==="lock") return toast(day>todayStr()?"אי אפשר להזין ימים עתידיים.":"את היום הזה כבר אי אפשר לתקן. לשינוי פנו למנהל."); dayModal(uid,day,m); });
+    if(m==="lock") return toast(isAdmin()?"אפשר לשנות שעות עד חצי שנה אחורה בלבד.":day>todayStr()?"אי אפשר להזין ימים עתידיים.":"את היום הזה כבר אי אפשר לתקן. לשינוי פנו למנהל."); dayModal(uid,day,m); });
   const R=monthRange(S.ym);
   $("#xpdf").onclick=()=>downloadPDF([{user,list}],R,false);
 }
@@ -458,7 +528,7 @@ function dayModal(uid,day,mode){
     if(action==="upsert"&&st.kind==="work"){ if(!st.start||!st.end) return err.textContent="נא למלא שעת כניסה ושעת יציאה"; if(st.start===st.end) return err.textContent="שעת היציאה זהה לשעת הכניסה";
       if(entryMin({kind:"work",start_time:st.start,end_time:st.end,break_min:st.brk})<=0) return err.textContent="ההפסקה ארוכה מזמן העבודה"; }
     if(req&&S.cfg.requireReason!==false&&!st.reason.trim()) return err.textContent="נא לכתוב את סיבת התיקון";
-    if(action==="delete"&&!confirm("לשלוח למנהל בקשה למחוק את הרישום של היום הזה?")) return;
+    if(action==="delete"&&!(await askConfirm("לשלוח למנהל בקשה למחוק את הרישום של היום הזה?",{ok:"שליחת הבקשה"}))) return;
     err.innerHTML='<span class="spin"></span>';
     if(req){
       if(pend){ const {error:de}=await S.sb.from("corrections").delete().eq("id",pend.id); if(de) return err.textContent="לא הצלחתי לעדכן את הבקשה הקודמת."; }
@@ -473,7 +543,7 @@ function dayModal(uid,day,mode){
     closeModal(); toast("נשמר ✓"); refresh();
   };
   const del=async()=>{
-    if(!confirm("למחוק את הרישום של היום הזה?")) return;
+    if(!(await askConfirm("למחוק את הרישום של היום הזה?",{ok:"מחיקה",danger:true}))) return;
     const {error}=await S.sb.from("entries").delete().eq("user_id",uid).eq("day",day);
     if(error) return $("#derr").textContent="המחיקה נכשלה.";
     closeModal(); toast("הרישום נמחק"); refresh();
@@ -484,26 +554,64 @@ function dayModal(uid,day,mode){
 
 /* ========================== admin: employees ========================== */
 async function viewTeam(){
-  const v=$("#view"), from=S.ym+"-01", to=ymAdd(S.ym,1)+"-01";
-  const [users,list]=await Promise.all([loadUsers(),loadEntries(from,to,null)]); if(!$("#view")) return;
-  const by={}; list.forEach(e=>(by[e.user_id]=by[e.user_id]||[]).push(e));
-  const ot=S.cfg.overtime!==false, allAct=employees().filter(u=>!u.locked||by[u.id]), brs=BRANCHES();
-  if(S.teamBranch&&S.teamBranch!=="_none"&&!brs.includes(S.teamBranch)) S.teamBranch="";
-  const act=allAct.filter(u=>!S.teamBranch||(S.teamBranch==="_none"?!u.branch:u.branch===S.teamBranch));
-  const tot=summarize(list.filter(e=>act.some(u=>u.id===e.user_id)));
-  v.innerHTML=`<div class="month"><button class="ib" id="pm" aria-label="החודש הקודם">${icon("right",20)}</button><h2>${ymLabel(S.ym)}</h2><button class="ib" id="nm" aria-label="החודש הבא" ${S.ym>=ymAdd(curYM(),1)?"disabled":""}>${icon("left",20)}</button></div>
-    <div class="stats"><div class="stat"><div class="v">${act.length}</div><div class="l">עובדים</div></div><div class="stat"><div class="v" dir="ltr">${fmtH(tot.min)}</div><div class="l">סה״כ שעות</div></div>
-      ${ot?`<div class="stat ot"><div class="v" dir="ltr">${fmtH(tot.o1+tot.o2)}</div><div class="l">שעות נוספות</div></div>`:""}<div class="stat vac"><div class="v">${tot.vac}</div><div class="l">ימי חופש</div></div><div class="stat sick"><div class="v">${tot.sick}</div><div class="l">ימי מחלה</div></div></div>
-    ${brs.length?`<div class="chips"><button class="chipf ${!S.teamBranch?"on":""}" data-br="">כל הסניפים (${allAct.length})</button>${brs.map(b=>`<button class="chipf ${S.teamBranch===b?"on":""}" data-br="${esc(b)}">${esc(b)} (${allAct.filter(u=>u.branch===b).length})</button>`).join("")}${allAct.some(u=>!u.branch)?`<button class="chipf ${S.teamBranch==="_none"?"on":""}" data-br="_none">ללא סניף (${allAct.filter(u=>!u.branch).length})</button>`:""}</div>`:""}
-    ${S.pending?`<button class="card pendcard" id="gopend">${icon("inbox",18)} <b>${S.pending} בקשות תיקון ממתינות לאישור</b> ${icon("left",16)}</button>`:""}
-    <div class="days list">${act.map(u=>{ const s=summarize(by[u.id]||[]); return `<button class="it" data-u="${u.id}">
-      <div class="nm"><b>${esc(u.name)}${u.locked?' <span class="badge lock">חסום</span>':""}</b>
-        <span>${u.branch?esc(u.branch)+" · ":""}${u.emp_no?"מס׳ "+esc(u.emp_no)+" · ":""}${s.days} ימי עבודה${s.vac?` · ${s.vac} חופש`:""}${s.sick?` · ${s.sick} מחלה`:""}</span></div>
-      <div class="fig"><b>${fmtH(s.min)}</b>שעות${ot&&(s.o1+s.o2)?` · נוספות ${fmtH(s.o1+s.o2)}`:""}</div>${icon("left",16)}</button>`; }).join("")||`<div class="empty">אין עובדים עדיין. פותחים עובד חדש בלשונית "משתמשים".</div>`}</div>`;
-  $("#pm").onclick=()=>{ S.ym=ymAdd(S.ym,-1); refresh(); }; $("#nm").onclick=()=>{ S.ym=ymAdd(S.ym,1); refresh(); };
-  const gp=$("#gopend"); if(gp) gp.onclick=()=>{ S.tab="approve"; render(); };
-  v.querySelectorAll("[data-br]").forEach(b=>b.onclick=()=>{ S.teamBranch=b.dataset.br; refresh(); });
-  v.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.u; refresh(); scrollTo(0,0); });
+  const v=$("#view"), td=todayStr(), from=ymAdd(curYM(),-1)+"-01";
+  const [users,list,pc]=await Promise.all([loadUsers(),loadEntries(from,addDays(td,1),null),loadCorr("2000-01-01","2999-01-01",null).then(c=>c.filter(x=>x.status==="pending"))]); if(!$("#view")) return;
+  const brs=BRANCHES(); if(S.teamBranch&&S.teamBranch!=="_none"&&!brs.includes(S.teamBranch)) S.teamBranch="";
+  const emps=employees().filter(u=>!S.teamBranch||(S.teamBranch==="_none"?!u.branch:u.branch===S.teamBranch));
+  const last={}, today={}; list.forEach(e=>{ if(!last[e.user_id]||e.day>last[e.user_id]) last[e.user_id]=e.day; if(e.day===td) today[e.user_id]=e; });
+  const pend={}; pc.forEach(c=>pend[c.user_id]=(pend[c.user_id]||0)+1);
+  v.innerHTML=`<div class="card filt">
+      <div class="two"><div><label class="lbl" style="margin-top:0">סניף</label><select class="field" id="fb"><option value="">כל הסניפים</option>${brs.map(b=>`<option ${S.teamBranch===b?"selected":""}>${esc(b)}</option>`).join("")}${employees().some(u=>!u.branch)?`<option value="_none" ${S.teamBranch==="_none"?"selected":""}>ללא סניף</option>`:""}</select></div>
+        <div><label class="lbl" style="margin-top:0">עובד</label><select class="field" id="fe"><option value="">בחירת עובד…</option>${emps.map(u=>`<option value="${u.id}">${esc(u.name)}${u.locked?" (חסום)":""}</option>`).join("")}</select></div></div>
+      <div class="actions" style="margin-top:12px"><button class="btn" id="lvn">${icon("plus",16)} הזנת חופש / מחלה</button>${S.pending?`<button class="btn ghost" id="gopend">${icon("inbox",16)} ${S.pending} בקשות ממתינות</button>`:""}</div></div>
+    <div class="days list">${emps.map(u=>{ const t=today[u.id]; return `<button class="it" data-u="${u.id}">
+      <div class="nm"><b>${esc(u.name)}${u.locked?' <span class="badge lock">חסום</span>':""}${pend[u.id]?` <span class="badge mgr">${pend[u.id]} ממתינות</span>`:""}</b>
+        <span>${u.branch?esc(u.branch)+" · ":""}${t?(t.kind==="work"?"היום: "+`<span dir="ltr">${hhmm(t.start_time)}–${hhmm(t.end_time)}</span>`:"היום: "+(t.kind==="vacation"?"חופש":"מחלה")):"היום: לא דיווח"}${last[u.id]?` · דיווח אחרון ${dShort(last[u.id]).slice(0,-5)}`:""}</span></div>${icon("left",16)}</button>`; }).join("")||`<div class="empty">אין עובדים${S.teamBranch?" בסניף הזה":""}. פותחים עובד חדש במשתמשים.</div>`}</div>`;
+  $("#fb").onchange=()=>{ S.teamBranch=$("#fb").value; refresh(); };
+  $("#fe").onchange=()=>{ if($("#fe").value){ S.view=$("#fe").value; S.ym=curYM(); refresh(); scrollTo(0,0); } };
+  $("#lvn").onclick=()=>leaveModal(null);
+  const gp=$("#gopend"); if(gp) gp.onclick=()=>go("approve");
+  v.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{ S.view=b.dataset.u; S.ym=curYM(); refresh(); scrollTo(0,0); });
+}
+// ADMIN: vacation / sick days for a chosen employee (one day or a range)
+async function leaveModal(uid){
+  await loadUsers(); const brs=BRANCHES(), td=todayStr();
+  const st={branch:uid?((S.users.find(u=>u.id===uid)||{}).branch||""):(S.teamBranch&&S.teamBranch!=="_none"?S.teamBranch:""),uid:uid||"",kind:"vacation",from:td,to:td,skipWe:true,note:""};
+  const draw=()=>{
+    const emps=employees().filter(u=>!st.branch||u.branch===st.branch);
+    $("#modal-root").innerHTML=`<div class="modal"><div class="sheet">
+      <div class="row" style="margin-top:0"><h2>הזנת חופש / מחלה</h2><button class="ib" id="mx">${icon("x")}</button></div>
+      <div class="two">${brs.length?`<div><label class="lbl">סניף</label><select class="field" id="lb"><option value="">כל הסניפים</option>${brs.map(b=>`<option ${st.branch===b?"selected":""}>${esc(b)}</option>`).join("")}</select></div>`:""}
+        <div><label class="lbl">עובד</label><select class="field" id="lu2"><option value="">בחירה…</option>${emps.map(u=>`<option value="${u.id}" ${st.uid===u.id?"selected":""}>${esc(u.name)}</option>`).join("")}</select></div></div>
+      <label class="lbl">סוג</label><div class="seg two-seg"><button data-k="vacation" class="vac ${st.kind==="vacation"?"on":""}">יום חופש</button><button data-k="sick" class="sick ${st.kind==="sick"?"on":""}">יום מחלה</button></div>
+      <div class="two"><div><label class="lbl">מתאריך</label><input class="field ltr" id="lf1" type="date" dir="ltr" min="${ADMIN_FROM()}" value="${st.from}"></div><div><label class="lbl">עד תאריך</label><input class="field ltr" id="lf2" type="date" dir="ltr" min="${ADMIN_FROM()}" value="${st.to}"></div></div>
+      <label class="check"><input type="checkbox" id="lwe" ${st.skipWe?"checked":""}> לדלג על שישי ושבת</label>
+      <label class="lbl">הערה (לא חובה)</label><input class="field" id="ln" maxlength="300" value="${esc(st.note)}" placeholder="${st.kind==="sick"?"למשל: אישור מחלה התקבל":"למשל: חופשה שנתית"}">
+      <div class="hint">אפשר להזין עד ${dShort(ADMIN_FROM())} אחורה. ימים שכבר יש בהם רישום יוחלפו (תתבקש לאשר).</div>
+      <div class="err" id="lerr2"></div><button class="btn block" id="lgo2">${icon("check",16)} שמירה</button></div></div>`;
+    const keep=()=>{ const b=$("#lb"); st.branch=b?b.value:""; st.uid=$("#lu2").value; st.from=$("#lf1").value; st.to=$("#lf2").value||st.from; st.skipWe=$("#lwe").checked; st.note=$("#ln").value; };
+    $("#mx").onclick=closeModal;
+    const lb=$("#lb"); if(lb) lb.onchange=()=>{ keep(); st.uid=""; draw(); };
+    $("#modal-root").querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{ keep(); st.kind=b.dataset.k; draw(); });
+    $("#lf1").onchange=()=>{ keep(); if(st.to<st.from) st.to=st.from; draw(); };
+    $("#lgo2").onclick=async()=>{
+      keep(); const err=$("#lerr2");
+      if(!st.uid) return err.textContent="נא לבחור עובד"; if(!st.from) return err.textContent="נא לבחור תאריך";
+      if(st.from<ADMIN_FROM()) return err.textContent=`אפשר להזין רק מ-${dShort(ADMIN_FROM())} ואילך`;
+      if(st.to<st.from) return err.textContent="תאריך הסיום לפני תאריך ההתחלה";
+      const days=rangeDays({from:st.from,to:addDays(st.to,1)}).filter(d=>!(st.skipWe&&(dowOf(d)===5||dowOf(d)===6)));
+      if(!days.length) return err.textContent="אין ימים לשמירה בטווח הזה"; if(days.length>62) return err.textContent="אפשר עד 62 ימים בפעם אחת";
+      const exist=await loadEntries(days[0],addDays(days[days.length-1],1),st.uid), clash=exist.filter(e=>days.includes(e.day));
+      const name=(S.users.find(u=>u.id===st.uid)||{}).name||"";
+      if(clash.length&&!(await askConfirm(`ל${name} כבר יש רישום ב-${clash.length} מהימים (${clash.slice(0,4).map(e=>dShort(e.day).slice(0,-5)).join(", ")}${clash.length>4?"…":""}).\nלהחליף אותם ב${st.kind==="vacation"?"יום חופש":"יום מחלה"}?`,{ok:"החלפה"}))) return;
+      err.innerHTML='<span class="spin"></span>'; $("#lgo2").disabled=true;
+      const rows=days.map(day=>({user_id:st.uid,day,kind:st.kind,start_time:null,end_time:null,break_min:0,note:st.note.trim()}));
+      const {error}=await S.sb.from("entries").upsert(rows,{onConflict:"user_id,day"});
+      if(error){ $("#lgo2").disabled=false; return err.textContent="השמירה נכשלה. נסו שוב."; }
+      closeModal(); toast(`נשמרו ${days.length} ימי ${st.kind==="vacation"?"חופש":"מחלה"} ל${name} ✓`,3500); refresh();
+    };
+  };
+  draw();
 }
 
 /* ========================== admin: approvals ========================== */
@@ -523,12 +631,19 @@ async function viewApprovals(){
       ${c.reason?`<div class="hint" style="margin-top:6px">סיבה: ${esc(c.reason)}</div>`:""}
       <div class="row"><input class="field" data-an="${c.id}" placeholder="הערה לעובד (לא חובה)" style="flex:1;min-width:160px"><div class="actions"><button class="btn ghost" data-rej="${c.id}">${icon("x",16)} דחייה</button><button class="btn" data-ok="${c.id}">${icon("check",16)} אישור</button></div></div></div>`).join("")
       :`<div class="card empty">${icon("check",20)}<br>אין בקשות ממתינות.</div>`}
-    ${(recent||[]).length?`<h3 style="margin:18px 0 8px">טופלו לאחרונה</h3><div class="days list">${recent.map(c=>`<div class="it"><div class="nm"><b>${esc(nm(c.user_id))} · ${dShort(c.day)}</b><span>${esc(entryText(c))}${c.admin_note?" · "+esc(c.admin_note):""}</span></div><span class="badge ${c.status==="approved"?"":"lock"}">${c.status==="approved"?"אושר":"נדחה"}</span></div>`).join("")}</div>`:""}`;
+    ${(recent||[]).length?`<h3 style="margin:18px 0 8px">טופלו לאחרונה</h3><div class="days list">${recent.map(c=>`<div class="it"><div class="nm"><b>${esc(nm(c.user_id))} · ${dShort(c.day)}</b><span>${esc(entryText(c))}${c.admin_note?" · "+esc(c.admin_note):""}</span></div><span class="badge ${c.status==="approved"?"":"lock"}">${c.status==="approved"?"אושר":"נדחה"}</span>${c.day>=ADMIN_FROM()?`<button class="btn ghost sm" data-undo="${c.id}" data-st="${c.status}" title="ביטול ההחלטה">${icon("undo",15)} ביטול</button>`:""}</div>`).join("")}</div>
+      <div class="hint">"ביטול" מחזיר את הבקשה להמתנה. אם היא אושרה – השעות חוזרות למה שהיה רשום לפני האישור.</div>`:""}`;
   const decide=async(id,ok)=>{ const note=(document.querySelector(`[data-an="${id}"]`)||{}).value||"";
     const {error}=await S.sb.rpc("decide_correction",{cid:Number(id),approve:ok,note});
     if(error) return toast("הפעולה נכשלה. רעננו ונסו שוב."); toast(ok?"אושר ✓ השעות עודכנו":"הבקשה נדחתה"); refresh(); };
   v.querySelectorAll("[data-ok]").forEach(b=>b.onclick=()=>decide(b.dataset.ok,true));
   v.querySelectorAll("[data-rej]").forEach(b=>b.onclick=()=>decide(b.dataset.rej,false));
+  v.querySelectorAll("[data-undo]").forEach(b=>b.onclick=async()=>{
+    const ap=b.dataset.st==="approved";
+    if(!(await askConfirm(ap?"לבטל את האישור?\nהשעות של העובד יחזרו למה שהיה רשום לפני האישור, והבקשה תחזור להמתנה.":"לבטל את הדחייה? הבקשה תחזור להמתנה.",{ok:"ביטול ההחלטה"}))) return;
+    const {error}=await S.sb.rpc("undo_decision",{cid:Number(b.dataset.undo)});
+    if(error) return toast(/other_pending/.test(error.message||"")?"לעובד יש כבר בקשה חדשה ממתינה לאותו יום – טפלו בה קודם.":"הביטול נכשל. נסו שוב.",4000);
+    toast(ap?"האישור בוטל ✓ השעות הוחזרו":"הדחייה בוטלה ✓"); refresh(); });
 }
 
 /* ========================== admin: reports ========================== */
@@ -581,7 +696,7 @@ async function viewUsers(){
 }
 async function deleteUser(u){
   if(!u) return;
-  if(!confirm(`למחוק את ${u.name}?\n\nהחשבון וכל השעות והבקשות שלו יימחקו לצמיתות, ואי אפשר לשחזר אותם.\nאם רוצים רק למנוע כניסה ולשמור את הנתונים – עדיף "חסימת החשבון".`)) return;
+  if(!(await askConfirm(`למחוק את ${u.name}?\n\nהחשבון וכל השעות והבקשות שלו יימחקו לצמיתות, ואי אפשר לשחזר אותם.\nאם רוצים רק למנוע כניסה ולשמור את הנתונים – עדיף "חסימה".`,{ok:"מחיקה לצמיתות",danger:true}))) return;
   try{ await api("delete_user",{user_id:u.id}); closeModal(); toast(`${u.name} נמחק/ה מהמערכת`); refresh(); }
   catch(x){ toast(apiErr(x),4000); }
 }
@@ -661,8 +776,8 @@ function viewSettings(){
     <div class="err" id="gok"></div><button class="btn block" id="gsave">${icon("check",16)} שמירת כל ההגדרות</button>`;
     const keepBr=()=>{ brs=[...v.querySelectorAll("[data-bi]")].map(x=>x.value); };
     $("#badd").onclick=()=>{ keepBr(); keepAll(); brs.push(""); draw(); const l=v.querySelectorAll("[data-bi]"); l[l.length-1].focus(); };
-    v.querySelectorAll("[data-bx]").forEach(b=>b.onclick=()=>{ keepBr(); keepAll(); const name=brs[+b.dataset.bx], n=S.users.filter(u=>u.branch===name).length;
-      if(n&&!confirm(`לסניף "${name}" משויכים ${n} עובדים. להסיר את הסניף? העובדים יישארו משויכים לשם הישן עד שתשנה להם.`)) return; brs.splice(+b.dataset.bx,1); draw(); });
+    v.querySelectorAll("[data-bx]").forEach(b=>b.onclick=async()=>{ keepBr(); keepAll(); const name=brs[+b.dataset.bx], n=S.users.filter(u=>u.branch===name).length;
+      if(n&&!(await askConfirm(`לסניף "${name}" משויכים ${n} עובדים. להסיר את הסניף? העובדים יישארו משויכים לשם הישן עד שתשנה להם.`,{ok:"הסרת הסניף",danger:true}))) return; brs.splice(+b.dataset.bx,1); draw(); });
     $("#gsave").onclick=save;
   };
   const keepAll=()=>{ const g=id=>$("#"+id); Object.assign(c,{company:g("gc").value.trim(),companyId:g("gid").value.trim(),address:g("gad").value.trim(),phone:g("gph").value.trim(),stdHours:Number(g("gh").value)||8.6,ot125Hours:Number(g("g125").value),
