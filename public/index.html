@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0f766e">
+<meta name="theme-color" content="#5D9AE2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="לירד נוכחות">
 <title>לירד שעון נוכחות</title>
@@ -11,14 +11,14 @@
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <style>
-:root{--bg:#f4f6f8;--card:#fff;--ink:#0f172a;--ink-2:#334155;--muted:#64748b;--line:#e2e8f0;--pri:#0f766e;--pri-2:#115e59;--pri-soft:#ccfbf1;--ok:#059669;--ok-soft:#d1fae5;--warn:#b45309;--warn-soft:#fef3c7;--bad:#dc2626;--bad-soft:#fee2e2;--vac:#2563eb;--vac-soft:#dbeafe;--sick:#c2410c;--sick-soft:#ffedd5;--r:14px}
+:root{--bg:#f4f6f8;--card:#fff;--ink:#0f172a;--ink-2:#334155;--muted:#64748b;--line:#e2e8f0;--pri:#5D9AE2;--pri-2:#3d7fcf;--pri-soft:#e3eefb;--ok:#059669;--ok-soft:#d1fae5;--warn:#b45309;--warn-soft:#fef3c7;--bad:#dc2626;--bad-soft:#fee2e2;--vac:#2563eb;--vac-soft:#dbeafe;--sick:#c2410c;--sick-soft:#ffedd5;--r:14px}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Rubik,Arial,sans-serif;font-size:15.5px;line-height:1.5}
 button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
 [hidden]{display:none!important}
 .wrap{max-width:860px;margin:0 auto;padding:0 14px calc(28px + env(safe-area-inset-bottom))}
 .top{position:sticky;top:0;z-index:40;background:rgba(244,246,248,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) 14px 10px;margin:0 -14px 14px;display:flex;align-items:center;gap:10px}
-.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:16.5px;flex:1;min-width:0}.brand .lg{width:34px;height:34px;flex:none}.brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;flex:1;min-width:0;color:var(--ink-2)}.brand img{height:34px;width:auto;flex:none}.brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}@media(max-width:400px){.brand span{display:none}}
 .chip{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 12px;font-size:14px;font-weight:600;max-width:46vw}
 .chip .av{width:26px;height:26px;border-radius:50%;background:var(--pri);color:#fff;display:grid;place-items:center;font-size:13px;flex:none}.chip b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
 .badge{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 8px;background:var(--pri-soft);color:var(--pri-2);white-space:nowrap}
@@ -36,14 +36,14 @@ h1{font-size:22px;margin:0 0 4px}h2{font-size:19px;margin:0}h3{font-size:16px;ma
 .link{background:none;border:0;color:var(--pri);font-weight:600;padding:0;text-decoration:underline;text-underline-offset:3px}
 .lbl{display:block;font-weight:600;font-size:14px;margin:12px 0 6px;color:var(--ink-2)}
 .field{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:10px 12px;background:#fff;min-height:44px;outline:none}
-.field:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(15,118,110,.15)}
+.field:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(93,154,226,.22)}
 .field.ltr{direction:ltr;text-align:right}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.two>div{min-width:0}
 .row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px}
 .err{color:var(--bad);font-size:14px;min-height:20px;margin-top:8px}.ok{color:var(--ok);font-size:14px;min-height:20px;margin-top:8px}
 .hint{color:var(--muted);font-size:13px;margin-top:6px}
 .check{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:14.5px}.check input{width:18px;height:18px;accent-color:var(--pri)}
-.auth{max-width:420px;margin:6vh auto 0}.auth .lgbig{width:64px;height:64px;margin:0 auto 10px;display:block}
+.auth{max-width:420px;margin:6vh auto 0}.auth .lgbig{width:190px;max-width:70%;height:auto;margin:4px auto 14px;display:block}
 .auth h1{text-align:center}.auth .sub{text-align:center}
 .month{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
 .month h2{font-size:20px;text-align:center;flex:1}
@@ -51,11 +51,11 @@ h1{font-size:22px;margin:0 0 4px}h2{font-size:19px;margin:0}h3{font-size:16px;ma
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-bottom:12px}
 .stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}.stat .v{font-size:21px;font-weight:800;line-height:1.2}.stat .l{font-size:12.5px;color:var(--muted)}
 .stat.vac .v{color:var(--vac)}.stat.sick .v{color:var(--sick)}.stat.ot .v{color:var(--warn)}
-.today{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#f0fdfa,#ccfbf1);border-color:#99f6e4}
+.today{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#f3f8fe,#e3eefb);border-color:#bcd6f4}
 .today .t1{font-weight:700}.today .t2{color:var(--ink-2);font-size:14px}
 .days{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:12px}
 .day{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #eef2f6;width:100%;background:none;border-inline:0;border-top:0;text-align:right}
-.day:last-child{border-bottom:0}.day:hover{background:#f8fafc}.day.we{background:#fafbfc}.day.td{background:#f0fdfa}.day.ro{cursor:default}.day.ro:hover{background:inherit}
+.day:last-child{border-bottom:0}.day:hover{background:#f8fafc}.day.we{background:#fafbfc}.day.td{background:#f3f8fe}.day.ro{cursor:default}.day.ro:hover{background:inherit}
 .dnum{width:44px;flex:none;text-align:center;line-height:1.1}.dnum b{display:block;font-size:18px}.dnum span{font-size:11.5px;color:var(--muted)}
 .dmain{flex:1;min-width:0;font-size:14.5px}.dmain .tm{direction:ltr;display:inline-block;font-variant-numeric:tabular-nums}
 .dmain .nt{display:block;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -73,7 +73,7 @@ h1{font-size:22px;margin:0 0 4px}h2{font-size:19px;margin:0}h3{font-size:16px;ma
 .seg button.on{background:#fff;color:var(--pri);box-shadow:0 1px 3px rgba(0,0,0,.1)}.seg button.on.vac{color:var(--vac)}.seg button.on.sick{color:var(--sick)}
 .tw{display:flex;gap:6px}.tw .field{flex:1;min-width:0;direction:ltr;text-align:center;font-variant-numeric:tabular-nums}.tw .btn{padding:0 10px;flex:none}
 .times{display:grid;grid-template-columns:1fr;gap:0}@media(min-width:480px){.times{grid-template-columns:1fr 1fr;gap:10px}}
-.total{margin-top:14px;background:#f0fdfa;border:1px solid #99f6e4;border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.total{margin-top:14px;background:#f3f8fe;border:1px solid #bcd6f4;border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-weight:700}
 .total b{font-size:20px;direction:ltr}
 .list .it{display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #eef2f6;width:100%;background:none;border-inline:0;border-top:0;text-align:right}
 .list .it:last-child{border-bottom:0}.list .it:hover{background:#f8fafc}
@@ -83,7 +83,7 @@ h1{font-size:22px;margin:0 0 4px}h2{font-size:19px;margin:0}h3{font-size:16px;ma
 .menu{position:fixed;z-index:70;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 32px rgba(15,23,42,.18);padding:6px;min-width:220px}
 .menu button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:0;background:none;border-radius:10px;font-weight:600;text-align:right}.menu button:hover{background:#f1f5f9}
 .menu .mh{padding:8px 12px 10px;border-bottom:1px solid var(--line);margin-bottom:4px}.menu .mh b{display:block}.menu .mh span{font-size:13px;color:var(--muted)}
-.spin{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(15,118,110,.25);border-top-color:var(--pri);border-radius:50%;animation:sp 1s linear infinite;vertical-align:middle}@keyframes sp{to{transform:rotate(360deg)}}
+.spin{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(93,154,226,.3);border-top-color:var(--pri);border-radius:50%;animation:sp 1s linear infinite;vertical-align:middle}@keyframes sp{to{transform:rotate(360deg)}}
 .empty{color:var(--muted);text-align:center;padding:26px 12px}
 svg.i{width:18px;height:18px;flex:none}
 /* ---------- printable report ---------- */
@@ -96,11 +96,11 @@ svg.i{width:18px;height:18px;flex:none}
 }
 .rep{font-family:Arial,"Segoe UI",sans-serif;color:#000;font-size:11.5px;direction:rtl}
 .rep+.rep{page-break-before:always;break-before:page}
-.rep .rh{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #0f766e;padding-bottom:8px;margin-bottom:10px}
-.rep .rh h1{font-size:19px;margin:0;color:#0f766e}.rep .rh .co{font-size:15px;font-weight:700}
+.rep .rh{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #5D9AE2;padding-bottom:8px;margin-bottom:10px}
+.rep .rh h1{font-size:19px;margin:0;color:#3d7fcf}.rep .rh .co{font-size:15px;font-weight:700}
 .rep .meta{display:grid;grid-template-columns:repeat(4,auto);gap:4px 18px;margin-bottom:10px;font-size:12px}.rep .meta b{font-weight:700}
 .rep table{width:100%;border-collapse:collapse}.rep th,.rep td{border:1px solid #cbd5e1;padding:3px 5px;text-align:center}
-.rep th{background:#f0fdfa;font-weight:700}.rep tr.we td{background:#f8fafc}.rep td.nt{text-align:right;max-width:150px}
+.rep th{background:#eef5fd;font-weight:700}.rep tr.we td{background:#f8fafc}.rep td.nt{text-align:right;max-width:150px}
 .rep td.tm{direction:ltr}.rep .sum{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
 .rep .sum div{border:1px solid #cbd5e1;border-radius:6px;padding:5px 8px}.rep .sum b{display:block;font-size:14px}
 .rep .sig{display:flex;justify-content:space-between;margin-top:26px;gap:30px}.rep .sig div{flex:1;border-top:1px solid #000;padding-top:4px;text-align:center}
@@ -122,7 +122,7 @@ const toEmail=u=>"u"+[...new TextEncoder().encode(String(u).toLowerCase())].map(
 const normUser=u=>String(u||"").trim().toLowerCase();
 const validUser=u=>/^[a-z0-9֐-׿._-]{3,20}$/.test(u);
 const APP_NAME="לירד שעון נוכחות";
-const LOGO=`<svg viewBox="0 0 64 64" class="lg" aria-hidden="true"><defs><linearGradient id="lgg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14b8a6"/><stop offset="1" stop-color="#0f766e"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#lgg)"/><circle cx="32" cy="33" r="19" fill="#fff"/><circle cx="32" cy="33" r="19" fill="none" stroke="#99f6e4" stroke-width="3"/><path d="M32 21v12l8 5" stroke="#0f766e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="27" y="8" width="10" height="5" rx="2" fill="#fff"/><circle cx="47" cy="47" r="9" fill="#f59e0b" stroke="#fff" stroke-width="2.5"/><path d="M43 47l3 3 5-6" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const LOGO=`<img src="logo.png" alt="lirad" class="lg">`;
 const ICONS={clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/>',
  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',cog:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
  left:'<path d="M15 18l-6-6 6-6"/>',right:'<path d="M9 18l6-6-6-6"/>',plus:'<path d="M12 5v14M5 12h14"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
@@ -167,7 +167,7 @@ async function api(action,payload={}){
   if(!r.ok) throw {code:j.error||"error"}; return j;
 }
 const API_ERR={taken:"שם המשתמש הזה כבר תפוס",signup_closed:"ההרשמה סגורה. חשבונות חדשים נפתחים על ידי המנהל.",weak_password:"הסיסמה צריכה להכיל לפחות 6 תווים",
- bad_username:"שם משתמש: 3–20 תווים – אותיות, מספרים, נקודה, קו תחתון או מקף, בלי רווחים",bad_name:"נא להזין שם",forbidden:"אין הרשאה לפעולה הזו",not_configured:"השרת עוד לא הוגדר",auth:"צריך להתחבר מחדש"};
+ bad_username:"שם משתמש: 3–20 תווים – אותיות, מספרים, נקודה, קו תחתון או מקף, בלי רווחים",bad_name:"נא להזין שם",forbidden:"אין הרשאה לפעולה הזו",not_configured:"השרת עוד לא הוגדר",auth:"צריך להתחבר מחדש",email_taken:"כתובת האימייל הזו כבר רשומה אצל עובד אחר",bad_email:"כתובת האימייל לא תקינה",need_login:"צריך להזין אימייל או שם משתמש",no_email:"לעובד הזה אין אימייל",mail_failed:"שליחת המייל נכשלה. צריך להגדיר שליחת מיילים ב-Supabase (ראו הוראות).",rate_limited:"יותר מדי ניסיונות. נסו שוב בעוד כמה דקות.",invalid_login:"פרטי הכניסה לא נכונים"};
 const apiErr=e=>API_ERR[e&&e.code]||"משהו השתבש. נסו שוב.";
 async function loadCfg(){ try{ const {data}=await S.sb.from("app_config").select("data").eq("id",1).maybeSingle(); S.cfg=(data&&data.data)||{}; }catch(e){ S.cfg={}; } }
 async function loadMe(){
@@ -199,24 +199,61 @@ async function signOut(msg){
 /* ========================== auth screens ========================== */
 function pwField(id,ac="current-password"){ return `<input class="field ltr" id="${id}" type="password" autocomplete="${ac}" dir="ltr">`; }
 function authShell(inner){ app.innerHTML=`<div class="auth"><div class="card">${LOGO.replace('class="lg"','class="lgbig"')}${inner}</div><p class="hint" style="text-align:center">${APP_NAME}</p></div>`; }
+const validEmail=e=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
 function renderSetupNeeded(){ authShell(`<h1>האתר עוד לא מחובר</h1><p class="sub">יש להגדיר ב-Vercel את SUPABASE_URL ו-SUPABASE_ANON_KEY ולפרסם מחדש.</p>`); }
 let FAILS=0, LOCK_UNTIL=0;
 function renderLogin(msg=""){
-  authShell(`<h1>${APP_NAME}</h1><p class="sub">כניסה לחשבון – מכל מכשיר</p>
-    <form id="lf" autocomplete="on"><label class="lbl" for="lu">שם משתמש</label><input class="field ltr" id="lu" autocomplete="username" autocapitalize="off" spellcheck="false" dir="ltr">
+  authShell(`<h1 style="text-align:center">${APP_NAME}</h1><p class="sub">כניסה לחשבון – מכל מכשיר</p>
+    <form id="lf" autocomplete="on"><label class="lbl" for="lu">אימייל או שם משתמש</label><input class="field ltr" id="lu" autocomplete="username" autocapitalize="off" spellcheck="false" dir="ltr" inputmode="email">
     <label class="lbl" for="lp">סיסמה</label>${pwField("lp")}
     <div class="err" id="lerr">${esc(msg)}</div><button class="btn block" id="lgo" type="submit">כניסה</button></form>
-    <div class="row" style="font-size:14px"><button class="link" id="forgot" type="button">שכחתי סיסמה</button>${S.cfg.allowSignup===true?`<span>אין חשבון? <button class="link" id="tosign" type="button">הרשמה</button></span>`:""}</div>`);
-  $("#forgot").onclick=()=>{ const e=$("#lerr"); e.style.color="var(--ink-2)"; e.textContent="פנו למנהל המערכת לאיפוס הסיסמה."; };
+    <div class="row" style="font-size:14px"><button class="link" id="first" type="button">כניסה ראשונה? הגדרת סיסמה</button><button class="link" id="forgot" type="button">שכחתי סיסמה</button></div>
+    ${S.cfg.allowSignup===true?`<div class="row" style="font-size:14px;justify-content:center"><span>אין חשבון? <button class="link" id="tosign" type="button">הרשמה</button></span></div>`:""}`);
+  $("#forgot").onclick=()=>renderResetRequest(false);
+  $("#first").onclick=()=>renderResetRequest(true);
   const ts=$("#tosign"); if(ts) ts.onclick=renderSignup;
   $("#lf").onsubmit=async ev=>{
     ev.preventDefault(); const err=$("#lerr"); err.style.color="";
     if(Date.now()<LOCK_UNTIL) return err.textContent=`יותר מדי ניסיונות. נסו שוב בעוד ${Math.ceil((LOCK_UNTIL-Date.now())/1000)} שניות.`;
-    const u=normUser($("#lu").value), pw=$("#lp").value; if(!u||!pw) return err.textContent="נא למלא שם משתמש וסיסמה";
+    const login=$("#lu").value.trim(), pw=$("#lp").value; if(!login||!pw) return err.textContent="נא למלא אימייל או שם משתמש, וסיסמה";
     $("#lgo").disabled=true; err.innerHTML='<span class="spin"></span>';
-    const {error}=await S.sb.auth.signInWithPassword({email:toEmail(u),password:pw});
-    if(error){ $("#lgo").disabled=false; if(++FAILS>=5){ LOCK_UNTIL=Date.now()+30000; FAILS=0; } $("#lp").value=""; return err.textContent="שם המשתמש או הסיסמה לא נכונים"; }
+    let ok=false, rl=false;
+    if(login.includes("@")){ const {error}=await S.sb.auth.signInWithPassword({email:login.toLowerCase(),password:pw}); ok=!error; rl=error&&error.status===429; }
+    else { const u=normUser(login);
+      const {error}=await S.sb.auth.signInWithPassword({email:toEmail(u),password:pw}); ok=!error;
+      if(!ok){ try{ const t=await api("login_username",{username:u,password:pw}); const {error:se}=await S.sb.auth.setSession({access_token:t.access_token,refresh_token:t.refresh_token}); ok=!se; }catch(x){ rl=x&&x.code==="rate_limited"; } } }
+    if(!ok){ $("#lgo").disabled=false; if(++FAILS>=5){ LOCK_UNTIL=Date.now()+30000; FAILS=0; } $("#lp").value=""; return err.textContent=rl?API_ERR.rate_limited:"פרטי הכניסה או הסיסמה לא נכונים"; }
     FAILS=0; await enter(err);
+  };
+}
+function renderResetRequest(first){
+  authShell(`<h1 style="text-align:center">${first?"כניסה ראשונה":"איפוס סיסמה"}</h1>
+    <p class="sub">${first?"הזינו את כתובת האימייל שהמנהל רשם עבורכם. נשלח אליה קישור, ובו תבחרו סיסמה משלכם.":"הזינו את כתובת האימייל שלכם, ונשלח אליה קישור לבחירת סיסמה חדשה."}</p>
+    <form id="rf"><label class="lbl" for="re">אימייל</label><input class="field ltr" id="re" type="email" autocomplete="email" dir="ltr" inputmode="email">
+    <div class="err" id="rerr"></div><button class="btn block" id="rgo" type="submit">שליחת קישור</button></form>
+    <div class="hint">מי שנכנס עם שם משתמש בלי אימייל – פנו למנהל לאיפוס הסיסמה.</div>
+    <div class="row"><button class="link" id="tol" type="button">חזרה לכניסה</button></div>`);
+  $("#tol").onclick=()=>renderLogin();
+  $("#rf").onsubmit=async ev=>{
+    ev.preventDefault(); const e=$("#rerr"), em=$("#re").value.trim().toLowerCase(); e.className="err";
+    if(!validEmail(em)) return e.textContent=API_ERR.bad_email;
+    $("#rgo").disabled=true; e.innerHTML='<span class="spin"></span>';
+    const {error}=await S.sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+"/"});
+    $("#rgo").disabled=false;
+    if(error){ e.textContent=error.status===429?"נשלחו כבר כמה מיילים לאחרונה. נסו שוב בעוד כמה דקות.":"לא הצלחתי לשלוח מייל כרגע. נסו שוב מאוחר יותר או פנו למנהל."; return; }
+    e.className="ok"; e.textContent="אם הכתובת רשומה במערכת, נשלח אליה קישור. בדקו את תיבת המייל (גם בספאם).";
+  };
+}
+function renderSetPassword(){
+  authShell(`<h1 style="text-align:center">בחירת סיסמה</h1><p class="sub">בחרו סיסמה משלכם. איתה תיכנסו מעכשיו, מכל מכשיר.</p>
+    <form id="nf"><label class="lbl">סיסמה חדשה (לפחות 6 תווים)</label>${pwField("np1","new-password")}<label class="lbl">אימות סיסמה</label>${pwField("np2","new-password")}
+    <div class="err" id="nerr"></div><button class="btn block" id="ngo" type="submit">שמירה וכניסה</button></form>`);
+  $("#nf").onsubmit=async ev=>{
+    ev.preventDefault(); const e=$("#nerr"), a=$("#np1").value;
+    if(a.length<6) return e.textContent=API_ERR.weak_password; if(a!==$("#np2").value) return e.textContent="הסיסמאות לא תואמות";
+    $("#ngo").disabled=true; const {error}=await S.sb.auth.updateUser({password:a});
+    if(error){ $("#ngo").disabled=false; return e.textContent=/same|different/i.test(error.message||"")?"זו הסיסמה הקיימת. בחרו סיסמה אחרת.":"השמירה נכשלה. בקשו קישור חדש ונסו שוב."; }
+    toast("הסיסמה נשמרה ✓"); await enter(null);
   };
 }
 async function enter(errEl){
@@ -224,13 +261,14 @@ async function enter(errEl){
   if(!me){ await S.sb.auth.signOut(); if(errEl) errEl.textContent="לא נמצא חשבון פעיל."; else renderLogin(); return; }
   if(me.locked){ await S.sb.auth.signOut(); S.me=null; const m="החשבון נחסם. יש לפנות למנהל."; if(errEl){ errEl.textContent=m; $("#lgo").disabled=false; } else renderLogin(m); return; }
   S.sb.from("profiles").update({last_seen:new Date().toISOString()}).eq("id",me.id).then(()=>{});
-  subscribe(); S.tab="my"; S.view=null; S.ym=curYM(); render();
+  subscribe(); S.tab=me.role==="admin"?"team":"my"; S.view=null; S.ym=curYM(); render();
 }
 function signupForm(first){
   return `<form id="sf" autocomplete="off">
     <label class="lbl" for="sn">שם מלא</label><input class="field" id="sn" maxlength="60">
     ${first?`<label class="lbl" for="sc">שם החברה (יופיע בדוחות)</label><input class="field" id="sc" maxlength="60" value="לירד">`:`<label class="lbl" for="se">מספר עובד (לא חובה)</label><input class="field ltr" id="se" maxlength="30" dir="ltr">`}
-    <label class="lbl" for="su">שם משתמש <span class="hint">(באנגלית, 3–20 תווים)</span></label><input class="field ltr" id="su" autocomplete="username" autocapitalize="off" spellcheck="false" dir="ltr">
+    <label class="lbl" for="sm">אימייל</label><input class="field ltr" id="sm" type="email" dir="ltr" autocomplete="email">
+    <label class="lbl" for="su">שם משתמש <span class="hint">(לא חובה אם הוזן אימייל)</span></label><input class="field ltr" id="su" autocomplete="username" autocapitalize="off" spellcheck="false" dir="ltr">
     <div class="two"><div><label class="lbl" for="sp">סיסמה</label>${pwField("sp","new-password")}</div><div><label class="lbl" for="sp2">אימות סיסמה</label>${pwField("sp2","new-password")}</div></div>
     <div class="hint">לפחות 6 תווים</div><div class="err" id="serr"></div>
     <button class="btn block" id="sgo" type="submit">${first?"יצירת חשבון מנהל ראשי":"יצירת חשבון"}</button></form>`;
@@ -238,12 +276,13 @@ function signupForm(first){
 function wireSignup(first){
   $("#sf").onsubmit=async ev=>{
     ev.preventDefault(); const err=$("#serr");
-    const name=$("#sn").value.trim(), u=normUser($("#su").value), pw=$("#sp").value;
-    if(!name) return err.textContent="נא להזין שם"; if(!validUser(u)) return err.textContent=API_ERR.bad_username;
+    const name=$("#sn").value.trim(), em=$("#sm").value.trim().toLowerCase(), u=normUser($("#su").value), pw=$("#sp").value;
+    if(!name) return err.textContent="נא להזין שם"; if(!em&&!u) return err.textContent=API_ERR.need_login;
+    if(em&&!validEmail(em)) return err.textContent=API_ERR.bad_email; if(u&&!validUser(u)) return err.textContent=API_ERR.bad_username;
     if(pw.length<6) return err.textContent=API_ERR.weak_password; if(pw!==$("#sp2").value) return err.textContent="הסיסמאות לא תואמות";
     $("#sgo").disabled=true; err.innerHTML='<span class="spin"></span>';
-    try{ await api("signup",{username:u,password:pw,name,emp_no:first?"":$("#se").value.trim()}); }catch(x){ $("#sgo").disabled=false; return err.textContent=apiErr(x); }
-    const {error}=await S.sb.auth.signInWithPassword({email:toEmail(u),password:pw});
+    try{ await api("signup",{username:u,email:em,password:pw,name,emp_no:first?"":$("#se").value.trim()}); }catch(x){ $("#sgo").disabled=false; return err.textContent=apiErr(x); }
+    const {error}=await S.sb.auth.signInWithPassword({email:em||toEmail(u),password:pw});
     if(error){ $("#sgo").disabled=false; return err.textContent="החשבון נוצר, אבל הכניסה נכשלה. נסו להיכנס."; }
     if(first){ const co=$("#sc").value.trim()||"לירד"; S.cfg={...S.cfg,company:co}; await S.sb.from("app_config").update({data:S.cfg}).eq("id",1); }
     await enter(null);
@@ -255,11 +294,11 @@ function renderSignup(){ authShell(`<h1>הרשמה</h1><p class="sub">יצירת
 /* ========================== app shell ========================== */
 function topBar(){
   const me=S.me, role=me.role==="admin"?`<span class="badge">ADMIN</span>`:me.role==="manager"?`<span class="badge mgr">מנהל</span>`:"";
-  return `<div class="top"><div class="brand">${LOGO}<span>${APP_NAME}</span></div>
+  return `<div class="top"><div class="brand">${LOGO}<span>שעון נוכחות</span></div>
     <button class="chip" id="mebtn" aria-label="החשבון שלי"><b>${esc(me.name)}</b>${role}<span class="av">${esc((me.name||"?").trim()[0]||"?")}</span></button></div>`;
 }
 function tabsBar(){
-  const t=[["my","clock","השעות שלי"]];
+  const t=S.me.role==="admin"?[]:[["my","clock","השעות שלי"]];
   if(isStaff()) t.push(["team","users","עובדים"]);
   if(canDo("users")) t.push(["users","user","משתמשים"]);
   if(canDo("settings")) t.push(["settings","cog","הגדרות"]);
@@ -268,7 +307,7 @@ function tabsBar(){
 }
 function render(){
   if(!S.me) return renderLogin();
-  if(S.tab==="team"&&!isStaff()) S.tab="my"; if(S.tab==="users"&&!canDo("users")) S.tab="my"; if(S.tab==="settings"&&!canDo("settings")) S.tab="my";
+  if(S.tab==="my"&&S.me.role==="admin") S.tab="team"; if(S.tab==="team"&&!isStaff()) S.tab="my"; if(S.tab==="users"&&!canDo("users")) S.tab="my"; if(S.tab==="settings"&&!canDo("settings")) S.tab="my";
   app.innerHTML=topBar()+tabsBar()+`<div id="view"><div class="empty"><span class="spin"></span></div></div>`;
   app.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{ S.tab=b.dataset.tab; S.view=null; render(); });
   $("#mebtn").onclick=e=>{ e.stopPropagation(); openMenu(e.currentTarget); };
@@ -286,7 +325,7 @@ async function refresh(){
 function openMenu(anchor){
   const old=$(".menu"); if(old){ old.remove(); return; }
   const me=S.me, d=document.createElement("div"); d.className="menu";
-  d.innerHTML=`<div class="mh"><b>${esc(me.name)}</b><span dir="ltr">${esc(me.username)}</span></div>
+  d.innerHTML=`<div class="mh"><b>${esc(me.name)}</b><span dir="ltr">${esc(me.email||me.username||"")}</span></div>
     <button id="m-pw">${icon("key")} שינוי סיסמה</button><button id="m-out">${icon("out")} התנתקות</button>`;
   document.body.appendChild(d); const r=anchor.getBoundingClientRect();
   d.style.top=(r.bottom+8)+"px"; d.style.left=Math.max(8,Math.min(innerWidth-d.offsetWidth-8,r.left))+"px";
@@ -302,7 +341,7 @@ function pwModal(){
     const e=$("#perr"), n=$("#pn").value; e.className="err";
     if(n.length<6) return e.textContent=API_ERR.weak_password; if(n!==$("#pn2").value) return e.textContent="הסיסמאות לא תואמות";
     $("#pgo").disabled=true;
-    const {error:ve}=await S.sb.auth.signInWithPassword({email:toEmail(S.me.username),password:$("#po").value});
+    const {data:sd}=await S.sb.auth.getSession(); const {error:ve}=await S.sb.auth.signInWithPassword({email:sd.session.user.email,password:$("#po").value});
     if(ve){ $("#pgo").disabled=false; return e.textContent="הסיסמה הנוכחית לא נכונה"; }
     const {error}=await S.sb.auth.updateUser({password:n});
     if(error){ $("#pgo").disabled=false; return e.textContent="העדכון נכשל. נסו שוב."; }
@@ -408,8 +447,8 @@ function dayModal(uid,day){
 async function viewTeam(){
   const v=$("#view"); const [users,list]=await Promise.all([loadUsers(),loadEntries(S.ym,null)]); if(!$("#view")) return;
   const by={}; list.forEach(e=>(by[e.user_id]=by[e.user_id]||[]).push(e));
-  const ot=S.cfg.overtime!==false, act=users.filter(u=>!u.locked||by[u.id]);
-  const tot=monthSummary(list);
+  const ot=S.cfg.overtime!==false, act=users.filter(u=>u.role!=="admin"&&(!u.locked||by[u.id]));
+  const tot=monthSummary(list.filter(e=>act.some(u=>u.id===e.user_id)));
   v.innerHTML=`<div class="month"><button class="ib" id="pm" aria-label="החודש הקודם">${icon("right",20)}</button><h2>${ymLabel(S.ym)}</h2><button class="ib" id="nm" aria-label="החודש הבא" ${S.ym>=ymAdd(curYM(),1)?"disabled":""}>${icon("left",20)}</button></div>
     <div class="stats"><div class="stat"><div class="v">${act.length}</div><div class="l">עובדים</div></div><div class="stat"><div class="v" dir="ltr">${fmtH(tot.min)}</div><div class="l">סה״כ שעות</div></div>
       ${ot?`<div class="stat ot"><div class="v" dir="ltr">${fmtH(tot.o1+tot.o2)}</div><div class="l">שעות נוספות</div></div>`:""}<div class="stat vac"><div class="v">${tot.vac}</div><div class="l">ימי חופש</div></div><div class="stat sick"><div class="v">${tot.sick}</div><div class="l">ימי מחלה</div></div></div>
@@ -430,9 +469,9 @@ async function viewTeam(){
 const PERMS=[["editHours","עריכת שעות של כל העובדים (גם ימים נעולים)"],["users","ניהול משתמשים: יצירה, איפוס סיסמה, חסימה ומחיקה של עובדים"],["settings","שינוי הגדרות המערכת"]];
 async function viewUsers(){
   const v=$("#view"), users=await loadUsers(); if(!$("#view")) return;
-  v.innerHTML=`<div class="row" style="margin:0 0 12px"><div><h2>משתמשים</h2><div class="hint">${users.length} חשבונות</div></div><button class="btn" id="nu">${icon("plus",16)} משתמש חדש</button></div>
+  v.innerHTML=`<div class="row" style="margin:0 0 12px"><div><h2>משתמשים</h2><div class="hint">${users.length} חשבונות</div></div><button class="btn" id="nu">${icon("plus",16)} עובד חדש</button></div>
     <div class="days list">${users.map(u=>`<button class="it" data-u="${u.id}"><div class="nm"><b>${esc(u.name)} ${u.role==="admin"?'<span class="badge">ADMIN</span>':u.role==="manager"?'<span class="badge mgr">מנהל</span>':'<span class="badge gray">עובד</span>'}${u.locked?' <span class="badge lock">חסום</span>':""}</b>
-      <span><span dir="ltr">${esc(u.username)}</span>${u.emp_no?" · מס׳ "+esc(u.emp_no):""}${u.last_seen?" · כניסה אחרונה "+new Date(u.last_seen).toLocaleDateString("he-IL"):""}</span></div>${icon("left",16)}</button>`).join("")}</div>`;
+      <span><span dir="ltr">${esc(u.email||u.username||"")}</span>${u.emp_no?" · מס׳ "+esc(u.emp_no):""}${u.last_seen?" · כניסה אחרונה "+new Date(u.last_seen).toLocaleDateString("he-IL"):""}</span></div>${icon("left",16)}</button>`).join("")}</div>`;
   $("#nu").onclick=()=>userModal(null);
   v.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>userModal(users.find(u=>u.id===b.dataset.u)));
 }
@@ -442,39 +481,52 @@ function userModal(u){
   const admin=S.me.role==="admin", self=u&&u.id===S.me.id, isAdm=u&&u.role==="admin";
   const canEdit=!u||admin&&(!isAdm||self)||(!admin&&u.role==="user");
   $("#modal-root").innerHTML=`<div class="modal"><div class="sheet">
-    <div class="row" style="margin-top:0"><h2>${u?esc(u.name):"משתמש חדש"}</h2><button class="ib" id="mx">${icon("x")}</button></div>
-    ${u?`<div class="hint">שם משתמש: <b dir="ltr">${esc(u.username)}</b>${u.created_at?" · נפתח "+new Date(u.created_at).toLocaleDateString("he-IL"):""}</div>`:""}
+    <div class="row" style="margin-top:0"><h2>${u?esc(u.name):"עובד חדש"}</h2><button class="ib" id="mx">${icon("x")}</button></div>
+    ${u?`<div class="hint">${u.username?`שם משתמש: <b dir="ltr">${esc(u.username)}</b> · `:""}${u.created_at?"נפתח "+new Date(u.created_at).toLocaleDateString("he-IL"):""}</div>`:""}
     <div class="two"><div><label class="lbl">שם מלא</label><input class="field" id="un" maxlength="60" value="${esc(u?u.name:"")}" ${canEdit?"":"disabled"}></div>
       <div><label class="lbl">מספר עובד</label><input class="field ltr" id="ue" maxlength="30" dir="ltr" value="${esc(u?u.emp_no:"")}" ${canEdit?"":"disabled"}></div></div>
-    ${u?"":`<div class="two"><div><label class="lbl">שם משתמש (באנגלית)</label><input class="field ltr" id="uu" dir="ltr" autocapitalize="off" spellcheck="false"></div><div><label class="lbl">סיסמה ראשונית</label><input class="field ltr" id="up" dir="ltr" autocomplete="off"></div></div><div class="hint">לפחות 6 תווים. מוסרים לעובד את שם המשתמש והסיסמה, והוא יכול לשנות את הסיסמה אחר כך.</div>`}
-    ${admin&&!isAdm?`<label class="lbl">תפקיד</label><select class="field" id="ur"><option value="user" ${!u||u.role==="user"?"selected":""}>עובד</option><option value="manager" ${u&&u.role==="manager"?"selected":""}>מנהל</option></select>
+    <label class="lbl">אימייל ${u?"":`<span class="hint">(העובד ייכנס איתו)</span>`}</label><input class="field ltr" id="um" type="email" dir="ltr" maxlength="120" value="${esc(u&&u.email||"")}" ${canEdit?"":"disabled"} autocomplete="off">
+    ${u?"":`<label class="lbl">שם משתמש <span class="hint">(לא חובה אם הוזן אימייל)</span></label><input class="field ltr" id="uu" dir="ltr" autocapitalize="off" spellcheck="false" autocomplete="off">
+      <label class="lbl">סיסמה ראשונית <span class="hint">(לא חובה אם הוזן אימייל)</span></label><input class="field ltr" id="up" dir="ltr" autocomplete="off">
+      <label class="check"><input type="checkbox" id="uinv" checked> לשלוח לעובד מייל לבחירת סיסמה משלו</label>
+      <div class="hint">עם אימייל: העובד מקבל קישור, או נכנס ב"כניסה ראשונה" ובוחר סיסמה. בלי אימייל: מוסרים לו שם משתמש וסיסמה.</div>`}
+    ${admin&&!isAdm?`<label class="lbl">תפקיד</label><select class="field" id="ur"><option value="user" ${!u||u.role==="user"?"selected":""}>עובד</option><option value="manager" ${u&&u.role==="manager"?"selected":""}>מנהל (גם מזין שעות)</option></select>
       <div id="pw" ${u&&u.role==="manager"?"":"hidden"}><div class="hint">הרשאות המנהל (מנהל תמיד רואה את השעות של כל העובדים):</div>${permsBox(u?u.perms:{editHours:true},false)}</div>`:""}
     <div class="err" id="uerr"></div>
-    ${canEdit?`<button class="btn block" id="usave">${icon("check",16)} ${u?"שמירה":"יצירת המשתמש"}</button>`:""}
+    ${canEdit?`<button class="btn block" id="usave">${icon("check",16)} ${u?"שמירה":"יצירת העובד"}</button>`:""}
     ${u&&canEdit&&!self?`<div class="card" style="margin:16px 0 0;background:#f8fafc">
-      <label class="lbl" style="margin-top:0">איפוס סיסמה</label><div class="tw"><input class="field ltr" id="upw" dir="ltr" placeholder="סיסמה חדשה" autocomplete="off"><button class="btn ghost" id="upwgo">איפוס</button></div>
+      <label class="lbl" style="margin-top:0">איפוס סיסמה</label>
+      ${u.email?`<button class="btn ghost block" id="usend" style="margin-bottom:8px">${icon("key",16)} שליחת מייל לעובד לבחירת סיסמה חדשה</button><div class="hint" style="margin-bottom:6px">או קביעת סיסמה ידנית:</div>`:""}
+      <div class="tw"><input class="field ltr" id="upw" dir="ltr" placeholder="סיסמה חדשה" autocomplete="off"><button class="btn ghost" id="upwgo">קביעה</button></div>
       <div class="row"><button class="btn ghost" id="ulock">${icon("lock",16)} ${u.locked?"ביטול חסימה":"חסימת החשבון"}</button><button class="btn danger" id="udel">${icon("trash",16)} מחיקה</button></div>
       <div class="hint">מחיקה מסירה את החשבון ואת כל השעות שלו. חסימה מונעת כניסה ושומרת את הנתונים.</div></div>`:""}
   </div></div>`;
   $("#mx").onclick=closeModal;
   const ur=$("#ur"); if(ur) ur.onchange=()=>{ $("#pw").hidden=ur.value!=="manager"; };
-  const err=$("#uerr");
+  const err=$("#uerr"), say=(t,ok)=>{ err.className=ok?"ok":"err"; err.textContent=t; };
   const sv=$("#usave"); if(sv) sv.onclick=async()=>{
-    const name=$("#un").value.trim(), emp_no=$("#ue").value.trim(); if(!name) return err.textContent="נא להזין שם";
-    sv.disabled=true; err.innerHTML='<span class="spin"></span>';
+    const name=$("#un").value.trim(), emp_no=$("#ue").value.trim(), em=$("#um").value.trim().toLowerCase(); if(!name) return say("נא להזין שם");
+    if(em&&!validEmail(em)) return say(API_ERR.bad_email);
+    sv.disabled=true; err.className="err"; err.innerHTML='<span class="spin"></span>';
     try{
-      if(!u){ const un=normUser($("#uu").value), pw=$("#up").value; if(!validUser(un)) throw {code:"bad_username"}; if(pw.length<6) throw {code:"weak_password"};
-        await api("create_user",{username:un,password:pw,name,emp_no,role:ur?ur.value:"user",perms:ur&&ur.value==="manager"?readPerms():undefined}); toast("המשתמש נוצר ✓"); }
-      else{ const patch={name,emp_no}; if(ur){ patch.role=ur.value; if(ur.value==="manager") patch.perms=readPerms(); }
-        const {error}=await S.sb.rpc("admin_update",{target:u.id,patch}); if(error) throw {code:"forbidden"}; toast("נשמר ✓"); if(self) await loadMe(); }
-      closeModal(); refresh();
-    }catch(x){ sv.disabled=false; err.textContent=apiErr(x); }
+      if(!u){ const un=normUser($("#uu").value), pw=$("#up").value;
+        if(!em&&!un) throw {code:"need_login"}; if(un&&!validUser(un)) throw {code:"bad_username"}; if(!em&&pw.length<6) throw {code:"weak_password"}; if(pw&&pw.length<6) throw {code:"weak_password"};
+        const r=await api("create_user",{username:un,email:em,password:pw,invite:!!em&&$("#uinv").checked,name,emp_no,role:ur?ur.value:"user",perms:ur&&ur.value==="manager"?readPerms():undefined});
+        closeModal(); refresh();
+        if(em&&$("#uinv")&&r.sent===false) toast("העובד נוצר, אבל המייל לא נשלח – צריך להגדיר שליחת מיילים. אפשר לקבוע לו סיסמה ידנית.",6000);
+        else toast(r.sent?"העובד נוצר ✓ נשלח אליו מייל לבחירת סיסמה":"העובד נוצר ✓",4000); return; }
+      const patch={name,emp_no}; if(ur){ patch.role=ur.value; if(ur.value==="manager") patch.perms=readPerms(); }
+      const {error}=await S.sb.rpc("admin_update",{target:u.id,patch}); if(error) throw {code:"forbidden"};
+      if(em!==(u.email||"")) await api("set_email",{user_id:u.id,email:em});
+      toast("נשמר ✓"); if(self) await loadMe(); closeModal(); refresh();
+    }catch(x){ sv.disabled=false; say(apiErr(x)); }
   };
-  const pg=$("#upwgo"); if(pg) pg.onclick=async()=>{ const pw=$("#upw").value; if(pw.length<6) return err.textContent=API_ERR.weak_password;
-    try{ await api("reset_password",{user_id:u.id,password:pw}); err.className="ok"; err.textContent="הסיסמה אופסה. מסרו לעובד את הסיסמה החדשה."; $("#upw").value=""; }catch(x){ err.className="err"; err.textContent=apiErr(x); } };
-  const lk=$("#ulock"); if(lk) lk.onclick=async()=>{ const {error}=await S.sb.rpc("admin_update",{target:u.id,patch:{locked:!u.locked}}); if(error) return err.textContent=apiErr({code:"forbidden"}); closeModal(); toast(u.locked?"החסימה בוטלה":"החשבון נחסם"); refresh(); };
+  const sd=$("#usend"); if(sd) sd.onclick=async()=>{ sd.disabled=true; try{ await api("send_reset",{user_id:u.id}); say(`נשלח מייל ל-${u.email} עם קישור לבחירת סיסמה.`,true); }catch(x){ say(apiErr(x)); } sd.disabled=false; };
+  const pg=$("#upwgo"); if(pg) pg.onclick=async()=>{ const pw=$("#upw").value; if(pw.length<6) return say(API_ERR.weak_password);
+    try{ await api("reset_password",{user_id:u.id,password:pw}); say("הסיסמה נקבעה. מסרו אותה לעובד – הוא יוכל לשנות אותה אחר כך.",true); $("#upw").value=""; }catch(x){ say(apiErr(x)); } };
+  const lk=$("#ulock"); if(lk) lk.onclick=async()=>{ const {error}=await S.sb.rpc("admin_update",{target:u.id,patch:{locked:!u.locked}}); if(error) return say(apiErr({code:"forbidden"})); closeModal(); toast(u.locked?"החסימה בוטלה":"החשבון נחסם"); refresh(); };
   const dl=$("#udel"); if(dl) dl.onclick=async()=>{ if(!confirm(`למחוק את ${u.name} ואת כל השעות שלו? אי אפשר לבטל את זה.`)) return;
-    try{ await api("delete_user",{user_id:u.id}); closeModal(); toast("המשתמש נמחק"); refresh(); }catch(x){ err.textContent=apiErr(x); } };
+    try{ await api("delete_user",{user_id:u.id}); closeModal(); toast("המשתמש נמחק"); refresh(); }catch(x){ say(apiErr(x)); } };
 }
 
 /* ========================== staff: settings ========================== */
@@ -558,10 +610,14 @@ async function excelReports(packs,ym,withSummary){
   try{
     const cfg=await (await fetch("/api/config")).json();
     if(!cfg.supabaseUrl||!cfg.supabaseAnonKey||!window.supabase) return renderSetupNeeded();
-    S.sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey,{auth:{persistSession:true,storageKey:"lirad.sb",autoRefreshToken:true}});
+    S.sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey,{auth:{persistSession:true,storageKey:"lirad.sb",autoRefreshToken:true,detectSessionInUrl:true,flowType:"implicit"}});
+    S.sb.auth.onAuthStateChange(ev=>{ if(ev==="PASSWORD_RECOVERY") setTimeout(renderSetPassword,0); });
   }catch(e){ return renderSetupNeeded(); }
+  const hash=new URLSearchParams(location.hash.slice(1)), recovery=/^(recovery|invite|magiclink)$/.test(hash.get("type")||"");
+  if(hash.get("error_code")){ history.replaceState(null,"",location.pathname); await loadCfg(); return renderLogin(hash.get("error_code")==="otp_expired"?"הקישור פג תוקף או שכבר השתמשו בו. בקשו קישור חדש.":"הקישור לא תקין. בקשו קישור חדש."); }
   await loadCfg();
   const {data:{session}}=await S.sb.auth.getSession();
+  if(recovery&&session){ history.replaceState(null,"",location.pathname); return renderSetPassword(); }
   if(session) return enter(null);
   try{ const h=await (await fetch("/api/admin")).json(); if(h.needsSetup) return renderFirstRun(); }catch(e){}
   renderLogin();

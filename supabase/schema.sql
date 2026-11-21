@@ -133,3 +133,9 @@ alter publication supabase_realtime add table public.profiles;
 revoke execute on function public.admin_update(uuid, jsonb) from public, anon;
 revoke execute on function public.handle_new_user() from public, anon, authenticated;
 grant execute on function public.admin_update(uuid, jsonb) to authenticated;
+
+-- ---------- 21 Nov 2026: e-mail sign-in ----------
+alter table public.profiles alter column username drop not null;
+alter table public.profiles add column if not exists email text;
+create unique index if not exists profiles_email_key on public.profiles (lower(email)) where email is not null;
+-- handle_new_user now also stores the real e-mail (see migration employee_email_login)
