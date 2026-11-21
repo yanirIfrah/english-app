@@ -145,6 +145,12 @@ svg.i{width:18px;height:18px;flex:none}
 body.noscroll{overflow:hidden}
 .cfm{z-index:90;align-items:center}.sheet.small{max-width:400px;border-radius:18px;margin:0 16px}.cfm-msg{font-size:15.5px;line-height:1.6;color:var(--ink)}
 .filt .actions{flex-wrap:wrap}
+
+.pwf{position:relative}.pwf .field{padding-left:44px}.pw-eye{position:absolute;left:4px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;background:none;color:var(--muted);display:grid;place-items:center;border-radius:9px}.pw-eye:hover{background:#f1f5f9;color:var(--ink-2)}
+.tw .pwf .field{text-align:right}
+.remind{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#f3f8fe;border-color:#bcd6f4}.remind>svg{color:var(--pri-2)}
+.rep tr.k-sick td,.rep .k-sick{color:#dc2626!important;font-weight:700}.rep tr.k-sick td{background:#fef2f2}
+.rep tr.k-vacation td,.rep .k-vacation{color:#5D9AE2!important;font-weight:700}.rep tr.k-vacation td{background:#eef5fd}
 </style>
 </head>
 <body>
@@ -172,7 +178,7 @@ const ICONS={clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',user
  out:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3L21 2M16 7l3 3"/>',
  x:'<path d="M18 6L6 18M6 6l12 12"/>',back:'<path d="M9 18l6-6-6-6"/>',trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15"/>',
  note:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',check:'<path d="M5 12l5 5L20 7"/>',inbox:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/>',
- chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',undo:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',send:'<path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/>'};
+ eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',eyeoff:'<path d="M17.9 17.9A10.4 10.4 0 0 1 12 19c-6.5 0-10-7-10-7a18.5 18.5 0 0 1 5.1-5.9M9.9 5.2A9.6 9.6 0 0 1 12 5c6.5 0 10 7 10 7a18.6 18.6 0 0 1-2.2 3.2M14.1 14.1a3 3 0 1 1-4.2-4.2M2 2l20 20"/>',bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',undo:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',send:'<path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/>'};
 const icon=(n,s=18)=>`<svg class="i" viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||""}</svg>`;
 function toast(t,ms=2600){ document.querySelectorAll(".toast").forEach(x=>x.remove()); const d=document.createElement("div"); d.className="toast"; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),ms); }
 const closeModal=()=>{ $("#modal-root").innerHTML=""; };
@@ -265,8 +271,46 @@ async function signOut(msg){
   S.me=null; S.tab="my"; S.view=null; S.ym=curYM(); closeModal(); renderLogin(msg||"");
 }
 
+/* ========================== daily reminder (web push) ========================== */
+const PUSH={reg:null,key:""};
+const pushSupported=()=>"serviceWorker" in navigator&&"PushManager" in window&&"Notification" in window;
+const isIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const isStandalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+function b64ToU8(b){ const p="=".repeat((4-b.length%4)%4), s=atob((b+p).replace(/-/g,"+").replace(/_/g,"/")); return Uint8Array.from([...s].map(c=>c.charCodeAt(0))); }
+async function swReady(){ if(!pushSupported()) return null; if(!PUSH.reg){ try{ PUSH.reg=await navigator.serviceWorker.register("/sw.js"); await navigator.serviceWorker.ready; }catch(e){ PUSH.reg=null; } } return PUSH.reg; }
+async function pushStatus(){ // "on" | "off" | "denied" | "ios-home" | "unsupported"
+  if(isIOS()&&!isStandalone()) return "ios-home";
+  if(!pushSupported()||!PUSH.key) return "unsupported";
+  if(Notification.permission==="denied") return "denied";
+  const reg=await swReady(); if(!reg) return "unsupported";
+  const sub=await reg.pushManager.getSubscription(); return sub&&Notification.permission==="granted"?"on":"off";
+}
+async function enablePush(){
+  const reg=await swReady(); if(!reg) throw {code:"unsupported"};
+  const perm=await Notification.requestPermission(); if(perm!=="granted") throw {code:"denied"};
+  let sub=await reg.pushManager.getSubscription();
+  if(!sub) sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToU8(PUSH.key)});
+  await api("push_sub",{sub:sub.toJSON(),ua:navigator.userAgent});
+}
+async function disablePush(){ const reg=await swReady(); const sub=reg&&await reg.pushManager.getSubscription(); if(sub){ try{ await api("push_unsub",{endpoint:sub.endpoint}); }catch(e){} await sub.unsubscribe(); } }
+async function reminderCard(){ // shown on the employee's month screen
+  const st=await pushStatus(); if(st==="on"||st==="unsupported") return "";
+  if(st!=="ios-home"&&localStorage.getItem("lirad.pushNo")==="1") return "";
+  const t=S.cfg.reminder===false?"":"";
+  if(S.cfg.reminder===false) return t;
+  if(st==="ios-home") return `<div class="card remind">${icon("bell",20)}<div style="flex:1"><b>רוצים תזכורת יומית ב-17:00?</b><div class="hint" style="margin:2px 0 0">באייפון: לחצו על כפתור השיתוף ⬆ ← "הוספה למסך הבית", פתחו את האפליקציה מהמסך הראשי והפעילו כאן את התזכורת.</div></div></div>`;
+  if(st==="denied") return `<div class="card remind">${icon("bell",20)}<div style="flex:1"><b>ההתראות חסומות בדפדפן</b><div class="hint" style="margin:2px 0 0">כדי לקבל תזכורת ב-17:00, אפשרו התראות לאתר הזה בהגדרות הדפדפן.</div></div></div>`;
+  return `<div class="card remind" id="rmc">${icon("bell",20)}<div style="flex:1"><b>תזכורת יומית ב-17:00</b><div class="hint" style="margin:2px 0 0">נשלח לך התראה אם עוד לא הזנת את שעות היום.</div></div><div class="actions"><button class="btn sm" id="rmon">הפעלה</button><button class="link" id="rmno" style="font-size:13px">לא עכשיו</button></div></div>`;
+}
+function wireReminderCard(){
+  const on=$("#rmon"); if(on) on.onclick=async()=>{ on.disabled=true; try{ await enablePush(); toast("התזכורת הופעלה ✓ תגיע כל יום ב-17:00",3500); const c=$("#rmc"); if(c) c.remove(); }catch(x){ on.disabled=false; toast(x&&x.code==="denied"?"לא אושרו התראות. אפשר לאשר בהגדרות הדפדפן.":"לא הצלחתי להפעיל התראות במכשיר הזה.",4000); } };
+  const no=$("#rmno"); if(no) no.onclick=()=>{ localStorage.setItem("lirad.pushNo","1"); const c=$("#rmc"); if(c) c.remove(); };
+}
+
 /* ========================== landing & auth ========================== */
-function pwField(id,ac="current-password"){ return `<input class="field ltr" id="${id}" type="password" autocomplete="${ac}" dir="ltr">`; }
+function pwField(id,ac="current-password"){ return `<div class="pwf"><input class="field ltr" id="${id}" type="password" autocomplete="${ac}" dir="ltr" autocapitalize="off" spellcheck="false"><button type="button" class="pw-eye" data-eye="${id}" aria-label="הצגת הסיסמה" title="הצגת הסיסמה">${icon("eye",18)}</button></div>`; }
+document.addEventListener("click",e=>{ const b=e.target.closest("[data-eye]"); if(!b) return; const f=document.getElementById(b.dataset.eye); if(!f) return;
+  const show=f.type==="password"; f.type=show?"text":"password"; b.innerHTML=icon(show?"eyeoff":"eye",18); b.setAttribute("aria-label",show?"הסתרת הסיסמה":"הצגת הסיסמה"); b.title=b.getAttribute("aria-label"); });
 function authShell(inner){ app.innerHTML=`<div class="auth"><div class="card">${LOGO.replace('class="lg"','class="lgbig"')}${inner}</div><p class="hint" style="text-align:center">${APP_NAME}</p></div>`; }
 function renderSetupNeeded(){ authShell(`<h1 style="text-align:center">האתר עוד לא מחובר</h1><p class="sub">יש להגדיר ב-Vercel את SUPABASE_URL ו-SUPABASE_ANON_KEY ולפרסם מחדש.</p>`); }
 function renderLanding(){
@@ -369,13 +413,20 @@ async function openDrawer(){
     <div class="duser"><span class="av big">${esc((me.name||"?").trim()[0]||"?")}</span><div><b>${esc(me.name)}</b><span>${adm?"מנהל מערכת (ADMIN)":esc([me.branch,me.emp_no?"מס׳ "+me.emp_no:""].filter(Boolean).join(" · ")||"עובד/ת")}</span></div></div>
     <nav class="dnavs">${nav.map(item).join("")}${adm?`<button class="dnav" data-act="leave">${icon("plus",18)} <span>הזנת חופש / מחלה לעובד</span></button>`:""}</nav>
     <div class="dinfo" id="dinfo"><span class="spin"></span></div>
-    <div class="dfoot"><button class="dnav" data-act="pw">${icon("key",18)} <span>שינוי סיסמה</span></button><button class="dnav" data-act="out">${icon("out",18)} <span>התנתקות</span></button>
+    <div class="dfoot">${adm?"":`<button class="dnav" data-act="push" id="dpush">${icon("bell",18)} <span>תזכורת יומית ב-17:00</span><span class="hint" id="dpst" style="margin:0"></span></button>`}<button class="dnav" data-act="pw">${icon("key",18)} <span>שינוי סיסמה</span></button><button class="dnav" data-act="out">${icon("out",18)} <span>התנתקות</span></button>
       <div class="hint" style="padding:8px 12px 0">${esc(S.cfg.company||"")} · ${APP_NAME}</div></div></aside>`;
   document.body.classList.add("noscroll");
   requestAnimationFrame(()=>root.querySelector(".drawer").classList.add("open"));
   $("#dov").onclick=$("#dx").onclick=closeDrawer;
   root.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
-  root.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{ const a=b.dataset.act; closeDrawer(); if(a==="pw") pwModal(); else if(a==="out") signOut(); else if(a==="leave") leaveModal(null); });
+  root.querySelectorAll("[data-act]").forEach(b=>b.onclick=async()=>{ const a=b.dataset.act;
+    if(a==="push"){ const st=await pushStatus();
+      if(st==="on"){ if(await askConfirm("לכבות את התזכורת היומית במכשיר הזה?",{ok:"כיבוי"})){ await disablePush(); toast("התזכורת כובתה"); } }
+      else if(st==="off"){ try{ await enablePush(); toast("התזכורת הופעלה ✓ תגיע כל יום ב-17:00",3500); }catch(x){ toast(x&&x.code==="denied"?"לא אושרו התראות. אפשר לאשר בהגדרות הדפדפן.":"לא הצלחתי להפעיל התראות במכשיר הזה.",4000); } }
+      else toast(st==="ios-home"?"באייפון: הוסיפו את האפליקציה למסך הבית (שיתוף ← הוספה למסך הבית), פתחו אותה משם והפעילו.":st==="denied"?"ההתראות חסומות. אפשרו אותן לאתר בהגדרות הדפדפן.":"המכשיר או הדפדפן הזה לא תומך בהתראות.",5000);
+      const ps=$("#dpst"); if(ps) ps.textContent=(await pushStatus())==="on"?"פעילה":"כבויה"; return; }
+    closeDrawer(); if(a==="pw") pwModal(); else if(a==="out") signOut(); else if(a==="leave") leaveModal(null); });
+  if(!adm) pushStatus().then(st=>{ const ps=$("#dpst"); if(ps) ps.textContent=st==="on"?"פעילה":"כבויה"; });
   // relevant info
   const info=$("#dinfo"); const row=(l,v)=>`<div class="drow"><span>${l}</span><b>${v}</b></div>`;
   try{
@@ -474,6 +525,7 @@ async function viewMonth(uid,adminView){
     <div class="stats"><div class="stat"><div class="v">${sm.days}</div><div class="l">ימי עבודה</div></div><div class="stat"><div class="v" dir="ltr">${fmtH(sm.min)}</div><div class="l">סה״כ שעות</div></div>
       ${ot?`<div class="stat ot"><div class="v" dir="ltr">${fmtH(sm.o1+sm.o2)}</div><div class="l">שעות נוספות</div></div>`:""}
       <div class="stat vac"><div class="v">${sm.vac}</div><div class="l">ימי חופש</div></div><div class="stat sick"><div class="v">${sm.sick}</div><div class="l">ימי מחלה</div></div></div>
+    <div id="rmslot"></div>
     ${own?`<div class="hint" style="margin:-4px 0 10px">את היום מזינים ישירות. לתיקון יום קודם (מ-${dShort(CORR_FROM())} ואילך) לוחצים עליו ושולחים בקשה – השינוי ייכנס אחרי אישור המנהל.</div>`:""}
     <div class="days">${rows.join("")}</div>
     <div class="card"><div class="row" style="margin:0"><div><h3>דוח חודשי – ${ymLabel(S.ym)}</h3><div class="hint">${adminView?"דוח לעובד הזה":"ריכוז השעות שלך לחודש"}</div></div>
@@ -485,6 +537,7 @@ async function viewMonth(uid,adminView){
   const tg=$("#tdgo"); if(tg) tg.onclick=()=>dayModal(uid,td,"direct");
   v.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{ const m=b.dataset.mode, day=b.dataset.day;
     if(m==="lock") return toast(isAdmin()?"אפשר לשנות שעות עד חצי שנה אחורה בלבד.":day>todayStr()?"אי אפשר להזין ימים עתידיים.":"את היום הזה כבר אי אפשר לתקן. לשינוי פנו למנהל."); dayModal(uid,day,m); });
+  if(own&&S.ym===curYM()) reminderCard().then(h=>{ const sl=$("#rmslot"); if(sl&&h){ sl.innerHTML=h; wireReminderCard(); } });
   const R=monthRange(S.ym);
   $("#xpdf").onclick=()=>downloadPDF([{user,list}],R,false);
 }
@@ -712,13 +765,13 @@ function userModal(u){
     ${isAdm?"":branchSelect("ub",u?u.branch:"")}
     <label class="lbl">אימייל לכניסה</label><input class="field ltr" id="um" type="email" dir="ltr" maxlength="120" value="${esc(u&&u.email||"")}" autocomplete="off">
     ${u?"":`<label class="lbl">שם משתמש <span class="hint">(לא חובה אם הוזן אימייל)</span></label><input class="field ltr" id="uu" dir="ltr" autocapitalize="off" spellcheck="false" autocomplete="off">
-      <label class="lbl">סיסמה</label><input class="field ltr" id="up" dir="ltr" autocomplete="off">
+      <label class="lbl">סיסמה</label><div class="pwf"><input class="field ltr" id="up" dir="ltr" autocomplete="off" autocapitalize="off" spellcheck="false"><button type="button" class="pw-eye" data-eye="up" aria-label="הסתרת הסיסמה">${icon("eyeoff",18)}</button></div>
       <div class="hint">לפחות 6 תווים. מוסרים לעובד את האימייל (או שם המשתמש) והסיסמה. אחרי הכניסה הוא יכול לשנות את הסיסמה בעצמו.</div>`}
     <div class="err" id="uerr"></div>
     <button class="btn block" id="usave">${icon("check",16)} ${u?"שמירה":"יצירת העובד"}</button>
     ${u&&!self?`<div class="card" style="margin:16px 0 0;background:#f8fafc">
       <label class="lbl" style="margin-top:0">איפוס סיסמה</label>
-      <div class="tw"><input class="field ltr" id="upw" dir="ltr" placeholder="סיסמה חדשה" autocomplete="off"><button class="btn ghost" id="upwgo">איפוס</button></div>
+      <div class="tw"><div class="pwf" style="flex:1"><input class="field ltr" id="upw" dir="ltr" placeholder="סיסמה חדשה" autocomplete="off" autocapitalize="off" spellcheck="false"><button type="button" class="pw-eye" data-eye="upw" aria-label="הסתרת הסיסמה">${icon("eyeoff",18)}</button></div><button class="btn ghost" id="upwgo">איפוס</button></div>
       <label class="lbl">הסרת העובד</label>
       <div class="actions"><button class="btn ghost" id="ulock">${icon("lock",16)} ${u.locked?"ביטול חסימה":"חסימה (שומרת נתונים)"}</button>${isAdm?"":`<button class="btn danger" id="udel">${icon("trash",16)} מחיקה לצמיתות</button>`}</div>
       <div class="hint">חסימה מונעת כניסה ושומרת את השעות לדוחות. מחיקה מסירה את החשבון ואת כל השעות שלו.</div></div>`:""}
@@ -773,6 +826,10 @@ function viewSettings(){
       <div class="hint">את היום הנוכחי עובד מזין ישירות. כל שינוי ליום קודם בטווח התיקונים נשלח לאישורך בלשונית "אישורים".</div>
       <label class="check"><input type="checkbox" id="grr" ${c.requireReason!==false?"checked":""}> חובה לכתוב סיבה בבקשת תיקון</label>
       <label class="check"><input type="checkbox" id="gs" ${c.allowSignup===true?"checked":""}> לאפשר לעובדים להירשם בעצמם (בלי שאפתח להם חשבון)</label></div>
+    <div class="card set"><h3>${icon("bell",17)} תזכורת יומית</h3>
+      <label class="check"><input type="checkbox" id="grm" ${c.reminder!==false?"checked":""}> לשלוח לעובדים התראה ב-17:00 אם עוד לא הזינו את שעות היום</label>
+      <label class="check"><input type="checkbox" id="grw" ${c.reminderSkipWeekend===true?"checked":""}> לא לשלוח בשישי ובשבת</label>
+      <div class="hint">כל עובד מפעיל את התזכורת במכשיר שלו (באפליקציה או בתפריט הצד). באייפון צריך קודם להוסיף את האפליקציה למסך הבית.</div></div>
     <div class="err" id="gok"></div><button class="btn block" id="gsave">${icon("check",16)} שמירת כל ההגדרות</button>`;
     const keepBr=()=>{ brs=[...v.querySelectorAll("[data-bi]")].map(x=>x.value); };
     $("#badd").onclick=()=>{ keepBr(); keepAll(); brs.push(""); draw(); const l=v.querySelectorAll("[data-bi]"); l[l.length-1].focus(); };
@@ -781,7 +838,7 @@ function viewSettings(){
     $("#gsave").onclick=save;
   };
   const keepAll=()=>{ const g=id=>$("#"+id); Object.assign(c,{company:g("gc").value.trim(),companyId:g("gid").value.trim(),address:g("gad").value.trim(),phone:g("gph").value.trim(),stdHours:Number(g("gh").value)||8.6,ot125Hours:Number(g("g125").value),
-    overtime:g("go").checked,defStart:g("gds").value||"08:00",defEnd:g("gde").value||"17:00",defBreak:parseInt(g("gdb").value,10),viewMonths:parseInt(g("gvm").value,10),corrMonths:parseInt(g("gcm").value,10),requireReason:g("grr").checked,allowSignup:g("gs").checked}); };
+    overtime:g("go").checked,defStart:g("gds").value||"08:00",defEnd:g("gde").value||"17:00",defBreak:parseInt(g("gdb").value,10),viewMonths:parseInt(g("gvm").value,10),corrMonths:parseInt(g("gcm").value,10),requireReason:g("grr").checked,allowSignup:g("gs").checked,reminder:g("grm").checked,reminderSkipWeekend:g("grw").checked}); };
   const save=async()=>{
     const ok=$("#gok"); brs=[...v.querySelectorAll("[data-bi]")].map(x=>x.value.trim()).filter(Boolean);
     if(new Set(brs).size!==brs.length){ ok.className="err"; ok.textContent="יש שני סניפים עם אותו שם"; return; }
@@ -805,9 +862,9 @@ function reportHTML(user,list,R){
   return `<div class="rep">${repHead(`דוח נוכחות ${PERIOD_HE[R.kind]}`,"")}
     <div class="meta"><div>עובד/ת: <b>${esc(user.name)}</b></div><div>מס׳ עובד: <b>${esc(user.emp_no||"—")}</b></div><div>סניף: <b>${esc(user.branch||"—")}</b></div><div>תקופה: <b>${esc(R.label)}</b></div></div>
     <table><thead><tr><th>תאריך</th><th>יום</th><th>סוג</th><th>כניסה</th><th>יציאה</th><th>הפסקה</th><th>סה״כ</th>${ot?"<th>רגילות</th><th>125%</th><th>150%</th>":""}<th>הערה</th></tr></thead><tbody>
-    ${rows.map(r=>{ const e=r.e, w=e&&e.kind==="work"; return `<tr class="${r.dow===5||r.dow===6?"we":""}"><td>${dShort(r.day).slice(0,-5)}</td><td>${HEB_DAYS[r.dow]}</td><td>${e?KIND_HE[e.kind]:""}</td><td class="tm">${w?hhmm(e.start_time):""}</td><td class="tm">${w?hhmm(e.end_time):""}</td><td>${w&&e.break_min?e.break_min+"′":""}</td><td class="tm">${w?decH(r.m):""}</td>${ot?`<td class="tm">${w?decH(r.o.reg):""}</td><td class="tm">${w&&r.o.o1?decH(r.o.o1):""}</td><td class="tm">${w&&r.o.o2?decH(r.o.o2):""}</td>`:""}<td class="nt">${e?esc(e.note):""}</td></tr>`; }).join("")}
+    ${rows.map(r=>{ const e=r.e, w=e&&e.kind==="work"; return `<tr class="${r.dow===5||r.dow===6?"we":""}${e&&e.kind!=="work"?" k-"+e.kind:""}"><td>${dShort(r.day).slice(0,-5)}</td><td>${HEB_DAYS[r.dow]}</td><td>${e?KIND_HE[e.kind]:""}</td><td class="tm">${w?hhmm(e.start_time):""}</td><td class="tm">${w?hhmm(e.end_time):""}</td><td>${w&&e.break_min?e.break_min+"′":""}</td><td class="tm">${w?decH(r.m):""}</td>${ot?`<td class="tm">${w?decH(r.o.reg):""}</td><td class="tm">${w&&r.o.o1?decH(r.o.o1):""}</td><td class="tm">${w&&r.o.o2?decH(r.o.o2):""}</td>`:""}<td class="nt">${e?esc(e.note):""}</td></tr>`; }).join("")}
     </tbody></table>
-    <div class="sum"><div>ימי עבודה<b>${s.days}</b></div><div>סה״כ שעות<b dir="ltr">${decH(s.min)} (${fmtH(s.min)})</b></div>${ot?`<div>שעות רגילות<b dir="ltr">${decH(s.reg)}</b></div><div>נוספות 125% / 150%<b dir="ltr">${decH(s.o1)} / ${decH(s.o2)}</b></div>`:""}<div>ימי חופש<b>${s.vac}</b></div><div>ימי מחלה<b>${s.sick}</b></div></div>
+    <div class="sum"><div>ימי עבודה<b>${s.days}</b></div><div>סה״כ שעות<b dir="ltr">${decH(s.min)} (${fmtH(s.min)})</b></div>${ot?`<div>שעות רגילות<b dir="ltr">${decH(s.reg)}</b></div><div>נוספות 125% / 150%<b dir="ltr">${decH(s.o1)} / ${decH(s.o2)}</b></div>`:""}<div class="k-vacation">ימי חופש<b>${s.vac}</b></div><div class="k-sick">ימי מחלה<b>${s.sick}</b></div></div>
     <div class="sig"><div>חתימת העובד/ת</div><div>חתימת המנהל/ת</div></div>
     <div class="foot">השעות מוצגות בשעות עשרוניות (8.50 = 8 שעות ו-30 דקות). ההפסקות אינן נכללות בסה״כ.${ot?` שעות נוספות מחושבות מעבר ל-${S.cfg.stdHours||8.6} שעות ביום.`:""}</div></div>`;
 }
@@ -823,7 +880,7 @@ function combinedHTML(packs,R){
     <tr style="font-weight:700;background:#eef5fd"><td style="text-align:right">סה״כ</td><td></td><td></td><td>${T.days}</td><td class="tm">${decH(T.min)}</td>${ot?`<td class="tm">${decH(T.reg)}</td><td class="tm">${decH(T.o1)}</td><td class="tm">${decH(T.o2)}</td>`:""}<td>${T.vac}</td><td>${T.sick}</td></tr></tbody></table>
     <h3 style="font-size:13px;margin:14px 0 6px">פירוט</h3>
     ${det.length?`<table><thead><tr><th>עובד/ת</th><th>תאריך</th><th>יום</th><th>סוג</th><th>כניסה</th><th>יציאה</th><th>הפסקה</th><th>סה״כ</th><th>הערה</th></tr></thead><tbody>
-    ${det.map(r=>{ const e=r.e, w=e&&e.kind==="work"; return `<tr><td style="text-align:right">${esc(r.u.name)}</td><td>${dShort(r.day).slice(0,-5)}</td><td>${HEB_DAYS[dowOf(r.day)]}</td><td>${e?KIND_HE[e.kind]:"לא הוזן"}</td><td class="tm">${w?hhmm(e.start_time):""}</td><td class="tm">${w?hhmm(e.end_time):""}</td><td>${w&&e.break_min?e.break_min+"′":""}</td><td class="tm">${w?decH(r.m):""}</td><td class="nt">${e?esc(e.note):""}</td></tr>`; }).join("")}</tbody></table>`:`<p>אין רישומים בתקופה הזו.</p>`}
+    ${det.map(r=>{ const e=r.e, w=e&&e.kind==="work"; return `<tr class="${e&&e.kind!=="work"?"k-"+e.kind:""}"><td style="text-align:right">${esc(r.u.name)}</td><td>${dShort(r.day).slice(0,-5)}</td><td>${HEB_DAYS[dowOf(r.day)]}</td><td>${e?KIND_HE[e.kind]:"לא הוזן"}</td><td class="tm">${w?hhmm(e.start_time):""}</td><td class="tm">${w?hhmm(e.end_time):""}</td><td>${w&&e.break_min?e.break_min+"′":""}</td><td class="tm">${w?decH(r.m):""}</td><td class="nt">${e?esc(e.note):""}</td></tr>`; }).join("")}</tbody></table>`:`<p>אין רישומים בתקופה הזו.</p>`}
     <div class="foot">השעות מוצגות בשעות עשרוניות (8.50 = 8 שעות ו-30 דקות). ההפסקות אינן נכללות בסה״כ.</div></div>`;
 }
 let PDF_P=null;
@@ -850,6 +907,7 @@ async function downloadPDF(packs,R,combined){
   try{
     const cfg=await (await fetch("/api/config")).json();
     if(!cfg.supabaseUrl||!cfg.supabaseAnonKey||!window.supabase) return renderSetupNeeded();
+    PUSH.key=cfg.vapidPublicKey||""; if(PUSH.key) swReady();
     S.sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey,{auth:{persistSession:true,storageKey:"lirad.sb",autoRefreshToken:true,detectSessionInUrl:false}});
   }catch(e){ return renderSetupNeeded(); }
   await loadCfg();

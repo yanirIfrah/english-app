@@ -2,6 +2,9 @@
   "functions": {
     "api/admin.js": {
       "maxDuration": 20
+    },
+    "api/remind.js": {
+      "maxDuration": 60
     }
   },
   "headers": [
@@ -37,5 +40,6 @@
       "destination": "/gone.html",
       "permanent": false
     }
-  ]
+  ],
+  "installCommand": "npm install --omit=dev --no-audit --no-fund"
 }

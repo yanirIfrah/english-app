@@ -58,6 +58,17 @@ export default async function handler(req, res) {
     }
     const me = await caller(req);
     if (!me || me.locked) return res.status(401).json({ error: "auth" });
+    if (b.action === "push_sub") { // save this device for the daily reminder (moves the device to the signed-in user)
+      const sub = b.sub || {}, k = sub.keys || {};
+      if (!/^https:\/\//.test(sub.endpoint || "") || String(sub.endpoint).length > 1000 || !k.p256dh || !k.auth) return res.status(400).json({ error: "bad_sub" });
+      await admin(`/rest/v1/push_subs?endpoint=eq.${encodeURIComponent(sub.endpoint)}`, { method: "DELETE" });
+      const r = await admin("/rest/v1/push_subs", { method: "POST", body: JSON.stringify({ user_id: me.id, endpoint: sub.endpoint, p256dh: String(k.p256dh).slice(0, 200), auth: String(k.auth).slice(0, 100), ua: String(b.ua || "").slice(0, 300) }) });
+      return res.status(r.ok ? 200 : 400).json(r.ok ? { ok: true } : { error: "failed" });
+    }
+    if (b.action === "push_unsub") {
+      await admin(`/rest/v1/push_subs?endpoint=eq.${encodeURIComponent(String(b.endpoint || ""))}&user_id=eq.${me.id}`, { method: "DELETE" });
+      return res.status(200).json({ ok: true });
+    }
     if (b.action === "create_user") {
       if (!isAdmin(me)) return res.status(403).json({ error: "forbidden" });
       const [st, out] = await createUser(b); return res.status(st).json(out);

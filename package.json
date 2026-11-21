@@ -1,1 +1,1 @@
-{ "name": "lirad-shaon", "private": true, "type": "module", "engines": { "node": ">=18" } }
+{ "name": "lirad-shaon", "private": true, "type": "module", "engines": { "node": ">=18" }, "dependencies": { "web-push": "3.6.7" } }
