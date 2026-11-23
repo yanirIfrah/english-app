@@ -214,6 +214,29 @@ body.noscroll{overflow:hidden}
 .er2{grid-column:1;display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px;color:var(--muted)}.er2 b{color:var(--ink)}
 .er3{grid-column:1;display:flex;flex-wrap:wrap;gap:6px}.er4{grid-column:2;grid-row:1/span 3;display:grid;grid-template-columns:1fr 1fr;gap:4px;align-content:center}
 .ib.sm{width:34px;height:34px;border-radius:10px}
+
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:10px;margin-bottom:14px}
+.hero-main{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.hero-main>div:last-child{display:flex;flex-direction:column;gap:2px}.hero-main>div:last-child b{font-size:16px}.hero-main>div:last-child span{font-size:13px;color:var(--muted)}
+.ring{--p:0;flex:none;width:76px;height:76px;border-radius:50%;background:conic-gradient(var(--ok) calc(var(--p)*1%),#eef2f6 0);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:#fff}.ring b,.ring span{position:relative}.ring b{font-size:22px;font-weight:800;line-height:1}.ring span{font-size:10.5px;color:var(--muted)}
+.hero-side{display:grid;grid-template-rows:repeat(3,1fr);gap:6px}
+.hs{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 12px;font:inherit;cursor:pointer;color:var(--ink-2)}
+.hs b{font-size:17px;font-weight:800}.hs span{font-size:13px;font-weight:600}
+.hs.vac b,.hs.vac span{color:var(--vac)}.hs.sick b,.hs.sick span{color:var(--sick)}.hs.mgr b,.hs.mgr span{color:#6d28d9}.hs.mgr{background:#f5f3ff}
+.hsec2{font-size:15px;margin:4px 2px 8px;color:var(--ink-2)}
+.todo{display:grid;gap:6px;margin-bottom:16px}
+.td1{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;font:inherit;text-align:right;cursor:pointer;color:var(--ink)}
+.tdi{flex:none;width:32px;height:32px;border-radius:10px;display:grid;place-items:center}.tdt{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0}.tdt b{font-size:14.5px}.tdt i{font-style:normal;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.td1.mgr .tdi{background:#ede9fe;color:#6d28d9}.td1.no .tdi{background:#fff1f2;color:#be123c}.td1.warn .tdi{background:var(--warn-soft);color:var(--warn)}.td1>svg{color:var(--muted)}
+.allok{display:flex;align-items:center;gap:8px;background:var(--ok-soft);color:var(--ok);border-radius:14px;padding:12px 14px;font-weight:700;font-size:14px;margin-bottom:16px}
+.brl{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px}
+.brr{display:grid;grid-template-columns:1fr 1fr auto auto;align-items:center;gap:10px;width:100%;padding:12px 14px;border:0;border-bottom:1px solid var(--line);background:none;font:inherit;text-align:right;cursor:pointer;color:var(--ink)}
+.brr:last-child{border-bottom:0}.brr:hover{background:#f8fafc}.brn{display:flex;flex-direction:column;font-weight:700;font-size:14.5px}.brn i{font-style:normal;font-weight:400;font-size:12px;color:var(--muted)}
+.brb{display:flex;align-items:center;gap:6px}.brb em{font-style:normal;font-size:12.5px;font-weight:700;color:var(--ink-2);min-width:28px}.brr>b{font-size:15px;font-weight:800;min-width:56px;text-align:left}.brr>svg{color:var(--muted)}
+.qa2{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.qa2 button{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:1px solid var(--line);border-radius:12px;padding:9px 2px;font:inherit;font-size:12px;font-weight:700;color:var(--ink-2);cursor:pointer}.qa2 button svg{color:var(--pri-2)}
+@media(max-width:380px){.hero{grid-template-columns:1fr}.hero-side{grid-template-rows:none;grid-template-columns:repeat(3,1fr)}.hs{flex-direction:column;padding:6px}}
 </style>
 </head>
 <body>
@@ -470,7 +493,7 @@ function render(){
   if(isAdmin()) loadPendingCount().then(paintBadge);
   refresh();
 }
-function go(tab){ closeDrawer(); S.tab=tab; S.view=null; S.back=null; render(); scrollTo(0,0); }
+function go(tab,keep){ closeDrawer(); if(tab==="team"&&!keep){ S.teamFilter=""; } S.tab=tab; S.view=null; S.back=null; render(); scrollTo(0,0); }
 function closeDrawer(){ const d=$("#drawer-root"); if(d) d.innerHTML=""; document.body.classList.remove("noscroll"); }
 async function openDrawer(){
   const me=S.me, adm=isAdmin(), nav=adm?NAV_ADMIN:NAV_EMP, td=todayStr();
@@ -688,17 +711,22 @@ async function viewTeam(){
   const v=$("#view"), td=todayStr(), from=ymAdd(curYM(),-1)+"-01";
   const [users,list,pc]=await Promise.all([loadUsers(),loadEntries(from,addDays(td,1),null),loadCorr("2000-01-01","2999-01-01",null).then(c=>c.filter(x=>x.status==="pending"))]); if(!$("#view")) return;
   const brs=BRANCHES(); if(S.teamBranch&&S.teamBranch!=="_none"&&!brs.includes(S.teamBranch)) S.teamBranch="";
-  const emps=employees().filter(u=>!S.teamBranch||(S.teamBranch==="_none"?!u.branch:u.branch===S.teamBranch));
-  const last={}, today={}; list.forEach(e=>{ if(!last[e.user_id]||e.day>last[e.user_id]) last[e.user_id]=e.day; if(e.day===td) today[e.user_id]=e; });
+  const last={}, today={}, byU={}; list.forEach(e=>{ if(!last[e.user_id]||e.day>last[e.user_id]) last[e.user_id]=e.day; if(e.day===td) today[e.user_id]=e; (byU[e.user_id]=byU[e.user_id]||{})[e.day]=e; });
+  const miss={}; employees().forEach(u=>{ miss[u.id]=missingDays(u,byU[u.id]||{},curYM()+"-01",td); });
+  const F=S.teamFilter||"";
+  const emps=employees().filter(u=>!S.teamBranch||(S.teamBranch==="_none"?!u.branch:u.branch===S.teamBranch))
+    .filter(u=>!F||(F==="norep"&&!u.locked&&!today[u.id])||(F==="miss"&&!u.locked&&miss[u.id].length));
   const pend={}; pc.forEach(c=>pend[c.user_id]=(pend[c.user_id]||0)+1);
   v.innerHTML=`<div class="card filt">
       <div class="two"><div><label class="lbl" style="margin-top:0">סניף</label><select class="field" id="fb"><option value="">כל הסניפים</option>${brs.map(b=>`<option ${S.teamBranch===b?"selected":""}>${esc(b)}</option>`).join("")}${employees().some(u=>!u.branch)?`<option value="_none" ${S.teamBranch==="_none"?"selected":""}>ללא סניף</option>`:""}</select></div>
         <div><label class="lbl" style="margin-top:0">עובד</label><select class="field" id="fe"><option value="">בחירת עובד…</option>${emps.map(u=>`<option value="${u.id}">${esc(u.name)}${u.locked?" (חסום)":""}</option>`).join("")}</select></div></div>
+      <div class="chips hf">${[["","הכול"],["norep","לא דיווחו היום"],["miss","ימים חסרים החודש"]].map(([k,l])=>`<button data-tf="${k}" class="chipf ${F===k?"on":""}">${l}</button>`).join("")}</div>
       <div class="actions" style="margin-top:12px"><button class="btn" id="lvn">${icon("plus",16)} הזנת חופש / מחלה</button>${S.pending?`<button class="btn ghost" id="gopend">${icon("inbox",16)} ${S.pending} בקשות ממתינות</button>`:""}</div></div>
     <div class="days list">${emps.map(u=>{ const t=today[u.id]; return `<button class="it" data-u="${u.id}">
-      <div class="nm"><b>${esc(u.name)}${u.locked?' <span class="badge lock">חסום</span>':""}${pend[u.id]?` <span class="badge mgr">${pend[u.id]} ממתינות</span>`:""}</b>
-        <span>${u.branch?esc(u.branch)+" · ":""}${t?(t.kind==="work"?"היום: "+`<span dir="ltr">${hhmm(t.start_time)}–${hhmm(t.end_time)}</span>`:"היום: "+(t.kind==="vacation"?"חופש":"מחלה")):"היום: לא דיווח"}${last[u.id]?` · דיווח אחרון ${dShort(last[u.id]).slice(0,-5)}`:""}</span></div>${icon("left",16)}</button>`; }).join("")||`<div class="empty">אין עובדים${S.teamBranch?" בסניף הזה":""}. פותחים עובד חדש במשתמשים.</div>`}</div>`;
+      <div class="nm"><b>${esc(u.name)}${u.locked?' <span class="badge lock">חסום</span>':""}${pend[u.id]?` <span class="badge mgr">${pend[u.id]} ממתינות</span>`:""}${miss[u.id]&&miss[u.id].length&&!u.locked?` <span class="tg warn" title="${miss[u.id].map(ddmm).join(", ")}">${icon("alert",12)} ${miss[u.id].length} ימים חסרים</span>`:""}</b>
+        <span>${u.branch?esc(u.branch)+" · ":""}${t?(t.kind==="work"?"היום: "+`<span dir="ltr">${hhmm(t.start_time)}–${hhmm(t.end_time)}</span>`:"היום: "+(t.kind==="vacation"?"חופש":"מחלה")):"היום: לא דיווח"}${last[u.id]?` · דיווח אחרון ${dShort(last[u.id]).slice(0,-5)}`:""}</span></div>${icon("left",16)}</button>`; }).join("")||(F?`<div class="empty">${icon("check",18)} ${F==="norep"?"כולם דיווחו היום":"אין ימים חסרים החודש"}${S.teamBranch?" בסניף הזה":""}.</div>`:`<div class="empty">אין עובדים${S.teamBranch?" בסניף הזה":""}. פותחים עובד חדש במשתמשים.</div>`)}</div>`;
   $("#fb").onchange=()=>{ S.teamBranch=$("#fb").value; refresh(); };
+  v.querySelectorAll("[data-tf]").forEach(b=>b.onclick=()=>{ S.teamFilter=b.dataset.tf; refresh(); });
   $("#fe").onchange=()=>{ if($("#fe").value){ S.view=$("#fe").value; S.ym=curYM(); refresh(); scrollTo(0,0); } };
   $("#lvn").onclick=()=>leaveModal(null);
   const gp=$("#gopend"); if(gp) gp.onclick=()=>go("approve");
@@ -756,87 +784,42 @@ function missingDays(u,map,from,toExcl){ // work days with no entry, from max(fr
   return out;
 }
 async function viewHome(){
-  const v=$("#view"), td=todayStr(), mFrom=curYM()+"-01";
-  const R=HM.period==="day"?{from:td,to:addDays(td,1),label:"היום – "+dLabel(td)}:HM.period==="week"?rangeOf("week",td):monthRange(curYM());
-  const loadFrom=R.from<mFrom?R.from:mFrom;
-  const [users,list,pc]=await Promise.all([loadUsers(),loadEntries(loadFrom,addDays(td,1),null),loadCorr("2000-01-01","2999-01-01",null).then(c=>c.filter(x=>x.status==="pending"))]); if(!$("#view")) return;
-  const brs=BRANCHES(), all=employees().filter(u=>!u.locked), hasNone=all.some(u=>!u.branch||!brs.includes(u.branch));
+  const v=$("#view"), td=todayStr(), mFrom=curYM()+"-01", wd=isWorkDow(td);
+  const [users,list,pc]=await Promise.all([loadUsers(),loadEntries(mFrom,addDays(td,1),null),loadCorr("2000-01-01","2999-01-01",null).then(c=>c.filter(x=>x.status==="pending"))]); if(!$("#view")) return;
+  const brs=BRANCHES(), all=employees().filter(u=>!u.locked);
   const byU={}; list.forEach(e=>{ (byU[e.user_id]=byU[e.user_id]||{})[e.day]=e; });
-  const pend={}; pc.forEach(c=>pend[c.user_id]=(pend[c.user_id]||0)+1);
-  // per-employee stats
-  const st=all.map(u=>{ const m=byU[u.id]||{}, inR=Object.values(m).filter(e=>e.day>=R.from&&e.day<R.to), s=summarize(inR), t=m[td];
-    const miss=missingDays(u,m,mFrom,td); const last=Object.keys(m).sort().pop()||"";
-    return {u,s,t,miss,last,pend:pend[u.id]||0,br:(u.branch&&brs.includes(u.branch))?u.branch:""}; });
-  const groups=[...brs.map(b=>({b,label:b})),...(hasNone?[{b:"",label:"ללא סניף"}]:[])].map(g=>({...g,rows:st.filter(x=>x.br===g.b)}));
-  const K={emp:all.length,rep:st.filter(x=>x.t).length,vac:st.filter(x=>x.t&&x.t.kind==="vacation").length,sick:st.filter(x=>x.t&&x.t.kind==="sick").length,
-    notRep:st.filter(x=>!x.t&&isWorkDow(td)).length,miss:st.filter(x=>x.miss.length).length,pend:pc.length};
+  const st=all.map(u=>{ const m=byU[u.id]||{}; return {u,t:m[td],miss:missingDays(u,m,mFrom,td),min:summarize(Object.values(m)).min,br:(u.branch&&brs.includes(u.branch))?u.branch:""}; });
+  const rep=st.filter(x=>x.t).length, vac=st.filter(x=>x.t&&x.t.kind==="vacation"), sick=st.filter(x=>x.t&&x.t.kind==="sick");
+  const notRep=wd?st.filter(x=>!x.t):[], missU=st.filter(x=>x.miss.length);
   const hr=new Date().getHours(), hello=hr<12?"בוקר טוב":hr<17?"צהריים טובים":hr<21?"ערב טוב":"לילה טוב";
-  const tile=(v1,l,cls,act,sub="")=>`<button class="hk ${cls}" data-act="${act}"><b>${v1}</b><span>${l}</span>${sub?`<i>${sub}</i>`:""}</button>`;
-  const todayChip=x=>x.t?(x.t.kind==="work"?`<span class="tg ok">${icon("check",12)} <span dir="ltr">${hhmm(x.t.start_time)}–${hhmm(x.t.end_time)}</span></span>`:x.t.kind==="vacation"?`<span class="tg vac">חופש</span>`:`<span class="tg sick">מחלה</span>`)
-    :isWorkDow(td)?`<span class="tg no">לא דיווח</span>`:`<span class="tg off">סוף שבוע</span>`;
-  // branch cards
-  const bcard=g=>{ const rows=g.rows, n=rows.length, rep=rows.filter(x=>x.t).length, S2=rows.reduce((a,x)=>{ ["days","min","o1","o2","vac","sick"].forEach(k=>a[k]+=x.s[k]); return a; },{days:0,min:0,o1:0,o2:0,vac:0,sick:0});
-    const miss=rows.reduce((a,x)=>a+x.miss.length,0), pct=n?Math.round(rep/n*100):0, pd=rows.reduce((a,x)=>a+x.pend,0);
-    return `<div class="bc${HM.branch===(g.b||"_none")?" sel":""}">
-      <div class="bch"><b>${icon("pin",15)} ${esc(g.label)}</b><span class="hint" style="margin:0">${n} עובדים</span></div>
-      <div class="bcp"><div class="bar"><i style="width:${pct}%"></i></div><span>דיווחו היום <b>${rep}/${n}</b></span></div>
-      <div class="bcg">
-        <div><b dir="ltr">${fmtH(S2.min)}</b><span>שעות</span></div><div><b>${S2.days}</b><span>ימי עבודה</span></div>
-        <div><b dir="ltr">${fmtH(S2.o1+S2.o2)}</b><span>נוספות</span></div><div><b dir="ltr">${n?fmtH(S2.min/n):"0:00"}</b><span>ממוצע לעובד</span></div>
-        <div class="k-vac"><b>${S2.vac}</b><span>ימי חופש</span></div><div class="k-sick"><b>${S2.sick}</b><span>ימי מחלה</span></div>
-      </div>
-      ${miss||pd?`<div class="bca">${miss?`<span class="tg warn">${icon("alert",12)} ${miss} ימים חסרי דיווח</span>`:""}${pd?`<span class="tg mgr">${pd} בקשות ממתינות</span>`:""}</div>`:""}
-      <div class="actions bcb"><button class="btn sm ghost" data-bemp="${g.b||"_none"}">${icon("users",14)} העובדים</button><button class="btn sm ghost" data-bpdf="${g.b||"_none"}">${icon("file",14)} דוח PDF</button></div></div>`; };
-  // employee rows (filtered)
-  const q=HM.q.trim();
-  const keep=x=>(!HM.branch||(HM.branch==="_none"?x.br==="":x.br===HM.branch))&&(!q||x.u.name.includes(q)||(x.u.emp_no||"").includes(q))&&
-    (HM.filter==="all"||(HM.filter==="norep"&&!x.t)||(HM.filter==="miss"&&x.miss.length)||(HM.filter==="pend"&&x.pend)||(HM.filter==="leave"&&x.t&&x.t.kind!=="work"));
-  const erow=x=>`<div class="er" data-u="${x.u.id}">
-      <div class="er1"><b>${esc(x.u.name)}</b>${x.u.emp_no?`<span class="hint" style="margin:0;display:inline">#${esc(x.u.emp_no)}</span>`:""}${todayChip(x)}</div>
-      <div class="er2"><span><b dir="ltr">${fmtH(x.s.min)}</b> שעות</span><span><b>${x.s.days}</b> ימים</span>${x.s.o1+x.s.o2?`<span><b dir="ltr">${fmtH(x.s.o1+x.s.o2)}</b> נוספות</span>`:""}${x.s.vac?`<span class="k-vac">${x.s.vac} חופש</span>`:""}${x.s.sick?`<span class="k-sick">${x.s.sick} מחלה</span>`:""}</div>
-      ${x.miss.length||x.pend?`<div class="er3">${x.miss.length?`<span class="tg warn" title="${x.miss.map(ddmm).join(", ")}">${icon("alert",12)} חסר דיווח: ${x.miss.slice(-4).map(ddmm).join(", ")}${x.miss.length>4?` (+${x.miss.length-4})`:""}</span>`:""}${x.pend?`<span class="tg mgr">${x.pend} ממתינות</span>`:""}</div>`:""}
-      <div class="er4"><button class="ib sm" data-open="${x.u.id}" title="החודש של העובד">${icon("cal",16)}</button><button class="ib sm" data-leave="${x.u.id}" title="הזנת חופש / מחלה">${icon("sun",16)}</button><button class="ib sm" data-pdf="${x.u.id}" title="דוח PDF">${icon("file",16)}</button><button class="ib sm" data-edit="${x.u.id}" title="עריכת משתמש">${icon("user",16)}</button></div>
-    </div>`;
-  const eg=groups.map(g=>({...g,rows:g.rows.filter(keep)})).filter(g=>g.rows.length);
-  v.innerHTML=`<div class="hhead"><div><h2>${hello}, ${esc((S.me.name||"").split(" ")[0])}</h2><div class="hint" style="margin:2px 0 0">${dLabel(td)}</div></div><button class="btn sm ghost" id="hrf" title="רענון">${icon("refresh",15)}</button></div>
-    <div class="hks">${tile(`${K.rep}/${K.emp}`,"דיווחו היום","","norep",K.notRep?`${K.notRep} עוד לא`:"כולם ✓")}${tile(K.vac,"בחופש היום","vac","vacation")}${tile(K.sick,"במחלה היום","sick","sick")}${tile(K.pend,"בקשות ממתינות",K.pend?"mgr":"","pend")}${tile(K.miss,"עובדים עם ימים חסרים",K.miss?"warn":"","miss","החודש, עד אתמול")}</div>
-    <div class="qa">${[["leave","sun","חופש / מחלה"],["approve","inbox","אישורים"],["reports","chart","דוחות"],["newuser","plus","משתמש חדש"],["leaveview","cal","ריכוז חופשות"],["settings","cog","הגדרות"]].map(([a,i,l])=>`<button data-q="${a}">${icon(i,20)}<span>${l}</span>${a==="approve"&&K.pend?`<em>${K.pend}</em>`:""}</button>`).join("")}</div>
-    <div class="row hsec"><h3>לפי סניפים</h3><div class="seg mini">${[["day","היום"],["week","השבוע"],["month","החודש"]].map(([k,l])=>`<button data-hp="${k}" class="${HM.period===k?"on":""}">${l}</button>`).join("")}</div></div>
-    <div class="hint" style="margin:-4px 0 8px">${esc(R.label)}</div>
-    <div class="bcs">${groups.map(bcard).join("")||`<div class="card empty">אין עובדים פעילים עדיין.</div>`}</div>
-    <div class="row hsec" id="hemps"><h3>לפי עובדים</h3><span class="hint" style="margin:0">${eg.reduce((a,g)=>a+g.rows.length,0)} מתוך ${all.length}</span></div>
-    <div class="card filt">
-      <div class="two"><div><select class="field" id="hb"><option value="">כל הסניפים</option>${brs.map(b=>`<option ${HM.branch===b?"selected":""}>${esc(b)}</option>`).join("")}${hasNone?`<option value="_none" ${HM.branch==="_none"?"selected":""}>ללא סניף</option>`:""}</select></div>
-        <div><input class="field" id="hq" placeholder="חיפוש לפי שם או מס׳ עובד" value="${esc(HM.q)}"></div></div>
-      <div class="chips hf">${[["all","הכול"],["norep","לא דיווחו היום"],["miss","ימים חסרים"],["pend","בקשות ממתינות"],["leave","בחופש / מחלה היום"]].map(([k,l])=>`<button data-hf="${k}" class="chipf ${HM.filter===k?"on":""}">${l}</button>`).join("")}</div></div>
-    ${eg.map(g=>`<div class="eg"><div class="egh">${icon("pin",14)} ${esc(g.label)} <span>${g.rows.length}</span></div>${g.rows.map(erow).join("")}</div>`).join("")||`<div class="card empty">${icon("check",20)}<br>אין עובדים שמתאימים לסינון.</div>`}`;
-  // wiring
-  const toEmps=()=>{ const e=$("#hemps"); if(e) e.scrollIntoView({behavior:"smooth",block:"start"}); };
+  const names=L=>L.slice(0,3).map(x=>esc(x.u.name.split(" ")[0])).join(", ")+(L.length>3?` ועוד ${L.length-3}`:"");
+  // what needs attention (only shown when there is something)
+  const todo=[
+    pc.length&&{act:"pend",cls:"mgr",ic:"inbox",t:`${pc.length} בקשות תיקון ממתינות`,sub:"לאישור או דחייה"},
+    notRep.length&&hr>=12&&{act:"norep",cls:"no",ic:"clock",t:`${notRep.length} עוד לא דיווחו היום`,sub:names(notRep)},
+    missU.length&&{act:"miss",cls:"warn",ic:"alert",t:`${missU.length} עובדים עם ימים חסרים החודש`,sub:names(missU)}
+  ].filter(Boolean);
+  const groups=[...brs.map(b=>({b,label:b})),...(st.some(x=>!x.br)?[{b:"",label:"ללא סניף"}]:[])].map(g=>({...g,rows:st.filter(x=>x.br===g.b)})).filter(g=>g.rows.length||g.b);
+  const pct=wd&&all.length?Math.round(rep/all.length*100):0;
+  v.innerHTML=`<div class="hhead"><div><h2>${hello}, ${esc((S.me.name||"").split(" ")[0])}</h2><div class="hint" style="margin:2px 0 0">${dLabel(td)}</div></div></div>
+    <div class="hero">
+      <div class="hero-main"><div class="ring" style="--p:${pct}"><b>${wd?rep:"—"}</b><span>${wd?`מתוך ${all.length}`:"סוף שבוע"}</span></div><div><b>דיווחו היום</b><span>${wd?(notRep.length?`${notRep.length} עוד לא דיווחו`:"כולם דיווחו ✓"):"אין דיווח בשישי ושבת"}</span></div></div>
+      <div class="hero-side"><button data-act="vacation" class="hs vac"><b>${vac.length}</b><span>בחופש</span></button><button data-act="sick" class="hs sick"><b>${sick.length}</b><span>במחלה</span></button><button data-act="pend" class="hs ${pc.length?"mgr":""}"><b>${pc.length}</b><span>ממתינות</span></button></div>
+    </div>
+    ${todo.length?`<h3 class="hsec2">דורש טיפול</h3><div class="todo">${todo.map(x=>`<button data-act="${x.act}" class="td1 ${x.cls}"><span class="tdi">${icon(x.ic,17)}</span><span class="tdt"><b>${x.t}</b><i>${x.sub}</i></span>${icon("left",16)}</button>`).join("")}</div>`
+      :`<div class="allok">${icon("check",18)} הכול מעודכן – אין משהו שדורש טיפול</div>`}
+    <h3 class="hsec2">סניפים <span class="hint" style="display:inline;font-weight:400">· שעות החודש</span></h3>
+    <div class="brl">${groups.map(g=>{ const n=g.rows.length, r=g.rows.filter(x=>x.t).length, mins=g.rows.reduce((a,x)=>a+x.min,0), p=wd&&n?Math.round(r/n*100):0;
+      return `<button class="brr" data-br="${g.b||"_none"}"><span class="brn">${esc(g.label)}<i>${n} עובדים</i></span><span class="brb"><span class="bar"><i style="width:${p}%"></i></span><em>${wd?`${r}/${n}`:"—"}</em></span><b dir="ltr">${fmtH(mins)}</b>${icon("left",15)}</button>`; }).join("")||`<div class="hint">אין סניפים מוגדרים.</div>`}</div>
+    <div class="qa2">${[["leave","sun","חופש / מחלה"],["reports","chart","דוחות"],["team","users","כל העובדים"],["newuser","plus","משתמש חדש"]].map(([a,i,l])=>`<button data-q="${a}">${icon(i,17)}<span>${l}</span></button>`).join("")}</div>`;
+  const teamWith=(branch,flt)=>{ S.teamBranch=branch; S.teamFilter=flt||""; go("team",true); };
   v.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{ const a=b.dataset.act;
     if(a==="pend") return go("approve");
-    if(a==="vacation"||a==="sick"){ LV.kind=a; LV.period="day"; LV.date=todayStr(); return go("leave"); }
-    HM.filter=a==="norep"?"norep":"miss"; HM.branch=""; viewHome().then(toEmps); });
-  v.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{ const a=b.dataset.q;
-    if(a==="leave") return leaveModal(null); if(a==="newuser") return userModal(null);
-    if(a==="leaveview"){ LV.kind="all"; LV.period="month"; LV.date=todayStr(); return go("leave"); } go(a); });
-  v.querySelectorAll("[data-hp]").forEach(b=>b.onclick=()=>{ HM.period=b.dataset.hp; viewHome(); });
-  v.querySelectorAll("[data-hf]").forEach(b=>b.onclick=()=>{ HM.filter=b.dataset.hf; viewHome(); });
-  v.querySelectorAll("[data-bemp]").forEach(b=>b.onclick=()=>{ HM.branch=b.dataset.bemp; HM.filter="all"; viewHome().then(toEmps); });
-  v.querySelectorAll("[data-bpdf]").forEach(b=>b.onclick=()=>{ const k=b.dataset.bpdf, rows=st.filter(x=>k==="_none"?x.br==="":x.br===k);
-    if(!rows.length) return toast("אין עובדים בסניף");
-    downloadPDF(rows.map(x=>({user:x.u,list:Object.values(byU[x.u.id]||{}).filter(e=>e.day>=R.from&&e.day<R.to).sort((a,c)=>a.day<c.day?-1:1)})),R,true); });
-  $("#hb").onchange=()=>{ HM.branch=$("#hb").value; viewHome(); };
-  let qt; $("#hq").oninput=()=>{ clearTimeout(qt); qt=setTimeout(()=>{ HM.q=$("#hq").value; const pos=$("#hq").selectionStart; viewHome().then(()=>{ const h=$("#hq"); if(h){ h.focus(); try{ h.setSelectionRange(pos,pos); }catch(e){} } }); },250); };
-  $("#hrf").onclick=()=>viewHome();
-  const openEmp=id=>{ S.back="home"; S.tab="team"; S.view=id; S.ym=curYM(); render(); scrollTo(0,0); };
-  v.querySelectorAll("[data-open]").forEach(b=>b.onclick=e=>{ e.stopPropagation(); openEmp(b.dataset.open); });
-  v.querySelectorAll(".er").forEach(r=>r.onclick=()=>openEmp(r.dataset.u));
-  v.querySelectorAll("[data-leave]").forEach(b=>b.onclick=e=>{ e.stopPropagation(); leaveModal(b.dataset.leave); });
-  v.querySelectorAll("[data-edit]").forEach(b=>b.onclick=e=>{ e.stopPropagation(); userModal(S.users.find(u=>u.id===b.dataset.edit)); });
-  v.querySelectorAll("[data-pdf]").forEach(b=>b.onclick=e=>{ e.stopPropagation(); const u=S.users.find(x=>x.id===b.dataset.pdf);
-    downloadPDF([{user:u,list:Object.values(byU[u.id]||{}).filter(x=>x.day>=R.from&&x.day<R.to).sort((a,c)=>a.day<c.day?-1:1)}],R,false); });
+    if(a==="vacation"||a==="sick"){ LV.kind=a; LV.period="day"; LV.date=todayStr(); LV.branch=""; return go("leave"); }
+    teamWith("",a); });
+  v.querySelectorAll("[data-br]").forEach(b=>b.onclick=()=>teamWith(b.dataset.br,""));
+  v.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{ const a=b.dataset.q; if(a==="leave") return leaveModal(null); if(a==="newuser") return userModal(null); if(a==="team") return teamWith("",""); go(a); });
 }
-
 /* ========================== leave overview (ADMIN) ========================== */
 const LV={period:"day",date:null,kind:"all",branch:""};
 const ddmm=d=>`${d.slice(8,10)}.${d.slice(5,7)}`;
